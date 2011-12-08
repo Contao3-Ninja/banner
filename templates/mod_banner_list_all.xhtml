@@ -14,24 +14,26 @@
     <div class="banner_flash block" style="height:<?php echo $banner['swf_height']; ?>px; width:<?php echo $banner['swf_width']; ?>px;">
         <?php if ($banner['banner_url']): ?><a href="banner_clicks.php?<?php echo $banner['banner_key'].$banner['banner_id']; ?>" <?php echo $banner['banner_target']; ?> ><?php endif; ?>
         <span id="swf_<?php echo $banner['swf_id']; ?>">
-            <?php echo $banner['swf_src']; ?><br /><?php echo $banner['banner_comment']; ?><br /><?php echo $banner['alt']; ?> 
+            <?php echo $banner['fallback_content']; ?>
         </span>
         <img src="system/modules/banner/leer.gif" alt="" style="position:relative; margin-top:<?php echo "-".$banner['swf_height']; ?>px; left:0; z-index: 10; width:<?php echo $banner['swf_width']; ?>px; height:<?php echo $banner['swf_height']; ?>px;" />
         <?php if ($banner['banner_url']): ?></a><?php endif; ?>
     </div>
     <script type="text/javascript">
-	<!--//--><![CDATA[//><!--
-	new Swiff("<?php echo $banner['swf_src']; ?>", {
-	  id: "swf_<?php echo $banner['swf_id']; ?>",
-	  width: <?php echo $banner['swf_width']; ?>,
-	  height: <?php echo $banner['swf_height']; ?>,
-	  params : {
-	  allowfullscreen: "false",
-	  wMode: "transparent",
-	  flashvars: ""
-	  }
-	}).replaces($("swf_<?php echo $banner['swf_id']; ?>"));
-	//--><!]]>
+	/* <![CDATA[ */ 
+	if(Browser.Plugins.Flash.version > 6) {
+		new Swiff("<?php echo $banner['swf_src']; ?>", {
+		  id: "swf_<?php echo $banner['swf_id']; ?>",
+		  width: <?php echo $banner['swf_width']; ?>,
+		  height: <?php echo $banner['swf_height']; ?>,
+		  params : {
+		  allowfullscreen: "false",
+		  wMode: "transparent",
+		  flashvars: ""
+		  }
+		}).replaces($("swf_<?php echo $banner['swf_id']; ?>"));
+	}
+	/* ]]> */
 	</script> 
 <?php endif; ?>
 <?php if ($banner['banner_text']) : ?>

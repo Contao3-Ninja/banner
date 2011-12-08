@@ -380,6 +380,33 @@ class ModuleBanner extends Module
 	                    case 4:  // Flash swf
 	                    case 13: // Flash swc
 	                    	list($usec, ) = explode(" ", microtime());
+	                    	//Check for Fallback Image, only for local flash files
+	            			if ($objBanners->banner_type == 'banner_image') {
+	            				$fallback_ext = 'text';
+	            				$path_parts = pathinfo($objBanners->banner_image);
+	            				if (@getimagesize(TL_ROOT . '/' . $path_parts['dirname'].'/'.$path_parts['filename'].'.jpg') !== false) {
+	            					$fallback_ext = '.jpg';
+	            				} elseif (@getimagesize(TL_ROOT . '/' . $path_parts['dirname'].'/'.$path_parts['filename'].'.png') !== false) {
+	            					$fallback_ext = '.png';
+	            				} elseif (@getimagesize(TL_ROOT . '/' . $path_parts['dirname'].'/'.$path_parts['filename'].'.gif') !== false) {
+	            					$fallback_ext = '.gif';
+	            				}
+	            				if ($fallback_ext == 'text') {
+	            					if ($this->strFormat == 'xhtml') {
+	            						$fallback_content = $objBanners->banner_image ."<br />". specialchars(ampersand($objBanners->banner_comment)) ."<br />". specialchars(ampersand($objBanners->banner_name)); 
+	            					} else {
+	            						$fallback_content = $objBanners->banner_image ."<br>". specialchars(ampersand($objBanners->banner_comment)) ."<br>". specialchars(ampersand($objBanners->banner_name)); 
+	            					}
+	            				} else {
+	            					//Get Image with sizes of flash
+	            					$src_fallback = $this->getImage($this->urlEncode($path_parts['dirname'].'/'.$path_parts['filename'].$fallback_ext), $size[0], $size[1]);
+	            					if ($this->strFormat == 'xhtml') {
+	            						$fallback_content = '<img src="' . $src_fallback . '" alt="'.specialchars(ampersand($objBanners->banner_comment)).'" height="'.$size[1].'" width="'.$size[0].'" />'; 
+	            					} else {
+	            						$fallback_content = '<img src="' . $src_fallback . '" alt="'.specialchars(ampersand($objBanners->banner_comment)).'" height="'.$size[1].'" width="'.$size[0].'">'; 
+	            					}
+	            				}
+	            			}
 	                        $arrBanners[] = array
 	                		(
 	            			    'banner_key'     => 'bid=',
@@ -393,6 +420,7 @@ class ModuleBanner extends Module
 	            				'swf_height'     => $size[1],
 	            				'swf_id'         => round((float)$usec*100000,0).'_'.$objBanners->id,
 	            				'alt'            => specialchars(ampersand($objBanners->banner_name)),
+	            				'fallback_content'=> $fallback_content,
 	            				'banner_pic'     => false,
 	            				'banner_flash'   => true,
 	            				'banner_text'    => false,
