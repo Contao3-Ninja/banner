@@ -2,7 +2,7 @@
 <div class="<?php echo $this->class; ?>"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 <?php foreach ($this->banners as $banner): ?>
 <?php if ($banner['banner_pic']) : ?>
-    <div class="banner_image">
+    <div class="banner_image" id="banner_<?php echo $banner['banner_id']; ?>">
         <?php if ($banner['banner_url']): ?><a href="banner_clicks.php?<?php echo $banner['banner_key'].$banner['banner_id']; ?>" <?php echo $banner['banner_target']; ?> ><?php endif; ?><img src="<?php echo $banner['src']; ?>"<?php echo $banner['size']; ?> title="<?php echo $banner['banner_comment']; ?>" alt="<?php echo $banner['alt']; ?>" /><?php if ($banner['banner_url']): ?></a><?php endif; ?>
     </div>
 <?php endif; ?>
@@ -33,7 +33,7 @@
 	  </script> 
 <?php endif; ?>
 <?php if ($banner['banner_text']) : ?>
-    <div class="banner_text">
+    <div class="banner_text" id="banner_<?php echo $banner['banner_id']; ?>">
     	<div class="banner_text_name"><?php if ($banner['banner_url']): ?><a href="banner_clicks.php?<?php echo $banner['banner_key'].$banner['banner_id']; ?>" <?php echo $banner['banner_target']; ?> ><?php endif; ?><?php echo $banner['banner_name']; ?><?php if ($banner['banner_url']): ?></a><?php endif; ?></div>
     	<div class="banner_text_comment"><?php echo $banner['banner_comment']; ?></div>
         <?php if ($banner['banner_url']): ?><div class="banner_text_url"><a href="banner_clicks.php?<?php echo $banner['banner_key'].$banner['banner_id']; ?>" <?php echo $banner['banner_target']; ?> ><?php echo $banner['banner_url_kurz']; ?></a></div><?php endif; ?>
