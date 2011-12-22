@@ -24,15 +24,16 @@
  */
 $GLOBALS['TL_LANG']['tl_banner_category']['title']            = array('Category', 'Please enter the name of the category.');
 $GLOBALS['TL_LANG']['tl_banner_category']['tstamp']           = array('Revision date', 'Date and time of latest revision');
-$GLOBALS['TL_LANG']['tl_banner_category']['banner_default']       = array('Default banner image', 'This banner will be showed, when no active banners are found.<br />This selection takes priority over modul definition "Hide when empty".');
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_default']       = array('Default banner image', 'This banner will be showed, when no active banners are found. This selection takes priority over modul definition "Hide when empty".');
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_default_name']  = array('Banner Name', 'Name is for title tag too.');
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_default_image'] = array('Banner default image', 'Please select the banner.(GIF,JPG,PNG,SWF)');
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_default_url']   = array('Banner target URL', 'Please enter the banner target URL: http://... ');
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_default_target']= array('Internal Link', 'If you choose this option, the banner target opens in the same browser window.');
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_protected']     = array('Protect category', 'Show banner of this category to certain member groups only.');
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_groups']        = array('Allowed member groups', 'Here you can choose which groups will be allowed to see the banners of this category.');
-$GLOBALS['TL_LANG']['tl_banner_category']['banner_numbers']       = array('Show all banners', 'If you choose this option, all active banners will be showed in frontend.');
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_numbers']       = array('Show all banners', 'If you choose this option, all active banners will be showed in frontend. You can limit the number below.');
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_random']        = array('Random order', 'If you choose this option, the banners will shown in a random order.');
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_limit']		  = array('Limiting the number of banners.','0: show all banners (default), otherwise maximum number of banners that will be showed.');
 
 /**
  * Legends

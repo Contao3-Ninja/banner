@@ -131,7 +131,7 @@ $GLOBALS['TL_DCA']['tl_banner_category'] = array
 	(
 		'banner_default'              => 'banner_default_name,banner_default_url,banner_default_image,banner_default_target',
 		'banner_protected'            => 'banner_groups',
-		'banner_numbers'              => 'banner_random'
+		'banner_numbers'              => 'banner_limit,banner_random'
 	),
 
 	// Fields
@@ -200,6 +200,13 @@ $GLOBALS['TL_DCA']['tl_banner_category'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_banner_category']['banner_random'],
 			'exclude'                 => true,
 			'inputType'               => 'checkbox'
+		),
+		'banner_limit'				  => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_banner_category']['banner_limit'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true, 'maxlength'=>10)
 		),
 		'banner_protected'            => array
 		(

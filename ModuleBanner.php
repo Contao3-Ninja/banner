@@ -128,18 +128,20 @@ class ModuleBanner extends Module
 		//$aresult = array();
 		$intTime = time();
 		
-		// Test auf Banner ALL
-		$objBannerAll = $this->Database->prepare("SELECT id AS BALL, banner_random FROM tl_banner_category "
+		// Test auf Banner ALL und Limit
+		$objBannerAll = $this->Database->prepare("SELECT id AS BALL, banner_random, banner_limit FROM tl_banner_category "
 		                                      . " WHERE id IN (?) AND banner_numbers=?")
 		                                ->execute(implode(',', $this->arrBannerCategories), 1);
 		$intAllRows = $objBannerAll->numRows;
 		$bolBRAND = false;
 		$intBALL = 0;
+		$intBannerLimit = 1; // default for single banner
 		if ($intAllRows >0) {
 			$objBannerAll->next(); 
 			//Kat mit Banner All Eigenschaft
 			$intBALL = 1;
 			$intBannerCategory = $objBannerAll->BALL;
+			$intBannerLimit    = $objBannerAll->banner_limit; // 0:all, others = max
 			if ($objBannerAll->banner_random == 1) {
 				$bolBRAND = true;
 			}
@@ -225,7 +227,7 @@ class ModuleBanner extends Module
 			    $intShowBannerId =  mt_rand(0,$intRows-1);
 			}
 			if ($intShowBannerId>-1) {
-	    		// direkt mit Limit
+	    		// direkt mit Limit und offset
 	            //$objBanners = $this->Database->prepare("SELECT TLB.*, banner_template FROM tl_banner AS TLB "
 	            $objBanners = $this->Database->prepare("SELECT TLB.* FROM tl_banner AS TLB "
 	                                                . " LEFT JOIN tl_banner_category ON (tl_banner_category.id=TLB.pid)"
@@ -253,7 +255,7 @@ class ModuleBanner extends Module
 				$strBannerSort = 'sorting';
 			}
 			//$objBanners = $this->Database->prepare("SELECT TLB.*, banner_template FROM tl_banner AS TLB "
-			$objBanners = $this->Database->prepare("SELECT TLB.* FROM tl_banner AS TLB "
+			$objBannersStmt = $this->Database->prepare("SELECT TLB.* FROM tl_banner AS TLB "
 	                                                . " LEFT JOIN tl_banner_category ON (tl_banner_category.id=TLB.pid)"
 	                                                . " LEFT OUTER JOIN tl_banner_stat AS TLS ON TLB.id=TLS.id"
 	                                                . " WHERE pid=?"
@@ -261,8 +263,12 @@ class ModuleBanner extends Module
 			                                        . " AND ((TLB.banner_until=?) OR (TLB.banner_until=1 AND TLB.banner_clicks_until>TLS.banner_clicks) OR (TLB.banner_until=1 AND TLB.banner_clicks_until=?) OR (TLB.banner_until=1 AND TLS.banner_clicks is NULL))"
 	                                                . " AND TLB.banner_published =1"
 	                                                . " AND (TLB.banner_start=? OR TLB.banner_start<=?) AND (TLB.banner_stop=? OR TLB.banner_stop>=?)"
-	                                                . " ORDER BY banner_weighting, ".$strBannerSort."")
-	    								 ->execute($intBannerCategory, '', '', '', '', '', $intTime, '', $intTime);
+	                                                . " ORDER BY banner_weighting, ".$strBannerSort."");
+			if ($intBannerLimit > 0) 
+			{
+				$objBannersStmt->limit($intBannerLimit);
+			}
+			$objBanners = $objBannersStmt->executeUncached($intBannerCategory, '', '', '', '', '', $intTime, '', $intTime);
 	    	$intRows = $objBanners->numRows;
 		}
 		/*

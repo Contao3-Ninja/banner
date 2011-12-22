@@ -55,6 +55,7 @@ CREATE TABLE `tl_banner_category` (
   `banner_default_target` char(1) NOT NULL default '', 
   `banner_numbers` char(1) NOT NULL default '', 
   `banner_random` char(1) NOT NULL default '', 
+  `banner_limit` int(10) unsigned NOT NULL default '0',
   `banner_protected` char(1) NOT NULL default '',
   `banner_groups` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`)

@@ -63,3 +63,7 @@
     color: #700000; 
     font-weight: bold;
 }
+
+#tl_banner_category div p.tl_tip {
+    overflow: visible;
+}
