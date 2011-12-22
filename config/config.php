@@ -89,33 +89,4 @@ array_insert($GLOBALS['FE_MOD']['miscellaneous'], 0, array
 	'banner' => 'ModuleBanner')
 );
 
-if (version_compare(VERSION . '.' . BUILD, '2.9.9', '<'))
-{
-	/**
-	 * Migration over module based runonce
-	 * 
-	 * Check for exists of /system/runonce
-	 * if not, copy the module runonce therefore
-	 */
-	$runonceJob  = 'system/modules/banner/config/RunonceJob.php';
-	$runonceFile = 'system/runonce.php';
-	
-	if ( (file_exists(TL_ROOT . '/' . $runonceJob)) && (!file_exists(TL_ROOT . '/' . $runonceFile)) ) 
-	{
-		//keine /system/runonce, let's go
-		$objFile = new File($runonceJob); // hier wird intern ein "TL_ROOT/" vorgesetzt
-		if ($objFile->filesize > 100) 
-		{
-			$objFiles = Files::getInstance();
-			$objFiles->copy($runonceJob,$runonceFile);
-			//
-			if (version_compare(VERSION . '.' . BUILD, '2.8.9', '>'))
-			{
-				$objFile->write("<?php // Module Migration Complete ?>");
-			}
-		}
-		$objFile->close();
-	}
-}
-
 ?>
