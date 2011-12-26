@@ -539,7 +539,7 @@ class tl_banner extends Backend
 	{
 		if (strlen($this->Input->get('tid')))
 		{
-			$this->toggleVisibility($this->Input->get('tid'), (strlen($this->Input->get('state')) ? '' : 1));
+			$this->toggleVisibility($this->Input->get('tid'), ($this->Input->get('state') == 1));
 			$this->redirect($this->getReferer());
 		}
 		
