@@ -405,7 +405,7 @@ class ModuleBanner extends Module
 	            					}
 	            				} else {
 	            					//Get Image with sizes of flash
-	            					$src_fallback = $this->getImage($this->urlEncode($path_parts['dirname'].'/'.$path_parts['filename'].$fallback_ext), $size[0], $size[1]);
+	            					$src_fallback = $this->getImage($this->urlEncode($path_parts['dirname'].'/'.$path_parts['filename'].$fallback_ext), $size[0], $size[1],'proportional');
 	            					if ($this->strFormat == 'xhtml') {
 	            						$fallback_content = '<img src="' . $src_fallback . '" alt="'.specialchars(ampersand($objBanners->banner_comment)).'" height="'.$size[1].'" width="'.$size[0].'" />'; 
 	            					} else {

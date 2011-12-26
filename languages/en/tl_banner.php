@@ -76,6 +76,8 @@ $GLOBALS['TL_LANG']['tl_banner']['tl_be_not_defined_max'] = 'unlimited';
 $GLOBALS['TL_LANG']['tl_banner']['tl_be_read_error']      = 'Banner file not found or read error!';
 $GLOBALS['TL_LANG']['tl_banner']['source_intern']      = 'internal';
 $GLOBALS['TL_LANG']['tl_banner']['source_extern']      = 'external';
+$GLOBALS['TL_LANG']['tl_banner']['source_fallback']    = 'Image-Fallback';
+$GLOBALS['TL_LANG']['tl_banner']['source_fallback_no'] = 'Image-Fallback not found.';
 
 /**
  * Buttons

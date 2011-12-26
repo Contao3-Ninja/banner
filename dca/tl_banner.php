@@ -81,6 +81,25 @@ class tl_banner extends Backend
         		            $oriSize = true; // Merkmal fuer Bilder ohne Umrechnung
         		        }
         		    }
+        		    //check for fallback image
+        		    $fallback_content = '<br><span style="font-weight: normal;">'.$GLOBALS['TL_LANG']['tl_banner']['source_fallback_no'].'</span>';
+        		    $path_parts = pathinfo($row['banner_image']);
+        		    if (@getimagesize(TL_ROOT . '/' . $path_parts['dirname'].'/'.$path_parts['filename'].'.jpg') !== false) {
+        		        $fallback_ext = '.jpg';
+        		        $fallback_content = true;
+        		    } elseif (@getimagesize(TL_ROOT . '/' . $path_parts['dirname'].'/'.$path_parts['filename'].'.png') !== false) {
+        		        $fallback_ext = '.png';
+        		        $fallback_content = true;
+        		    } elseif (@getimagesize(TL_ROOT . '/' . $path_parts['dirname'].'/'.$path_parts['filename'].'.gif') !== false) {
+        		        $fallback_ext = '.gif';
+        		        $fallback_content = true;
+        		    }
+        		    if ($fallback_content === true) 
+        		    {
+        		        //Get Image with sizes of flash
+        		        $src_fallback = $this->getImage($this->urlEncode($path_parts['dirname'].'/'.$path_parts['filename'].$fallback_ext), $intWidth, $intHeight,'proportional');
+       		            $fallback_content = '<br><img src="' . $src_fallback . '" alt="'.specialchars(ampersand($row['banner_name'])).'" height="'.$intHeight.'" width="'.$intWidth.'"><br><span style="font-weight: normal;">'.$GLOBALS['TL_LANG']['tl_banner']['source_fallback'].'</span>';
+        		    }
         		    break;
                 default:
                     break;
@@ -107,6 +126,7 @@ class tl_banner extends Backend
     	if ('banner_image_extern' == $row['banner_type']) {
     	    // Externer Banner Grafik
     	    $BannerSourceIntern=false;
+    	    $fallback_content = '';
     	    $arrImageSize = $this->getimagesizeexternal($row['banner_image_extern']);
     	    //log_message('[getimagesizeexternal] Image Details2: '.print_r($arrImageSize,true).'', 'debug.log');
     	    switch ($arrImageSize[2]) {
@@ -208,7 +228,7 @@ class tl_banner extends Backend
 	            case 4:  // Flash swf
 	            case 13: // Flash swc
 	        		$output = '<div class="mod_banner_be">' .
-	                            '<div class="name"><div id="flash_'.$row['id'].'">'.specialchars(ampersand($row['banner_name'])).'</div></div>' .
+	                            '<div class="name"><div id="flash_'.$row['id'].'">'.specialchars(ampersand($row['banner_name'])).'</div>'.$fallback_content.'</div>' .
 	        					'<div class="right">' .
 	                        	   '<div class="left">'.
 	                        	     '<div class="published_head">'.$GLOBALS['TL_LANG']['tl_banner']['banner_published'][0].'</div>'.
@@ -241,7 +261,7 @@ class tl_banner extends Backend
 	                            '<div class="url">'.$banner_url_text . (strlen($banner_url)<80 ? $banner_url : substr($banner_url, 0, 36)."[...]".substr($banner_url,-36,36) ). '</div>' .
 	        				  '</div>'.
 	        				   '<script type="text/javascript">
-								<!--//--><![CDATA[//><!--
+								/* <![CDATA[ */
 								new Swiff("'.$banner_image.'", {
 								  id: "flash_'.$row['id'].'",
 								  width: '.$intWidth.',
@@ -252,7 +272,7 @@ class tl_banner extends Backend
 								  flashvars: ""
 								  }
 								}).replaces($("flash_'.$row['id'].'"));
-								//--><!]]>
+								/* ]]> */
 								</script>';
 	                break;
 	            default:
