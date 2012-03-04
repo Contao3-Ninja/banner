@@ -87,6 +87,18 @@ CREATE TABLE `tl_banner_blocker` (
   KEY `type` (`type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+-- 
+-- Table `tl_banner_random_blocker`
+-- 
+
+CREATE TABLE `tl_banner_random_blocker` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `bid` int(10) unsigned NOT NULL default '0',
+  `tstamp` int(10) unsigned NOT NULL default '0',
+  `ip` varchar(40) NOT NULL default '0.0.0.0',
+  PRIMARY KEY  (`id`),
+  KEY `bid` (`bid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
 -- Table `tl_module`
