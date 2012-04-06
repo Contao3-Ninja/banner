@@ -1,14 +1,14 @@
 <?php @error_reporting(0); @ini_set("display_errors", 0);  
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
  * Modul Banner - /config/runonce.php
  *
  * PHP version 5
- * @copyright  Glen Langer 2007..2011
+ * @copyright  Glen Langer 2007..2012
  * @author     Glen Langer
  * @package    Banner
  * @license    GPL
@@ -17,7 +17,7 @@
 /**
  * Class BannerRunonceJob
  *
- * @copyright  Glen Langer 2007..2011
+ * @copyright  Glen Langer 2007..2012
  * @author     Glen Langer
  * @package    Banner
  * @license    GPL
@@ -114,5 +114,8 @@ class BannerRunonceJob extends Controller
 		}
 	}
 }
+
+$objBannerRunonceJob = new BannerRunonceJob();
+$objBannerRunonceJob->run();
 
 ?>
