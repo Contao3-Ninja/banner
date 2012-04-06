@@ -17,6 +17,6 @@
 
 // require_once(TL_ROOT . '/system/modules/banner/ModuleBannerVersion.php');
 define('BANNER_VERSION', '2.3');
-define('BANNER_BUILD', '0');
+define('BANNER_BUILD', '1');
 
 ?>

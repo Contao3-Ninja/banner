@@ -170,7 +170,7 @@ window.addEvent('domready', function() {
                 <?php endforeach; ?>
                 </select>
                 <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>">
-                <input class="tl_img_submit" type="image" value="<?php echo specialchars($GLOBALS['TL_LANG']['MSC']['showOnly']); ?>" title="<?php echo specialchars($GLOBALS['TL_LANG']['MSC']['showOnly']); ?>" src="system/themes/<?php echo $this->theme; ?>/images/reload.gif" name="filter">
+                <input class="tl_img_submit" style="padding-left: 6px;" type="image" value="<?php echo specialchars($GLOBALS['TL_LANG']['MSC']['showOnly']); ?>" title="<?php echo specialchars($GLOBALS['TL_LANG']['MSC']['showOnly']); ?>" src="system/themes/<?php echo $this->theme; ?>/images/reload.gif" name="filter">
             </div>
             </form>
         </div>
@@ -195,55 +195,53 @@ window.addEvent('domready', function() {
 <?php if ($this->bannerkatid>0 || $this->bannerkatid==-1) : ?>
     <?php foreach ($this->bannersstat as $bannerstat): ?>
         <?php if ($bannerstat['banner_pic']) : ?>
-            <!-- Bild Start -->
-            <tr onmouseout="Theme.hoverRow(this, 0);" onmouseover="Theme.hoverRow(this, 1);">
-                <td style="padding-left: 2px; padding-bottom:6px;  padding-top:6px;" class="tl_file_list"><img style="<?php echo $bannerstat['banner_style']; ?>" alt="<?php echo $bannerstat['banner_alt']; ?>" src="<?php echo $bannerstat['banner_image']; ?>" height="<?php echo $bannerstat['banner_height']; ?>" width="<?php echo $bannerstat['banner_width']; ?>" title="<?php echo $bannerstat['banner_title']; ?>"><br>&nbsp;<?php echo $bannerstat['banner_name']; ?><br>&nbsp;<?php echo $bannerstat['banner_url']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_active']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_prio']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_views']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_clicks']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><a href="<?php echo $this->banner_base_be; ?>/main.php?do=bannerstat&amp;act=zero&amp;zid=<?php echo $bannerstat['banner_id']; ?>" title="<?php echo $bannerstat['banner_zero']; ?>" onclick="if (!confirm('<?php echo $bannerstat['banner_confirm']; ?>')) return false; Backend.getScrollOffset();"><img src="system/themes/<?php echo $this->theme; ?>/images/down.gif" alt="<?php echo $bannerstat['banner_zero']; ?>" height="16" width="13"></a></td>
-            </tr>
-            <!-- Bild Ende -->
+<!-- Bild Start -->
+<tr onmouseout="Theme.hoverRow(this, 0);" onmouseover="Theme.hoverRow(this, 1);">
+    <td style="padding-left: 2px; padding-bottom:6px;  padding-top:6px;" class="tl_file_list"><img style="<?php echo $bannerstat['banner_style']; ?>" alt="<?php echo $bannerstat['banner_alt']; ?>" src="<?php echo $bannerstat['banner_image']; ?>" height="<?php echo $bannerstat['banner_height']; ?>" width="<?php echo $bannerstat['banner_width']; ?>" title="<?php echo $bannerstat['banner_title']; ?>"><br>&nbsp;<?php echo $bannerstat['banner_name']; ?><br>&nbsp;<?php echo $bannerstat['banner_url']; ?></td>
+    <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_active']; ?></td>
+    <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_prio']; ?></td>
+    <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_views']; ?></td>
+    <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_clicks']; ?></td>
+    <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><a href="<?php echo $this->banner_base_be; ?>/main.php?do=bannerstat&amp;act=zero&amp;zid=<?php echo $bannerstat['banner_id']; ?>&amp;id=<?php echo $this->bannerkatid; ?>" title="<?php echo $bannerstat['banner_zero']; ?>" onclick="if (!confirm('<?php echo $bannerstat['banner_confirm']; ?>')) return false; Backend.getScrollOffset();"><img src="system/themes/<?php echo $this->theme; ?>/images/down.gif" alt="<?php echo $bannerstat['banner_zero']; ?>" height="16" width="13"></a></td>
+</tr>
+<!-- Bild Ende -->
         <?php endif; ?>
         <?php if ($bannerstat['banner_flash']) : ?>
-            <!-- swf Start -->
-            <tr onmouseout="Theme.hoverRow(this, 0);" onmouseover="Theme.hoverRow(this, 1);">
-                <td style="padding-left: 2px; padding-bottom:6px; padding-top:6px;" class="tl_file_list"><div id="swf_<?php echo $bannerstat['banner_id']; ?>">Flash</div><br>&nbsp;<?php echo $bannerstat['banner_name']; ?><br>&nbsp;<?php echo $bannerstat['banner_url']; ?>
-                <script type="text/javascript">
-				<!--//--><![CDATA[//><!--
-				new Swiff("<?php echo $bannerstat['swf_src']; ?>", {
-				  id: "swf_<?php echo $bannerstat['banner_id']; ?>",
-				  width: <?php echo $bannerstat['swf_width']; ?>,
-				  height: <?php echo $bannerstat['swf_height']; ?>,
-				  params : {
-				  allowfullscreen: "false",
-				  wMode: "transparent",
-				  flashvars: ""
-				  }
-				}).replaces($("swf_<?php echo $bannerstat['banner_id']; ?>"));
-				//--><!]]>
-				</script> 
-                </td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_active']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_prio']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_views']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_clicks']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><a href="<?php echo $this->banner_base_be; ?>/main.php?do=bannerstat&amp;act=zero&amp;zid=<?php echo $bannerstat['banner_id']; ?>" title="<?php echo $bannerstat['banner_zero']; ?>" onclick="if (!confirm('<?php echo $bannerstat['banner_confirm']; ?>')) return false; Backend.getScrollOffset();"><img src="system/themes/<?php echo $this->theme; ?>/images/down.gif" alt="<?php echo $bannerstat['banner_zero']; ?>" height="16" width="13"></a></td>
-            </tr>
-            <!-- swf Ende -->
+<!-- swf Start -->
+<tr onmouseout="Theme.hoverRow(this, 0);" onmouseover="Theme.hoverRow(this, 1);">
+    <td style="padding-left: 2px; padding-bottom:6px; padding-top:6px;" class="tl_file_list"><div id="swf_<?php echo $bannerstat['banner_id']; ?>">Flash</div><br>&nbsp;<?php echo $bannerstat['banner_name']; ?><br>&nbsp;<?php echo $bannerstat['banner_url']; ?>
+    <script>
+	new Swiff("<?php echo $bannerstat['swf_src']; ?>", {
+	  id: "swf_<?php echo $bannerstat['banner_id']; ?>",
+	  width: <?php echo $bannerstat['swf_width']; ?>,
+	  height: <?php echo $bannerstat['swf_height']; ?>,
+	  params : {
+	  allowfullscreen: "false",
+	  wMode: "transparent",
+	  flashvars: ""
+	  }
+	}).replaces($("swf_<?php echo $bannerstat['banner_id']; ?>"));
+	</script> 
+    </td>
+    <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_active']; ?></td>
+    <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_prio']; ?></td>
+    <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_views']; ?></td>
+    <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_clicks']; ?></td>
+    <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><a href="<?php echo $this->banner_base_be; ?>/main.php?do=bannerstat&amp;act=zero&amp;zid=<?php echo $bannerstat['banner_id']; ?>&amp;id=<?php echo $this->bannerkatid; ?>" title="<?php echo $bannerstat['banner_zero']; ?>" onclick="if (!confirm('<?php echo $bannerstat['banner_confirm']; ?>')) return false; Backend.getScrollOffset();"><img src="system/themes/<?php echo $this->theme; ?>/images/down.gif" alt="<?php echo $bannerstat['banner_zero']; ?>" height="16" width="13"></a></td>
+</tr>
+<!-- swf Ende -->
         <?php endif; ?>
         <?php if ($bannerstat['banner_text']) : ?>
-            <!-- Text Start -->
-            <tr onmouseout="Theme.hoverRow(this, 0);" onmouseover="Theme.hoverRow(this, 1);">
-                <td style="padding-left: 2px; padding-bottom:6px;  padding-top:6px;" class="tl_file_list"><span style="font-weight:bold;"><?php echo $bannerstat['banner_name']; ?></span><br><br><?php echo $bannerstat['banner_comment']; ?><br><br>&nbsp;&nbsp;<?php echo $bannerstat['banner_url_kurz']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_active']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_prio']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_views']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_clicks']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><a href="<?php echo $this->banner_base_be; ?>/main.php?do=bannerstat&amp;act=zero&amp;zid=<?php echo $bannerstat['banner_id']; ?>" title="<?php echo $bannerstat['banner_zero']; ?>" onclick="if (!confirm('<?php echo $bannerstat['banner_confirm']; ?>')) return false; Backend.getScrollOffset();"><img src="system/themes/<?php echo $this->theme; ?>/images/down.gif" alt="<?php echo $bannerstat['banner_zero']; ?>" height="16" width="13"></a></td>
-            </tr>
-            <!-- Text Ende -->
+<!-- Text Start -->
+<tr onmouseout="Theme.hoverRow(this, 0);" onmouseover="Theme.hoverRow(this, 1);">
+    <td style="padding-left: 2px; padding-bottom:6px;  padding-top:6px;" class="tl_file_list"><span style="font-weight:bold;"><?php echo $bannerstat['banner_name']; ?></span><br><br><?php echo $bannerstat['banner_comment']; ?><br><br>&nbsp;&nbsp;<?php echo $bannerstat['banner_url_kurz']; ?></td>
+    <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_active']; ?></td>
+    <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_prio']; ?></td>
+    <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_views']; ?></td>
+    <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_clicks']; ?></td>
+    <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><a href="<?php echo $this->banner_base_be; ?>/main.php?do=bannerstat&amp;act=zero&amp;zid=<?php echo $bannerstat['banner_id']; ?>&amp;id=<?php echo $this->bannerkatid; ?>" title="<?php echo $bannerstat['banner_zero']; ?>" onclick="if (!confirm('<?php echo $bannerstat['banner_confirm']; ?>')) return false; Backend.getScrollOffset();"><img src="system/themes/<?php echo $this->theme; ?>/images/down.gif" alt="<?php echo $bannerstat['banner_zero']; ?>" height="16" width="13"></a></td>
+</tr>
+<!-- Text Ende -->
         <?php endif; ?>
     <?php endforeach; ?>
 <?php endif; ?>

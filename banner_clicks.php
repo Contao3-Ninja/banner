@@ -2,7 +2,7 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -16,7 +16,7 @@
  * <a href="banner_clicks.php?bid=7">
  *
  * PHP version 5
- * @copyright  Glen Langer 2007..2011
+ * @copyright  Glen Langer 2007..2012
  * @author     Glen Langer 
  * @package    Banner 
  * @license    GPL 
@@ -46,7 +46,7 @@ if (!file_exists(TL_ROOT . '/system/modules/botdetection/ModuleBotDetection.php'
  * Class BannerClicks
  *
  * Banner ReDirect class
- * @copyright  Glen Langer 2007..2011
+ * @copyright  Glen Langer 2007..2012
  * @author     Glen Langer
  * @package    Banner
  */

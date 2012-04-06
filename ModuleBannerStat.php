@@ -1,14 +1,14 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  * 
  * Modul Banner Stat - Backend
  * 
  * PHP version 5
- * @copyright  Glen Langer 2007..2011
+ * @copyright  Glen Langer 2007..2012
  * @author     Glen Langer
  * @package    Banner
  * @license    GPL
@@ -19,7 +19,7 @@
 /**
  * Class ModuleBannerStat
  *
- * @copyright  Glen Langer 2007..2011
+ * @copyright  Glen Langer 2007..2012
  * @author     Glen Langer
  * @package    Banner
  */
@@ -44,10 +44,20 @@ class ModuleBannerStat extends BackendModule
 	public function __construct()
 	{
 	    parent::__construct();
-	    if ($this->Input->get('act',true)=='zero') {
+	    
+	    if ($this->Input->get('id') === null)
+	    {
+	        $this->intKatID = (int)$this->Input->post('id');
+	    }
+	    else 
+	    {
+	        $this->intKatID = (int)$this->Input->get('id');
+	    }
+	    
+	    if ($this->Input->get('act',true)=='zero') 
+	    {
 	    	$this->setZero();
 	    }
-    	$this->intKatID = (int)$this->Input->post('id');
 	}
 	
 	/**
@@ -57,22 +67,29 @@ class ModuleBannerStat extends BackendModule
 	{
 		require_once(TL_ROOT . '/system/modules/banner/ModuleBannerVersion.php');
 		
-	    if ($this->intKatID == 0) { //direkter Aufruf ohne ID
+	    if ($this->intKatID == 0) 
+	    { //direkter Aufruf ohne ID
     	    $objBannerKatID = $this->Database->prepare("SELECT MIN(pid) AS ANZ from tl_banner")->execute();
     	    $objBannerKatID->next();
-    	    if ($objBannerKatID->ANZ === null) {
+    	    if ($objBannerKatID->ANZ === null) 
+    	    {
     	    	$this->intKatID = 0;
-    	    } else {
+    	    } 
+    	    else 
+    	    {
     	        $this->intKatID = $objBannerKatID->ANZ;
     	    }
 	    } // if intKatID == 0
-	    if ($this->intKatID == -1) { // alle Kat
+	    if ($this->intKatID == -1) 
+	    { // alle Kat
 	    	$objBanners = $this->Database->prepare("SELECT tb.id, tb.banner_type, tb.banner_name, tb.banner_url, tb.banner_jumpTo, tb.banner_image, tb.banner_image_extern, tb.banner_weighting, tb.banner_start, tb.banner_stop, tb.banner_published, tb.banner_until, tb.banner_comment, tb.banner_views_until, tb.banner_clicks_until, tbs.banner_views, tbs.banner_clicks"
 		                                     	. " FROM tl_banner tb, tl_banner_stat tbs"
 	                                         	. " WHERE tb.id=tbs.id"
 	                                         	. " ORDER BY tb.pid,tb.banner_name")
 					                 	 ->execute();
-	    } else {
+	    } 
+	    else 
+	    {
 			$objBanners = $this->Database->prepare("SELECT tb.id, tb.banner_type, tb.banner_name, tb.banner_url, tb.banner_jumpTo, tb.banner_image, tb.banner_image_extern, tb.banner_weighting, tb.banner_start, tb.banner_stop, tb.banner_published, tb.banner_until, tb.banner_comment, tb.banner_views_until, tb.banner_clicks_until, tbs.banner_views, tbs.banner_clicks"
 		                                     	. " FROM tl_banner tb, tl_banner_stat tbs"
 	                                         	. " WHERE tb.id=tbs.id"
@@ -81,11 +98,13 @@ class ModuleBannerStat extends BackendModule
 					                 	 ->execute($this->intKatID);
 	    }
         $intRows = $objBanners->numRows;
-		if ($intRows>0) {// Banner vorhanden in Statistik Tabelle
+		if ($intRows>0) 
+		{// Banner vorhanden in Statistik Tabelle
             while ($objBanners->next())
     		{
     		    //Banner Ziel per Page?
-                if ($objBanners->banner_jumpTo >0) {
+                if ($objBanners->banner_jumpTo >0) 
+                {
                 	//url generieren
                 	$objBannerNextPage = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
                                                         ->limit(1)
@@ -95,99 +114,130 @@ class ModuleBannerStat extends BackendModule
                 		$objBanners->banner_url = $this->generateFrontendUrl($objBannerNextPage->fetchAssoc());
                 	} 
                 }
-    		    if ($objBanners->banner_url == '') {
+    		    if ($objBanners->banner_url == '') 
+    		    {
     		    	$objBanners->banner_url = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['NoURL'];
-    		    	if ($objBanners->banner_clicks == 0) {
+    		    	if ($objBanners->banner_clicks == 0) 
+    		    	{
     		    		$objBanners->banner_clicks = '--';
     		    	}
     		    }
     		    if ( ($objBanners->banner_published == 1) && 
     		         ($objBanners->banner_start=='' || $objBanners->banner_start<=time()) && 
     		         ($objBanners->banner_stop==''  || $objBanners->banner_stop>time())
-    		       ) {
+    		       ) 
+    		    {
     		    	$objBanners->banner_published = '<span class="banner_stat_yes">'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['pub_yes'].'</span>';
     		    	$intMaxViews =0;
     		    	$intMaxClicks=0;
-    		    	if ($objBanners->banner_until==1 && $objBanners->banner_views_until !='' && $objBanners->banner_views>=$objBanners->banner_views_until) {
+    		    	if ($objBanners->banner_until==1 && $objBanners->banner_views_until !='' && $objBanners->banner_views>=$objBanners->banner_views_until) 
+    		    	{
     		    	    //max views erreicht
     		    	    $intMaxViews=1;
     		    		$objBanners->banner_published = '<span class="banner_stat_no">'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['pub_no'].'</span>';
     		    	}
-    		    	if ($objBanners->banner_until==1 && $objBanners->banner_clicks_until !='' && $objBanners->banner_clicks>=$objBanners->banner_clicks_until) {
+    		    	if ($objBanners->banner_until==1 && $objBanners->banner_clicks_until !='' && $objBanners->banner_clicks>=$objBanners->banner_clicks_until) 
+    		    	{
     		    	    //max clicks erreicht
     		    	    $intMaxClicks=1;
     		    		$objBanners->banner_published = '<span class="banner_stat_no">'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['pub_no'].'</span>';
     		    	}
-    		    } else {
+    		    } 
+    		    else 
+    		    {
     		    	$objBanners->banner_published = '<span class="banner_stat_no">'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['pub_no'].'</span>';
     		    }
     		    // 1 = GIF, 2 = JPG, 3 = PNG
     		    // 4 = SWF, 13 = SWC (zip-like swf file)
     		    // 5 = PSD, 6 = BMP, 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order)
     		    // 9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF
-    		    if ($objBanners->banner_type == 'banner_image') {
+    		    if ($objBanners->banner_type == 'banner_image') 
+    		    {
     		        //Interne Banner Grafik
     		        $arrImageSize = @getimagesize(TL_ROOT . '/' . $objBanners->banner_image);
-    		        if ($arrImageSize===false) {
+    		        if ($arrImageSize===false) 
+    		        {
 				    	//Workaround fuer PHP ohne zlib bei SWC Files
 				    	$arrImageSize = $this->getimagesizecompressed(TL_ROOT . '/' . $objBanners->banner_image);
 				    }
     		    } 
-    		    if ($objBanners->banner_type == 'banner_image_extern') {
+    		    if ($objBanners->banner_type == 'banner_image_extern') 
+    		    {
     		    	$arrImageSize = $this->getImageSizeExternal($objBanners->banner_image_extern);
     		    }
-    		    if ($objBanners->banner_type == 'banner_text') {
+    		    if ($objBanners->banner_type == 'banner_text') 
+    		    {
     		    	$arrImageSize = array(999,999,999);
     		    }
     		    $banner_url = html_entity_decode($objBanners->banner_url, ENT_NOQUOTES, 'UTF-8');
     		    $oriSize = false;
-    		    switch ($arrImageSize[2]) {
-                case 1:
-                case 2:
-                case 3:
-    	        case 4:  // Flash swf
-            	case 13: // Flash swc
-            	   if ($arrImageSize[0] > $arrImageSize[1]) { // Breite > Hoehe
-            		    if ($arrImageSize[0] >250) {
-            		    	$intWidth  = 250;
-            		    	$intHeight = ceil($intWidth*$arrImageSize[1]/$arrImageSize[0]);
-            		    } else {
-            		    	$intWidth  = $arrImageSize[0];
-            		    	$intHeight = $arrImageSize[1];
-            		    	$oriSize = true; // Merkmal fuer Bilder ohne Umrechnung
-            		    }
-                    } else { // Hoehe >= Breite, ggf. Hoehe verkleinern
-        		        if ($arrImageSize[1]>250) {
-        		            // pruefen ob bei neuer Hoehe die Breite zu klein wird
-        		        	if ((250*$arrImageSize[0]/$arrImageSize[1]) < 40) {
-        		        		// Breite statt Hoehe setzen
-        		        		$intWidth  = 40;
-        		        		$intHeight = ceil($intWidth*$arrImageSize[1]/$arrImageSize[0]);
-        		        	} else {
-        		        		$intHeight = 250;
-        		        		$intWidth  = ceil($intHeight*$arrImageSize[0]/$arrImageSize[1]);
-        		        	}
-        		        } else {
-        		            $intWidth  = $arrImageSize[0];
-        		            $intHeight = $arrImageSize[1];
-        		            $oriSize = true; // Merkmal fuer Bilder ohne Umrechnung
-        		        }
-        		    }
-        		    break;
-                default:
-                    break;
-        	   }  
- 		       switch ($arrImageSize[2]) {
+    		    switch ($arrImageSize[2]) 
+    		    {
                     case 1:
                     case 2:
                     case 3:
-                        if ($objBanners->banner_type == 'banner_image') { // internes Bild
-                            if ($oriSize) {
+                    case 4:  // Flash swf
+                    case 13: // Flash swc
+                        if ($arrImageSize[0] > $arrImageSize[1]) 
+                        { // Breite > Hoehe
+                            if ($arrImageSize[0] >250) 
+                            {
+                            	$intWidth  = 250;
+                            	$intHeight = ceil($intWidth*$arrImageSize[1]/$arrImageSize[0]);
+                            } 
+                            else 
+                            {
+                            	$intWidth  = $arrImageSize[0];
+                            	$intHeight = $arrImageSize[1];
+                            	$oriSize = true; // Merkmal fuer Bilder ohne Umrechnung
+                            }
+                        } 
+                        else 
+                        { // Hoehe >= Breite, ggf. Hoehe verkleinern
+                            if ($arrImageSize[1]>250) 
+                            {
+                                // pruefen ob bei neuer Hoehe die Breite zu klein wird
+                            	if ((250*$arrImageSize[0]/$arrImageSize[1]) < 40) 
+                            	{
+                            		// Breite statt Hoehe setzen
+                            		$intWidth  = 40;
+                            		$intHeight = ceil($intWidth*$arrImageSize[1]/$arrImageSize[0]);
+                            	} 
+                            	else 
+                            	{
+                            		$intHeight = 250;
+                            		$intWidth  = ceil($intHeight*$arrImageSize[0]/$arrImageSize[1]);
+                            	}
+                            } 
+                            else 
+                            {
+                                $intWidth  = $arrImageSize[0];
+                                $intHeight = $arrImageSize[1];
+                                $oriSize = true; // Merkmal fuer Bilder ohne Umrechnung
+                            }
+                        }
+        		        break;
+                    default:
+                        break;
+        	   }  
+ 		       switch ($arrImageSize[2]) 
+ 		       {
+                    case 1:
+                    case 2:
+                    case 3:
+                        if ($objBanners->banner_type == 'banner_image') 
+                        { // internes Bild
+                            if ($oriSize) 
+                            {
                             	$objBanners->banner_image = $this->urlEncode($objBanners->banner_image); 
-                            } else {
+                            } 
+                            else 
+                            {
                                 $objBanners->banner_image = $this->getImage($this->urlEncode($objBanners->banner_image), $intWidth, $intHeight);
                             }
-                        } else { // externes Bild
+                        } 
+                        else 
+                        { // externes Bild
                         	$objBanners->banner_image = $objBanners->banner_image_extern;
                         }
                		    $arrBannersStat[] = array
@@ -214,7 +264,8 @@ class ModuleBannerStat extends BackendModule
             		    break;
                     case 4:  // Flash swf
                     case 13: // Flash swc
-                        if ($objBanners->banner_type == 'banner_image_extern') {
+                        if ($objBanners->banner_type == 'banner_image_extern') 
+                        {
                             $objBanners->banner_image = $objBanners->banner_image_extern;
                         }
                		    $arrBannersStat[] = array
@@ -242,7 +293,9 @@ class ModuleBannerStat extends BackendModule
 	                	if (preg_match('@^(?:http://)?([^/]+)@i',$banner_url, $treffer))
 	                	{
 	                		$banner_url_kurz = $treffer[1];
-	                	} else {
+	                	} 
+	                	else 
+	                	{
 	                		$banner_url_kurz = '';
 	                	}
                         $arrBannersStat[] = array
@@ -276,7 +329,9 @@ class ModuleBannerStat extends BackendModule
                         break;
     		    }
     		}
-		} else {
+		} 
+		else 
+		{
 		    $arrBannersStat[] = array();
 		}
 		
@@ -310,8 +365,10 @@ class ModuleBannerStat extends BackendModule
 					                   ->execute();
 		$intKatRows = $objBannerKat->numRows;
 		
-		if ($intKatRows>0) {
-    		if ($intRows==0) { // gewählte Kat hat keine Banner, es gibt aber weitere Kats
+		if ($intKatRows>0) 
+		{
+    		if ($intRows==0) 
+    		{ // gewählte Kat hat keine Banner, es gibt aber weitere Kats
     			$arrBannerKats[] = array
     		    (
                     'id'    => '0',
@@ -332,7 +389,9 @@ class ModuleBannerStat extends BackendModule
                     'title' => $objBannerKat->title
 			    );
 			}
-		} else { // es gibt keine Kat mit Banner
+		} 
+		else 
+		{ // es gibt keine Kat mit Banner
 			$arrBannerKats[] = array
 		    (
                 'id'    => '0',
@@ -354,28 +413,33 @@ class ModuleBannerStat extends BackendModule
 	protected function setZero()
 	{
 	    $intBID = preg_replace('@\D@', '', $this->Input->get('zid')); //  only digits 
-	    if ($intBID>0) {
-        $this->Database->prepare("UPDATE tl_banner_stat SET tstamp=?, banner_views=0, banner_clicks=0 WHERE id=?")
-					   ->execute( time() , $intBID );
+	    if ($intBID>0) 
+	    {
+            $this->Database->prepare("UPDATE tl_banner_stat SET tstamp=?, banner_views=0, banner_clicks=0 WHERE id=?")
+    					   ->execute( time() , $intBID );
 	    }
 	    return ;
 	}
 	
-	private function swc_data($filename) {
+	private function swc_data($filename) 
+	{
 		$size = 0;
 		$width = 0;
 		$height = 0;
 	
 		$file = @fopen($filename,"rb") ;
-		if (!$file) {
+		if (!$file) 
+		{
 			return false;
 		}
-		if ("CWS" != fread($file,3)) {
+		if ("CWS" != fread($file,3)) 
+		{
 			return false;
 		} 
 		// Version
 		fread($file,1) ;
-		for ($i=0;$i<4;$i++) {
+		for ($i=0;$i<4;$i++) 
+		{
 			$t = ord(fread($file,1));
 			$size += ($t<<(8*$i));
 		}
@@ -392,35 +456,43 @@ class ModuleBannerStat extends BackendModule
 		$cbyte<<= 5 ;
 		$cbit 	= 2 ;
 		// RECT
-		for ($vals=0;$vals<4;$vals++) {
+		for ($vals=0;$vals<4;$vals++) 
+		{
 			$bitcount = 0 ;
-			while ($bitcount<$bits) {
-				if ($cbyte&128) {
+			while ($bitcount<$bits) 
+			{
+				if ($cbyte&128) 
+				{
 					$cval .= "1" ;
-				} else {
+				} 
+				else 
+				{
 					$cval .= "0" ;
-					}
+				}
 				$cbyte<<=1 ;
 				$cbyte &= 255 ;
 				$cbit-- ;
 				$bitcount++ ;
-				if ($cbit<0) {
+				if ($cbit<0) 
+				{
 					$cbyte	= ord(substr($buffer,0,1)) ;
 					$buffer = substr($buffer,1) ;
 					$cbit = 7 ;
-					}
-			  }
+				}
+			}
 			$c 		= 1 ;
 			$val 	= 0 ;
 			$tval = strrev($cval) ;
-			for ($n=0;$n<strlen($tval);$n++) {
+			for ($n=0;$n<strlen($tval);$n++) 
+			{
 				$atom = substr($tval,$n,1) ;
 				if ($atom=="1") $val+=$c ;
 				$c*=2 ;
-			  }
+			}
 			// TWIPS to PIXELS
 			$val/=20 ;
-			switch ($vals) {
+			switch ($vals) 
+			{
 				case 0:
 					// tmp value
 					$width = $val ;
@@ -435,7 +507,7 @@ class ModuleBannerStat extends BackendModule
 				case 3:
 					$height = $val - $height ;
 				break ;
-			  }
+			}
 			$cval = "" ;
 		}
 		fclose($file) ;
@@ -454,7 +526,8 @@ class ModuleBannerStat extends BackendModule
 	{
 		$arrImageSize = false;
 		$res = $this->swc_data($BannerImage);
-		if ($res) {
+		if ($res) 
+		{
 			// width,height
 			$arrImageSize = array($res[0], $res[1], 13);
 		}
@@ -475,7 +548,8 @@ class ModuleBannerStat extends BackendModule
 	    $objRequest = new Request();
 		$objRequest->send(html_entity_decode($BannerImageExternal, ENT_NOQUOTES, 'UTF-8'));
 		// Test auf chunked
-		if ( array_key_exists('Transfer-Encoding',$objRequest->headers) && $objRequest->headers['Transfer-Encoding'] == 'chunked') {
+		if ( array_key_exists('Transfer-Encoding',$objRequest->headers) && $objRequest->headers['Transfer-Encoding'] == 'chunked') 
+		{
 			try
 			{ 
 	    		$objFile = new File($tmpImage);
@@ -488,11 +562,15 @@ class ModuleBannerStat extends BackendModule
 				if ($e->getCode() == 0)
 				{
 					log_message('[getimagesizeexternal] tmpFile Problem: notWriteable', 'debug.log');
-				} else {
+				} 
+				else 
+				{
 				    log_message('[getimagesizeexternal] tmpFile Problem: error', 'debug.log');
 				}
 			}
-		} else {
+		} 
+		else 
+		{
 			try
 			{ 
 	    		$objFile = new File($tmpImage);
@@ -505,7 +583,9 @@ class ModuleBannerStat extends BackendModule
 				if ($e->getCode() == 0)
 				{
 					log_message('[getimagesizeexternal] tmpFile Problem: notWriteable', 'debug.log');
-				} else {
+				} 
+				else 
+				{
 				    log_message('[getimagesizeexternal] tmpFile Problem: error', 'debug.log');
 				}
 			} 
@@ -513,7 +593,8 @@ class ModuleBannerStat extends BackendModule
 		$objRequest=null;
 		unset($objRequest);
 		$arrImageSize = @getimagesize(TL_ROOT . '/' . $tmpImage);
-		if ($arrImageSize===false) {
+		if ($arrImageSize===false) 
+		{
 	    	//Workaround fuer PHP ohne zlib bei SWC Files
 	    	$arrImageSize = $this->getimagesizecompressed(TL_ROOT . '/' . $tmpImage);
 	    }
@@ -529,7 +610,8 @@ class ModuleBannerStat extends BackendModule
     {
         $decBody = '';
         $m = '';
-        while (trim($chunked)) {
+        while (trim($chunked)) 
+        {
             preg_match("/^([\da-fA-F]+)[^\r\n]*\r\n/sm", $chunked, $m);
             $length = hexdec(trim($m[1]));
             $cut = strlen($m[0]);

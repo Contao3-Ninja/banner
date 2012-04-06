@@ -1,14 +1,14 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  * 
  * Modul Banner - Frontend
  *
  * PHP version 5
- * @copyright  Glen Langer 2007..2011
+ * @copyright  Glen Langer 2007..2012
  * @author     Glen Langer 
  * @package    Banner
  * @license    GPL
@@ -19,7 +19,7 @@
 /**
  * Class ModuleBanner
  *
- * @copyright  Glen Langer 2007..2011
+ * @copyright  Glen Langer 2007..2012
  * @author     Glen Langer 
  * @package    Banner
  */
@@ -710,14 +710,15 @@ class ModuleBanner extends Module
 	    $ClientIP = bin2hex(sha1($intCatID . $this->Environment->remoteAddr,true)); // sha1 20 Zeichen, bin2hex 40 zeichen
 	    $lastBanner = array_pop($this->arrBannerData);
 	    $BannerID = $lastBanner['banner_id'];
-	    if ($BannerID==0) { // kein Banner, nichts zu tun
+	    if ($BannerID==0) 
+	    { // kein Banner, nichts zu tun
 	        return;
-	    }	    
+	    }
 	    $BannerBlockTime = time() - 60*10;   // 10 Minuten, 0-10 min wird geblockt
 	    $BannerCleanTime = time() - 60*10*3; // 30 Minuten, Einträge >= 30 Minuten werden gelöscht
 	    if (isset($GLOBALS['TL_CONFIG']['mod_banner_block_time']) && intval($GLOBALS['TL_CONFIG']['mod_banner_block_time'])>0) {
 	        $BannerBlockTime = time() - 60*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
-	        $BannerCleanTime = $BannerBlockTime * 3;
+	        $BannerCleanTime = time() - 60*3*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
 	    }
 	    $this->Database->prepare("DELETE FROM tl_banner_blocker WHERE tstamp<? AND type=?")
 	                   ->execute($BannerCleanTime, 'v');
