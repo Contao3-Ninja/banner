@@ -134,21 +134,21 @@ window.addEvent('domready', function() {
         <div style="float:left; padding-left: 4px;">
             <form method="get" class="popup info" id="banner_export1" action="<?php echo $this->banner_base; ?>system/modules/banner/export/BannerStatExport.php?tl_field=csvc&amp;tl_katid=<?php echo $this->bannerkatid; ?>">
             <div class="tl_formbody">
-                <input type="submit" value="CSV ','" alt="Export CSV ," class="tl_submit"/>
+                <input type="submit" value="CSV ','" alt="Export CSV ," class="tl_submit" />
             </div>
             </form>
         </div>
         <div style="float:left; padding-left: 6px;">
             <form method="get" class="popup info" id="banner_export2" action="<?php echo $this->banner_base; ?>system/modules/banner/export/BannerStatExport.php?tl_field=csvs&amp;tl_katid=<?php echo $this->bannerkatid; ?>">
             <div class="tl_formbody">
-                <input type="submit" value="CSV ';'" alt="Export CSV ;" class="tl_submit"/>
+                <input type="submit" value="CSV ';'" alt="Export CSV ;" class="tl_submit" />
             </div>
             </form>
         </div>
 	    <div style="float:left; padding-left: 6px;">
             <form method="get" class="popup info" id="banner_export3" action="<?php echo $this->banner_base; ?>system/modules/banner/export/BannerStatExport.php?tl_field=excel&amp;tl_katid=<?php echo $this->bannerkatid; ?>">
             <div class="tl_formbody">
-                <input type="submit" value="Excel" alt="Export Excel" class="tl_submit"/>
+                <input type="submit" value="Excel" alt="Export Excel" class="tl_submit" />
             </div>
             </form>
         </div>
@@ -160,7 +160,7 @@ window.addEvent('domready', function() {
         <div style="float:left; padding-right: 6px;">
             <form method="post" class="info" id="banner_statistik" action="<?php echo $this->banner_base_be; ?>/main.php?do=bannerstat">
             <div class="tl_formbody">
-                <select class="tl_select" name="id" style="width:300px;">
+                <select class="tl_select" name="id" style="width:200px;">
                 <?php foreach ($this->bannerkats as $bannerkat): ?>
                     <?php if ($bannerkat['id']==$this->bannerkatid) : ?>
                     <option selected="selected" value="<?php echo $bannerkat['id']; ?>"><?php echo $bannerkat['title']; ?></option>
@@ -169,13 +169,31 @@ window.addEvent('domready', function() {
                     <?php endif; ?>
                 <?php endforeach; ?>
                 </select>
-                <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>">
+                <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>" />
                 <input class="tl_img_submit" type="image" value="<?php echo specialchars($GLOBALS['TL_LANG']['MSC']['showOnly']); ?>" title="<?php echo specialchars($GLOBALS['TL_LANG']['MSC']['showOnly']); ?>" src="system/themes/<?php echo $this->theme; ?>/images/reload.gif" name="filter" />
             </div>
             </form>
         </div>
-     </fieldset>
-     <!-- Kategorie Ende //-->
+    </fieldset>
+    <!-- Kategorie Ende //-->
+    <!-- Kategorie Reset //-->
+<?php if ($this->bannerkatid>0) : ?>
+    <fieldset style="margin-right: 6px; float:right;">
+        <legend> <?php echo $this->bannercatzero; ?> </legend>
+        <div style="float:left;">
+            <form method="post" class="info" id="banner_cat_reset" action="<?php echo $this->banner_base_be; ?>/main.php?do=bannerstat">
+            <div class="tl_formbody">
+                <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>" />
+                <input type="hidden" name="act" value="zero" />
+                <input type="hidden" name="id" value="<?php echo $this->bannerkatid; ?>" />
+                <input type="hidden" name="catzid" value="<?php echo $this->bannerkatid; ?>" />
+                <input type="submit" value="<?php echo $this->bannercatzerobutton; ?>" alt="<?php echo $this->bannercatzerotext; ?>" title="<?php echo $this->bannercatzerotext; ?>" class="tl_submit" onclick="if (!confirm('<?php echo $this->bannercatzeroconfirm; ?>')) return false; Backend.getScrollOffset();" />
+            </div>
+            </form>
+        </div>
+    </fieldset>
+<?php endif; ?>
+    <!-- Kategorie Reset Ende //-->
     <div class="clear"></div>
 </div>
 <br /> <br />
@@ -202,7 +220,13 @@ window.addEvent('domready', function() {
                 <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_prio']; ?></td>
                 <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_views']; ?></td>
                 <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_clicks']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><a href="<?php echo $this->banner_base_be; ?>/main.php?do=bannerstat&amp;act=zero&amp;zid=<?php echo $bannerstat['banner_id']; ?>&amp;id=<?php echo $this->bannerkatid; ?>" title="<?php echo $bannerstat['banner_zero']; ?>" onclick="if (!confirm('<?php echo $bannerstat['banner_confirm']; ?>')) return false; Backend.getScrollOffset();"><img src="system/themes/<?php echo $this->theme; ?>/images/down.gif" alt="<?php echo $bannerstat['banner_zero']; ?>" height="16" width="13" /></a></td>
+                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><form method="post" class="info" id="banner_reset" action="<?php echo $this->banner_base_be; ?>/main.php?do=bannerstat">
+                <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>" />
+                <input type="hidden" name="act" value="zero" />
+                <input type="hidden" name="zid" value="<?php echo $bannerstat['banner_id']; ?>" />
+                <input type="hidden" name="id" value="<?php echo $this->bannerkatid; ?>" />
+                <input class="tl_img_submit" type="image" value="<?php echo $bannerstat['banner_zero']; ?>" title="<?php echo $bannerstat['banner_zero']; ?>" src="system/modules/banner/themes/<?php echo $this->theme0; ?>/down0.gif" name="filter" onclick="if (!confirm('<?php echo $bannerstat['banner_confirm']; ?>')) return false; Backend.getScrollOffset();" />
+                </form></td>
             </tr>
             <!-- Bild Ende -->
         <?php endif; ?>
@@ -229,7 +253,13 @@ window.addEvent('domready', function() {
                 <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_prio']; ?></td>
                 <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_views']; ?></td>
                 <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_clicks']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><a href="<?php echo $this->banner_base_be; ?>/main.php?do=bannerstat&amp;act=zero&amp;zid=<?php echo $bannerstat['banner_id']; ?>&amp;id=<?php echo $this->bannerkatid; ?>" title="<?php echo $bannerstat['banner_zero']; ?>" onclick="if (!confirm('<?php echo $bannerstat['banner_confirm']; ?>')) return false; Backend.getScrollOffset();"><img src="system/themes/<?php echo $this->theme; ?>/images/down.gif" alt="<?php echo $bannerstat['banner_zero']; ?>" height="16" width="13" /></a></td>
+                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><form method="post" class="info" id="banner_reset" action="<?php echo $this->banner_base_be; ?>/main.php?do=bannerstat">
+                <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>" />
+                <input type="hidden" name="act" value="zero" />
+                <input type="hidden" name="zid" value="<?php echo $bannerstat['banner_id']; ?>" />
+                <input type="hidden" name="id" value="<?php echo $this->bannerkatid; ?>" />
+                <input class="tl_img_submit" type="image" value="<?php echo $bannerstat['banner_zero']; ?>" title="<?php echo $bannerstat['banner_zero']; ?>" src="system/modules/banner/themes/<?php echo $this->theme0; ?>/down0.gif" name="filter" onclick="if (!confirm('<?php echo $bannerstat['banner_confirm']; ?>')) return false; Backend.getScrollOffset();" />
+                </form></td>
             </tr>
             <!-- swf Ende -->
         <?php endif; ?>
@@ -241,7 +271,13 @@ window.addEvent('domready', function() {
                 <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_prio']; ?></td>
                 <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_views']; ?></td>
                 <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><?php echo $bannerstat['banner_clicks']; ?></td>
-                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><a href="<?php echo $this->banner_base_be; ?>/main.php?do=bannerstat&amp;act=zero&amp;zid=<?php echo $bannerstat['banner_id']; ?>&amp;id=<?php echo $this->bannerkatid; ?>" title="<?php echo $bannerstat['banner_zero']; ?>" onclick="if (!confirm('<?php echo $bannerstat['banner_confirm']; ?>')) return false; Backend.getScrollOffset();"><img src="system/themes/<?php echo $this->theme; ?>/images/down.gif" alt="<?php echo $bannerstat['banner_zero']; ?>" height="16" width="13" /></a></td>
+                <td style="padding-left: 2px; text-align: center;" class="tl_file_list"><form method="post" class="info" id="banner_reset" action="<?php echo $this->banner_base_be; ?>/main.php?do=bannerstat">
+                <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>" />
+                <input type="hidden" name="act" value="zero" />
+                <input type="hidden" name="zid" value="<?php echo $bannerstat['banner_id']; ?>" />
+                <input type="hidden" name="id" value="<?php echo $this->bannerkatid; ?>" />
+                <input class="tl_img_submit" type="image" value="<?php echo $bannerstat['banner_zero']; ?>" title="<?php echo $bannerstat['banner_zero']; ?>" src="system/modules/banner/themes/<?php echo $this->theme0; ?>/down0.gif" name="filter" onclick="if (!confirm('<?php echo $bannerstat['banner_confirm']; ?>')) return false; Backend.getScrollOffset();" />
+                </form></td>
             </tr>
             <!-- Text Ende -->
         <?php endif; ?>
