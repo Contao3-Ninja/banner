@@ -101,7 +101,7 @@ $GLOBALS['TL_LANG']['XPL']['banner_help'] = array
 		'und Eintragung in dieses Feld kann verhindert werden, '.
 		'dass die eigenen Zugriffe mitgez&auml;hlt werden.<br />'.
 		'Genaue Anleitung dazu sind im Wiki / Forum zu finden.'
-	) 
+	)
 );
 
 ?>
