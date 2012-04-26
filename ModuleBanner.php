@@ -59,6 +59,9 @@ class ModuleBanner extends Module
 	 */
 	protected $strFormat = 'xhtml';
 	
+	/**
+	 * Banner Random Blocker
+	 */
 	protected $statusRandomBlocker = false;
 	
 	/**
@@ -94,6 +97,7 @@ class ModuleBanner extends Module
 	
 	/**
 	 * Generate module
+	 * @todo : Complete rewrite. In several methods.
 	 */
 	protected function compile()
 	{
@@ -115,7 +119,8 @@ class ModuleBanner extends Module
 		}
 		
 		//FE Login Check / Filtering Categories
-		if ($this->BannerCheckFE()===false) {
+		if ($this->BannerCheckFE()===false) 
+		{
     	    // Eingeloggter FE Nutzer darf nichts sehen
     	    // auf Leer umschalten
             $this->strTemplate='mod_banner_empty';
@@ -138,24 +143,30 @@ class ModuleBanner extends Module
 		$bolBRAND = false;
 		$intBALL = 0;
 		$intBannerLimit = 1; // default for single banner
-		if ($intAllRows >0) {
+		if ($intAllRows >0) 
+		{
 			$objBannerAll->next(); 
 			//Kat mit Banner All Eigenschaft
 			$intBALL = 1;
 			$intBannerCategory = $objBannerAll->BALL;
 			$intBannerLimit    = $objBannerAll->banner_limit; // 0:all, others = max
-			if ($objBannerAll->banner_random == 1) {
+			if ($objBannerAll->banner_random == 1) 
+			{
 				$bolBRAND = true;
 			}
 		}
-        if (count(self::$arrBannerSeen)) {
+        if (count(self::$arrBannerSeen)) 
+        {
             $strSqlExcludeSeen = " AND TLB.id NOT IN (".implode(",", self::$arrBannerSeen).")";
             $this->Template->headline_stop = true;
-        } else {
+        } 
+        else 
+        {
             $strSqlExcludeSeen = '';
             $this->Template->headline_stop = false;
         }
-		if ($intBALL !==1) {
+		if ($intBALL !==1) 
+		{
 			/*
 			____ _ _  _ ____ _    ____    ___  ____ _  _ _  _ ____ ____ 
 			[__  | |\ | | __ |    |___    |__] |__| |\ | |\ | |___ |__/ 
@@ -257,7 +268,8 @@ class ModuleBanner extends Module
 			if($intRows >1 )  { // more Banners
 			    $intShowBannerId =  mt_rand(0,$intRows-1);
 			}
-			if ($intShowBannerId>-1) {
+			if ($intShowBannerId>-1) 
+			{
 	    		// direkt mit Limit und offset
 	            //$objBanners = $this->Database->prepare("SELECT TLB.*, banner_template FROM tl_banner AS TLB "
 			    $intRandomBlocker = " AND TLB.id !=" .$this->BannerGetRandomBlocker();
@@ -374,7 +386,8 @@ class ModuleBanner extends Module
 	            		$objBanners->banner_url = $this->generateFrontendUrl($objBannerNextPage->fetchAssoc());
 	            	} 
 	            }
-	            if ($arrImageSize !== false) {
+	            if ($arrImageSize !== false) 
+	            {
 	    		    if ($arrValue[0]>0 && $arrValue[1]>0) {
 	    		        $size[0] = $arrValue[0];  // neue Breite
 	    		        $size[1] = $arrValue[1];  // neue Höhe
@@ -398,24 +411,35 @@ class ModuleBanner extends Module
 	                	case 1:
 	                	case 2:
 	                    case 3:
-	                        if ($objBanners->banner_type == 'banner_image') {
+	                        if ($objBanners->banner_type == 'banner_image') 
+	                        {
 	                            //Interne Banner Grafik
 	                            if ($oriSize) {
 	                            	//Bild ohne Umrechnug wichtig fuer GIF
 	                            	$src = $this->urlEncode($objBanners->banner_image);
-	                            } else {
+	                            } 
+	                            else 
+	                            {
 	                                $src = $this->getImage($this->urlEncode($objBanners->banner_image), $size[0], $size[1]);
 	                            }
 	                            if (($imgSize = @getimagesize(TL_ROOT . '/' . $src)) !== false)
 	                    		{
 	                    			$size[3] = ' ' . $imgSize[3];
 	                    		}
-	                        } else {
+	                        } 
+	                        else 
+	                        {
 	                            //Externe Banner Grafik
 	                            //Umwandlung bei Parametern
 	                            $src = html_entity_decode($objBanners->banner_image_extern, ENT_NOQUOTES, 'UTF-8');
 	                            //$src = $objBanners->banner_image_extern;
 	                            $size[3] = ' height="'.$size[1].'" width="'.$size[0].'"';
+	                        }
+	                        //First Line for title
+	                        $banner_comment_pos = strpos($objBanners->banner_comment,'\n',1);
+	                        if ($banner_comment_pos !== false) 
+	                        {
+	                            $objBanners->banner_comment = substr($objBanners->banner_comment,0,$banner_comment_pos);
 	                        }
 	            		    $arrBanners[] = array
 	            			(
@@ -438,7 +462,8 @@ class ModuleBanner extends Module
 	                    case 13: // Flash swc
 	                    	list($usec, ) = explode(" ", microtime());
 	                    	//Check for Fallback Image, only for local flash files
-	            			if ($objBanners->banner_type == 'banner_image') {
+	            			if ($objBanners->banner_type == 'banner_image') 
+	            			{
 	            				$fallback_ext = 'text';
 	            				$path_parts = pathinfo($objBanners->banner_image);
 	            				if (@getimagesize(TL_ROOT . '/' . $path_parts['dirname'].'/'.$path_parts['filename'].'.jpg') !== false) {
@@ -448,8 +473,10 @@ class ModuleBanner extends Module
 	            				} elseif (@getimagesize(TL_ROOT . '/' . $path_parts['dirname'].'/'.$path_parts['filename'].'.gif') !== false) {
 	            					$fallback_ext = '.gif';
 	            				}
-	            				if ($fallback_ext == 'text') {
-	            					if ($this->strFormat == 'xhtml') {
+	            				if ($fallback_ext == 'text') 
+	            				{
+	            					if ($this->strFormat == 'xhtml') 
+	            					{
 	            						$fallback_content = $objBanners->banner_image ."<br />". specialchars(ampersand($objBanners->banner_comment)) ."<br />". specialchars(ampersand($objBanners->banner_name)); 
 	            					} else {
 	            						$fallback_content = $objBanners->banner_image ."<br>". specialchars(ampersand($objBanners->banner_comment)) ."<br>". specialchars(ampersand($objBanners->banner_name)); 
@@ -503,7 +530,8 @@ class ModuleBanner extends Module
 	                		break;
 	                } //switch
 	                //if (($objBanners->banner_template != $this->strTemplate) && ($objBanners->banner_template != '')) {
-	                if (($this->banner_template != $this->strTemplate) && ($this->banner_template != '')) {
+	                if (($this->banner_template != $this->strTemplate) && ($this->banner_template != '')) 
+	                {
 	                    $this->strTemplate = $this->banner_template;
 	                    $this->Template = new FrontendTemplate($this->strTemplate);
 	    		    }
@@ -512,15 +540,20 @@ class ModuleBanner extends Module
 	        		
 	        		$this->arrBannerData = $arrResults;
 	        		$this->BannerStatViewUpdate();
-	    		} else {
-	    			if ($objBanners->banner_type != 'banner_text') {
+	    		} 
+	    		else 
+	    		{
+	    			if ($objBanners->banner_type != 'banner_text') 
+	    			{
 	        		    // read Error, empty template
 		    		    $banner_error = ($objBanners->banner_type == 'banner_image') ? $objBanners->banner_image : $objBanners->banner_image_extern;
 		    		    $this->log('Banner File read error '.$banner_error.'', 'ModulBanner Compile', 'ERROR');
 		    		    $this->strTemplate='mod_banner_empty';
 		                $this->Template = new FrontendTemplate($this->strTemplate);
 		                //$this->Template->banners = $arrResults; 
-	                } else {
+	                } 
+	                else 
+	                {
 	                	// Text Banner
 	                	// Kurz URL (nur Domain)
 	                	$treffer = '';
@@ -563,7 +596,9 @@ class ModuleBanner extends Module
 	    		}
 			} // while schleife alle Banner bzw. ein Banner
 			$this->Template->banners = $arrResults;
-		} else {
+		} 
+		else 
+		{
 			/*
 			_  _ ____ _ _  _    ___  ____ _  _ _  _ ____ ____    _  _ ____ ____ _  _ ____ _  _ ___  ____ _  _ 
 			|_/  |___ | |\ |    |__] |__| |\ | |\ | |___ |__/    |  | |  | |__/ |__| |__| |\ | |  \ |___ |\ | 
@@ -577,7 +612,8 @@ class ModuleBanner extends Module
                                                 . " AND banner_default_image !=? ")
     									 ->execute('1', '');
 			$intDefaultRows = $objBanners->numRows;
-			if ($intDefaultRows) {
+			if ($intDefaultRows) 
+			{
 				/*
 				___  ____ ____ ____ _  _ _    ___    ___  ____ _  _ _  _ ____ ____    ___  ____ ____ _ _  _ _ ____ ____ ___ 
 				|  \ |___ |___ |__| |  | |     |     |__] |__| |\ | |\ | |___ |__/    |  \ |___ |___ | |\ | | |___ |__/  |  
@@ -653,7 +689,9 @@ class ModuleBanner extends Module
 			    }
     			$arrResults[] = $arrBanners[0];
         		$this->Template->banners = $arrResults;
-			} else {
+			} 
+			else 
+			{
 				/*
 				_  _ ____ _ _  _    ___  ____ ____ ____ _  _ _    ___    ___  ____ _  _ _  _ ____ ____ 
 				|_/  |___ | |\ |    |  \ |___ |___ |__| |  | |     |     |__] |__| |\ | |\ | |___ |__/ 
@@ -698,10 +736,12 @@ class ModuleBanner extends Module
 	 */
 	protected function BannerStatViewUpdate()
 	{
-	    if ($this->BannerCheckBot() == true) {
+	    if ($this->BannerCheckBot() == true) 
+	    {
 	    	return; //Bot gefunden, wird nicht gezaehlt
 	    }
-	    if ($this->CheckUserAgent() == true) {
+	    if ($this->CheckUserAgent() == true) 
+	    {
 	    	return ; //User Agent Filterung
 	    }
 	    // Blocker
@@ -716,7 +756,8 @@ class ModuleBanner extends Module
 	    }
 	    $BannerBlockTime = time() - 60*10;   // 10 Minuten, 0-10 min wird geblockt
 	    $BannerCleanTime = time() - 60*10*3; // 30 Minuten, Einträge >= 30 Minuten werden gelöscht
-	    if (isset($GLOBALS['TL_CONFIG']['mod_banner_block_time']) && intval($GLOBALS['TL_CONFIG']['mod_banner_block_time'])>0) {
+	    if (isset($GLOBALS['TL_CONFIG']['mod_banner_block_time']) && intval($GLOBALS['TL_CONFIG']['mod_banner_block_time'])>0) 
+	    {
 	        $BannerBlockTime = time() - 60*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
 	        $BannerCleanTime = time() - 60*3*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
 	    }
