@@ -25,7 +25,7 @@ $this->loadLanguageFile('tl_page');
 /**
  * Add a palette to tl_module
  */
-$GLOBALS['TL_DCA']['tl_module']['palettes']['banner'] = 'name,type,headline;banner_hideempty;banner_categories,banner_template;banner_redirect;guests,protected,banner_useragent;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['banner'] = 'name,type,headline;banner_hideempty,banner_firstview;banner_categories,banner_template;banner_redirect;guests,protected,banner_useragent;align,space,cssID';
 
 
 /**
@@ -36,6 +36,12 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['banner_hideempty'] = array
 	'label'         => &$GLOBALS['TL_LANG']['tl_module']['banner_hideempty'],
 	'exclude'       => true,
 	'inputType'     => 'checkbox'
+);
+$GLOBALS['TL_DCA']['tl_module']['fields']['banner_firstview'] = array
+(
+        'label'         => &$GLOBALS['TL_LANG']['tl_module']['banner_firstview'],
+        'exclude'       => true,
+        'inputType'     => 'checkbox'
 );
 $GLOBALS['TL_DCA']['tl_module']['fields']['banner_categories'] = array
 (

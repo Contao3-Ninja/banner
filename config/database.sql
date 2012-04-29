@@ -105,6 +105,7 @@ CREATE TABLE `tl_banner_random_blocker` (
 -- 
 CREATE TABLE `tl_module` (
   `banner_hideempty` char(1) NOT NULL default '0',
+  `banner_firstview` char(1) NOT NULL default '0',
   `banner_categories` varchar(255) NOT NULL default '',
   `banner_template` varchar(32) NOT NULL default '',
   `banner_redirect` varchar(32) NOT NULL default '',
