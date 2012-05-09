@@ -38,6 +38,7 @@ $GLOBALS['TL_LANG']['tl_banner']['banner_stop']      = array('Show until', 'If y
 $GLOBALS['TL_LANG']['tl_banner']['banner_until']     = array('Limiting the number of Views and Clicks', 'If you select this option, you can define a maximum number of views and/or maximum number of clicks.');
 $GLOBALS['TL_LANG']['tl_banner']['banner_views_until']  = array('Limiting the number of Views',  'By entering a number, the current banner is no longer displayed after this number of views.');
 $GLOBALS['TL_LANG']['tl_banner']['banner_clicks_until'] = array('Limiting the number of Clicks', 'By entering a number, the current banner is no longer displayed after this number of clicks.');
+$GLOBALS['TL_LANG']['tl_banner']['banner_domain']    = array('Filter Domain', 'If you enter a domain name, this banner is used only for this domain. If you leave the field empty, this banner is used for all domains.');
 $GLOBALS['TL_LANG']['tl_banner']['banner_cat_not_found'] = 'No category selected in banner modul.';
 
 /**
@@ -48,6 +49,7 @@ $GLOBALS['TL_LANG']['tl_banner']['destination_legend'] = 'Banner targets';
 $GLOBALS['TL_LANG']['tl_banner']['image_legend']       = 'Banner image';
 $GLOBALS['TL_LANG']['tl_banner']['comment_legend']     = 'Comment';
 $GLOBALS['TL_LANG']['tl_banner']['publish_legend']     = 'Publish settings';
+$GLOBALS['TL_LANG']['tl_banner']['filter_legend']      = 'Filtering';
 
 /**
  * Reference

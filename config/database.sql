@@ -34,7 +34,8 @@ CREATE TABLE `tl_banner` (
   `banner_stop` varchar(10) NOT NULL default '',
   `banner_until` char(1) NOT NULL default '',
   `banner_views_until` varchar(10) NOT NULL default '', 
-  `banner_clicks_until` varchar(10) NOT NULL default '', 
+  `banner_clicks_until` varchar(10) NOT NULL default '',
+  `banner_domain` varchar(255) NOT NULL default '', 
   PRIMARY KEY  (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
