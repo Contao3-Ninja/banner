@@ -99,7 +99,19 @@ $GLOBALS['TL_LANG']['XPL']['banner_help'] = array
 		'and entry in this field can be prevented, '.
 		'that will count your own requests.<br />'.
 		'Detailed instructions, can be found in the Wiki.'
-	)
+	),
+	array
+	(
+		'Filter Domain',
+		'If you enter a domain name, this banner is used only for this domain.'.
+		'If you leave the field empty, this banner is used for all domains.<br/>'.
+		'Example:<br /><br />'.
+		"<pre>\n".
+		"yourdomain.com\n".
+		'</pre><br />'.
+		'The banner will be displayed, if matches the domain. But also in partial match starting from the right . So also with access via sub.yourdomain.com .'.
+		'An entry in "Site structure" - "Domain Name" is not required for the filtering.'
+	) 
 );
 
 ?>

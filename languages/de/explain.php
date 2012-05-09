@@ -101,7 +101,19 @@ $GLOBALS['TL_LANG']['XPL']['banner_help'] = array
 		'und Eintragung in dieses Feld kann verhindert werden, '.
 		'dass die eigenen Zugriffe mitgez&auml;hlt werden.<br />'.
 		'Genaue Anleitung dazu sind im Wiki / Forum zu finden.'
-	)
+	),
+	array
+	(
+		'Filter Domain',
+		'Wenn Sie hier eine Domain eingeben, wird dieser Banner nur f&uuml;r diese Domain genutzt.<br />'.
+		'Ohne Angabe wird dieser Banner f&uuml;r alle Domains genutzt.<br />'.
+		'Beispiel:<br /><br />'.
+		'<pre>'.
+		"meinedomain.de\n".
+		'</pre><br />'.
+		'Der Banner wird angezeigt, wenn die Domain übereinstimmt, auch bei Teilübereinstimmung von rechts beginnend. Damit auch bei Zugriff über sub.meinedomain.de .'.
+		'Ein Eintrag in "Seitenstruktur" - "Domain Name" ist nicht notwendig f&uuml;r die Filterung.'
+	) 
 );
 
 ?>
