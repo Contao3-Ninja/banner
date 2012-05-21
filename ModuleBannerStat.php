@@ -47,14 +47,14 @@ class ModuleBannerStat extends BackendModule
 	    
 	    if ($this->Input->get('id') === null)
 	    {
-	        $this->intKatID = (int)$this->Input->post('id');
+	        $this->intKatID = (int)$this->Input->post('id'); //banner reset, category reset
 	    }
 	    else 
 	    {
-	        $this->intKatID = (int)$this->Input->get('id');
+	        $this->intKatID = (int)$this->Input->get('id'); //directly category link
 	    }
 	    
-	    if ($this->Input->get('act',true)=='zero') 
+	    if ($this->Input->post('act',true)=='zero') //banner reset, category reset
 	    {
 	    	$this->setZero();
 	    }
@@ -349,6 +349,7 @@ class ModuleBannerStat extends BackendModule
 		$this->Template->banner_footer    = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['comment'];
 		$this->Template->banner_base      = $this->Environment->base;
 		$this->Template->theme            = $this->getTheme();
+		$this->Template->theme0           = 'default';
 		
 		if (version_compare(VERSION . '.' . BUILD, '2.9.0', '<'))
 		{
@@ -402,6 +403,11 @@ class ModuleBannerStat extends BackendModule
 		$this->Template->bannerkatid   = $this->intKatID;
 		$this->Template->bannerstatkat = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['kat'];
 		$this->Template->exportfield   = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['kat'].' '.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['export'];
+		$this->Template->bannercatzero        = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['cat_zero'];
+		$this->Template->bannercatzerobutton  = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['cat_zero_button'];
+		$this->Template->bannercatzerotext    = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['cat_zero_text'];
+		$this->Template->bannercatzeroconfirm = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['cat_zero_confirm'];
+		
 		// Code für Versionen ab 2.9.0
 		$this->Template->banner_base_be = $this->Environment->base . 'contao';
 		// Ausgabe
@@ -412,11 +418,19 @@ class ModuleBannerStat extends BackendModule
 	 */
 	protected function setZero()
 	{
-	    $intBID = preg_replace('@\D@', '', $this->Input->get('zid')); //  only digits 
+	    //Banner
+	    $intBID = preg_replace('@\D@', '', $this->Input->post('zid')); //  only digits 
 	    if ($intBID>0) 
 	    {
             $this->Database->prepare("UPDATE tl_banner_stat SET tstamp=?, banner_views=0, banner_clicks=0 WHERE id=?")
     					   ->execute( time() , $intBID );
+	    }
+	    //Category
+        $intCatBID = preg_replace('@\D@', '', $this->Input->post('catzid')); //  only digits
+	    if ($intCatBID>0)
+	    {
+	        $this->Database->prepare("UPDATE tl_banner_stat INNER JOIN tl_banner USING ( id ) SET tl_banner_stat.tstamp=?, banner_views=0, banner_clicks=0 WHERE pid=?")
+	                       ->execute( time() , $intCatBID );
 	    }
 	    return ;
 	}

@@ -1,7 +1,7 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  * 
@@ -10,7 +10,7 @@
  * Default language file (de).
  *
  * PHP version 5
- * @copyright  Glen Langer 2007..2010
+ * @copyright  Glen Langer 2007..2012
  * @author     Glen Langer 
  * @package    BannerLanguage 
  * @license    GPL 
@@ -44,6 +44,11 @@ $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['export_headline']     = 'Kategorie
 
 $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_text']    = 'Bannerstatistik auf 0 setzen f&uuml;r diesen Banner.';
 $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_confirm'] = 'View- und Klickstatistik wirklich auf 0 setzen f&uuml;r diesen Werbebanner?';
+
+$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['cat_zero']         = 'Statistik';
+$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['cat_zero_button']  = 'Reset aller Banner';
+$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['cat_zero_text']    = 'Bannerstatistik auf 0 setzen f&uuml;r ALLE Banner dieser Kategorie.';
+$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['cat_zero_confirm'] = 'View- und Klickstatistik wirklich auf 0 setzen f&uuml;r ALLE Banner dieser Kategorie?';
 
 $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['kat'] = 'Kategorie';
 $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['allkat'] = 'Alle Kategorien';

@@ -1,7 +1,7 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  * 
@@ -10,7 +10,7 @@
  * Default language file (en).
  *
  * PHP version 5
- * @copyright  Glen Langer 2007..2010
+ * @copyright  Glen Langer 2007..2012
  * @author     Glen Langer
  * @package    BannerLanguage 
  * @license    GPL 
@@ -44,6 +44,11 @@ $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['export_headline']     = 'Category,
 
 $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_text']    = 'The banner statistic counter will be reset to zero.';
 $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_confirm'] = 'Do you really want to reset the banner statistic counters (views and clicks)?';
+
+$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['cat_zero']         = 'Statistic';
+$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['cat_zero_button']  = 'Reset all banners';
+$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['cat_zero_text']    = 'All banner statistic counters will be reset to zero in this category.';
+$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['cat_zero_confirm'] = 'Do you really want to reset all banner statistic counters (views and clicks) in this category?';
 
 $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['kat'] = 'Category';
 $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['allkat'] = 'All categories';

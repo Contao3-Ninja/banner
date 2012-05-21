@@ -680,9 +680,9 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 	(
 	      '__selector__'                => array('banner_type','banner_until'),
 		  'default'                     => 'banner_type',
-		  'banner_image'                => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_jumpTo,banner_target;{image_legend},banner_image,banner_imgSize;{comment_legend},banner_comment;{publish_legend},banner_published,banner_start,banner_stop,banner_until;',
-		  'banner_image_extern'         => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_target;{image_legend},banner_image_extern,banner_imgSize;{comment_legend},banner_comment;{publish_legend},banner_published,banner_start,banner_stop,banner_until;',
-		  'banner_text'                 => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_jumpTo,banner_target;{comment_legend},banner_comment;{publish_legend},banner_published,banner_start,banner_stop,banner_until;'
+		  'banner_image'                => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_jumpTo,banner_target;{image_legend},banner_image,banner_imgSize;{comment_legend},banner_comment;{publish_legend},banner_published,banner_start,banner_stop,banner_until;{filter_legend:hide},banner_domain',
+		  'banner_image_extern'         => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_target;{image_legend},banner_image_extern,banner_imgSize;{comment_legend},banner_comment;{publish_legend},banner_published,banner_start,banner_stop,banner_until;{filter_legend:hide},banner_domain',
+		  'banner_text'                 => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_jumpTo,banner_target;{comment_legend},banner_comment;{publish_legend},banner_published,banner_start,banner_stop,banner_until;{filter_legend:hide},banner_domain'
 	),
     // Subpalettes
 	'subpalettes' => array
@@ -817,6 +817,13 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 			'inputType'               => 'text',
 			'explanation'	          => 'banner_help',
 			'eval'                    => array('nospace'=>true, 'maxlength'=>10, 'rgxp'=>'digit', 'helpwizard'=>true, 'tl_class'=>'w50')
+		),
+		'banner_domain' => array
+		(
+	        'label'                   => &$GLOBALS['TL_LANG']['tl_banner']['banner_domain'],
+	        'inputType'               => 'text',
+	        'explanation'	          => 'banner_help',
+	        'eval'                    => array('mandatory'=>false, 'maxlength'=>255, 'helpwizard'=>true)
 		)
 	)
 );
