@@ -1,4 +1,4 @@
-<?php @error_reporting(0); @ini_set("display_errors", 0);  
+<?php   
 /**
  * Contao Open Source CMS
  * Copyright (C) 2005-2012 Leo Feyer
@@ -36,6 +36,7 @@ class BannerRunonceJob extends Controller
 		{
 			if ($this->Database->tableExists('tl_banner_category'))
 			{
+			    $addTemplate = false;
 			    if ($this->Database->fieldExists('banner_template', 'tl_banner_category')
 			    && !$this->Database->fieldExists('banner_template', 'tl_module'))
 			    {
@@ -44,69 +45,68 @@ class BannerRunonceJob extends Controller
 			    	$this->Database->execute("ALTER TABLE `tl_module` ADD `banner_template` varchar(32) NOT NULL default ''");
 			    	$addTemplate = true;
 			    }
-			    
+
+    			if ( ($this->Database->fieldExists('banner_template', 'tl_banner_category')
+    			   && $this->Database->fieldExists('banner_template', 'tl_module')) 
+    			   || $addTemplate === true)
+    			{
+    				$objTemplates = $this->Database->execute("SELECT count(banner_template) AS ANZ FROM tl_module WHERE banner_template !=''");
+    				while ($objTemplates->next())
+    				{
+    				    if ($objTemplates->ANZ > 0) 
+    				    {
+    				        //nicht gefuellt
+    				        $migration = false;
+    				    } 
+    				    else 
+    				    {
+    				        $migration = true;
+    				    }
+    				}
+    				
+    				if ($migration == true)
+    				{
+    				    //Feld versuchen zu fuellen
+    				    $objBannerTemplatesNew = $this->Database->execute("SELECT `id`, `name` , `banner_categories` FROM `tl_module` WHERE `type`='banner'");
+    				    
+    				    while ($objBannerTemplatesNew->next())
+    				    {
+    				        if (strpos($objBannerTemplatesNew->banner_categories,':') !== false)
+    				        {
+    				            $arrKat = deserialize($objBannerTemplatesNew->banner_categories,true);
+    				        } 
+    				        else 
+    				        {
+    				            $arrKat = array($objBannerTemplatesNew->banner_categories);
+    				        }
+    				        if (count($arrKat) == 1 && (int)$arrKat[0] >0) 
+    				        {	//nicht NULL
+    				            //eine eindeutige Zuordnung, kann eindeutig migriert werden
+    				            $objTemplatesOld = $this->Database->execute("SELECT `id`, `title`, `banner_template` FROM `tl_banner_category` WHERE id =".$arrKat[0]."");
+    				            
+    				            while ($objTemplatesOld->next())
+    				            {
+    				                $this->Database->prepare("UPDATE tl_module SET banner_template=? WHERE id=?")->execute($objTemplatesOld->banner_template, $objBannerTemplatesNew->id);
+    				                //Protokoll
+    				                $strText = 'Banner-Module "'.$objBannerTemplatesNew->name.'" has been migrated';
+    				                $this->Database->prepare("INSERT INTO tl_log (tstamp, source, action, username, text, func, ip, browser) VALUES(?, ?, ?, ?, ?, ?, ?, ?)")->execute(time(), 'BE', 'CONFIGURATION', '', specialchars($strText), 'Banner Modul Template Migration', '127.0.0.1', 'NoBrowser');
+    				            }
+    				        } 
+    				        elseif (count($arrKat) > 1) 
+    				        {
+    				            $objTemplatesOld = $this->Database->execute("SELECT `id`, `title`, `banner_template` FROM `tl_banner_category` WHERE id =".$arrKat[0]."");
+    				            
+    				            while ($objTemplatesOld->next())
+    				            {
+    				                //Protokoll
+    				                $strText = 'Banner-Module "'.$objBannerTemplatesNew->name.'" could not be migrated';
+    				                $this->Database->prepare("INSERT INTO tl_log (tstamp, source, action, username, text, func, ip, browser) VALUES(?, ?, ?, ?, ?, ?, ?, ?)")->execute(time(), 'BE', 'ERROR', '', specialchars($strText), 'Banner Modul Template Migration', '127.0.0.1', 'NoBrowser');
+    				            }
+    				        }
+    				    } // while
+    				} // migration == true
+    			}
 			} // if tableExists('tl_banner_category')
-			
-			if ( ($this->Database->fieldExists('banner_template', 'tl_banner_category')
-			   && $this->Database->fieldExists('banner_template', 'tl_module')) 
-			   || $addTemplate === true)
-			{
-				$objTemplates = $this->Database->execute("SELECT count(banner_template) AS ANZ FROM tl_module WHERE banner_template !=''");
-				while ($objTemplates->next())
-				{
-				    if ($objTemplates->ANZ > 0) 
-				    {
-				        //nicht gefuellt
-				        $migration = false;
-				    } 
-				    else 
-				    {
-				        $migration = true;
-				    }
-				}
-				
-				if ($migration == true)
-				{
-				    //Feld versuchen zu fuellen
-				    $objBannerTemplatesNew = $this->Database->execute("SELECT `id`, `name` , `banner_categories` FROM `tl_module` WHERE `type`='banner'");
-				    
-				    while ($objBannerTemplatesNew->next())
-				    {
-				        if (strpos($objBannerTemplatesNew->banner_categories,':') !== false)
-				        {
-				            $arrKat = deserialize($objBannerTemplatesNew->banner_categories,true);
-				        } 
-				        else 
-				        {
-				            $arrKat = array($objBannerTemplatesNew->banner_categories);
-				        }
-				        if (count($arrKat) == 1 && (int)$arrKat[0] >0) 
-				        {	//nicht NULL
-				            //eine eindeutige Zuordnung, kann eindeutig migriert werden
-				            $objTemplatesOld = $this->Database->execute("SELECT `id`, `title`, `banner_template` FROM `tl_banner_category` WHERE id =".$arrKat[0]."");
-				            
-				            while ($objTemplatesOld->next())
-				            {
-				                $this->Database->prepare("UPDATE tl_module SET banner_template=? WHERE id=?")->execute($objTemplatesOld->banner_template, $objBannerTemplatesNew->id);
-				                //Protokoll
-				                $strText = 'Banner-Module "'.$objBannerTemplatesNew->name.'" has been migrated';
-				                $this->Database->prepare("INSERT INTO tl_log (tstamp, source, action, username, text, func, ip, browser) VALUES(?, ?, ?, ?, ?, ?, ?, ?)")->execute(time(), 'BE', 'CONFIGURATION', '', specialchars($strText), 'Banner Modul Template Migration', '127.0.0.1', 'NoBrowser');
-				            }
-				        } 
-				        elseif (count($arrKat) > 1) 
-				        {
-				            $objTemplatesOld = $this->Database->execute("SELECT `id`, `title`, `banner_template` FROM `tl_banner_category` WHERE id =".$arrKat[0]."");
-				            
-				            while ($objTemplatesOld->next())
-				            {
-				                //Protokoll
-				                $strText = 'Banner-Module "'.$objBannerTemplatesNew->name.'" could not be migrated';
-				                $this->Database->prepare("INSERT INTO tl_log (tstamp, source, action, username, text, func, ip, browser) VALUES(?, ?, ?, ?, ?, ?, ?, ?)")->execute(time(), 'BE', 'ERROR', '', specialchars($strText), 'Banner Modul Template Migration', '127.0.0.1', 'NoBrowser');
-				            }
-				        }
-				    } // while
-				} // migration == true
-			}
 		} // version > 2.8
 		else
 		{
