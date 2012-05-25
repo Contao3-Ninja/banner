@@ -482,10 +482,15 @@ class ModuleBanner extends Module
 	                            $size[3] = ' height="'.$size[1].'" width="'.$size[0].'"';
 	                        }
 	                        //First Line for title
-	                        $banner_comment_pos = strpos($objBanners->banner_comment,"\n",1);
-	                        if ($banner_comment_pos !== false) 
+	                        //strpos: This functions throws an "Offset not contained in string" 
+	                        //        error if the offset is not in between 0 and the length of string.
+	                        if ( strlen($objBanners->banner_comment) > 1 )
 	                        {
-	                            $objBanners->banner_comment = substr($objBanners->banner_comment,0,$banner_comment_pos);
+	                            $banner_comment_pos = strpos($objBanners->banner_comment,"\n",1);
+    	                        if ($banner_comment_pos !== false) 
+    	                        {
+    	                            $objBanners->banner_comment = substr($objBanners->banner_comment,0,$banner_comment_pos);
+    	                        }
 	                        }
 	            		    $arrBanners[] = array
 	            			(
