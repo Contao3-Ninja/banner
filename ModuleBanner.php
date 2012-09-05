@@ -909,8 +909,9 @@ class ModuleBanner extends Module
 	    { // kein Banner, nichts zu tun
 	        return;
 	    }
-	    $this->Database->prepare("DELETE FROM tl_banner_random_blocker WHERE ip=?")
-	                   ->execute($ClientIP);
+	    // Eigene IP oder aeltere Eintraege loeschen
+	    $this->Database->prepare("DELETE FROM tl_banner_random_blocker WHERE ip=? OR tstamp <?")
+	                   ->execute($ClientIP, time() -(24*60*60));
 	    $arrSet = array
 	    (
 	            'bid'    => $BannerID,
@@ -933,8 +934,8 @@ class ModuleBanner extends Module
 	    //log_message('BannerStatViewUpdate $intCatID:'.$intCatID,'Banner.log');
 	    $ClientIP = bin2hex(sha1($intCatID . $this->Environment->remoteAddr,true)); // sha1 20 Zeichen, bin2hex 40 zeichen
 	    $objBanners = $this->Database->prepare("SELECT * FROM tl_banner_random_blocker WHERE ip=?")
-                    	   ->limit(1)
-                    	   ->execute($ClientIP);
+                    	             ->limit(1)
+                    	             ->execute($ClientIP);
 	    $objBanners->fetchAssoc();
 	    if (0 == $objBanners->numRows) 
 	    {
