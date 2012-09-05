@@ -108,7 +108,7 @@ class ModuleBanner extends Module
 	
 	/**
 	 * Generate module
-	 * @todo : Complete rewrite. In several methods.
+	 * @todo : Complete rewrite. In several methods an classes.
 	 */
 	protected function compile()
 	{
@@ -352,28 +352,39 @@ class ModuleBanner extends Module
 			if ($bolBRAND) 
 			{
 				$strBannerSort = 'RAND()';
+				$intRandomBlocker = " AND TLB.id !=" .$this->BannerGetRandomBlocker();
+				$maxloop =0;
 			} 
 			else 
 			{
 				$strBannerSort = 'sorting';
+				$intRandomBlocker = " AND TLB.id !=0";
+				$maxloop =1;
 			}
 			//$objBanners = $this->Database->prepare("SELECT TLB.*, banner_template FROM tl_banner AS TLB "
-			$objBannersStmt = $this->Database->prepare("SELECT TLB.* FROM tl_banner AS TLB "
-	                                                . " LEFT JOIN tl_banner_category ON (tl_banner_category.id=TLB.pid)"
-	                                                . " LEFT OUTER JOIN tl_banner_stat AS TLS ON TLB.id=TLS.id"
-	                                                . " WHERE pid=?"
-	                                                . " AND ((TLB.banner_until=?) OR (TLB.banner_until=1 AND TLB.banner_views_until>TLS.banner_views)   OR (TLB.banner_until=1 AND TLB.banner_views_until=?)  OR (TLB.banner_until=1 AND TLS.banner_views is NULL))"
-			                                        . " AND ((TLB.banner_until=?) OR (TLB.banner_until=1 AND TLB.banner_clicks_until>TLS.banner_clicks) OR (TLB.banner_until=1 AND TLB.banner_clicks_until=?) OR (TLB.banner_until=1 AND TLS.banner_clicks is NULL))"
-	                                                . " AND TLB.banner_published =1"
-	                                                . " AND (TLB.banner_start=? OR TLB.banner_start<=?) AND (TLB.banner_stop=? OR TLB.banner_stop>=?)"
-			                                        . " AND (TLB.banner_domain=? OR RIGHT(?, CHAR_LENGTH(TLB.banner_domain)) = TLB.banner_domain)"
-	                                                . " ORDER BY banner_weighting, ".$strBannerSort."");
-			if ($intBannerLimit > 0) 
+
+			do
 			{
-				$objBannersStmt->limit($intBannerLimit);
-			}
-			$objBanners = $objBannersStmt->executeUncached($intBannerCategory, '', '', '', '', '', $intTime, '', $intTime, '', $http_host);
-	    	$intRows = $objBanners->numRows;
+    			$objBannersStmt = $this->Database->prepare("SELECT TLB.* FROM tl_banner AS TLB "
+    	                                                . " LEFT JOIN tl_banner_category ON (tl_banner_category.id=TLB.pid)"
+    	                                                . " LEFT OUTER JOIN tl_banner_stat AS TLS ON TLB.id=TLS.id"
+    	                                                . " WHERE pid=?"
+    	                                                . " AND ((TLB.banner_until=?) OR (TLB.banner_until=1 AND TLB.banner_views_until>TLS.banner_views)   OR (TLB.banner_until=1 AND TLB.banner_views_until=?)  OR (TLB.banner_until=1 AND TLS.banner_views is NULL))"
+    			                                        . " AND ((TLB.banner_until=?) OR (TLB.banner_until=1 AND TLB.banner_clicks_until>TLS.banner_clicks) OR (TLB.banner_until=1 AND TLB.banner_clicks_until=?) OR (TLB.banner_until=1 AND TLS.banner_clicks is NULL))"
+    	                                                . " AND TLB.banner_published =1"
+    	                                                . " AND (TLB.banner_start=? OR TLB.banner_start<=?) AND (TLB.banner_stop=? OR TLB.banner_stop>=?)"
+    			                                        . " AND (TLB.banner_domain=? OR RIGHT(?, CHAR_LENGTH(TLB.banner_domain)) = TLB.banner_domain)"
+    			                                        .$intRandomBlocker
+    	                                                . " ORDER BY banner_weighting, ".$strBannerSort."");
+    			if ($intBannerLimit > 0) 
+    			{
+    				$objBannersStmt->limit($intBannerLimit);
+    			}
+    			$objBanners = $objBannersStmt->executeUncached($intBannerCategory, '', '', '', '', '', $intTime, '', $intTime, '', $http_host);
+    	    	$intRows = $objBanners->numRows;
+    	    	$intRandomBlocker=''; //next loop without RandomBlocker
+    	    	$maxloop++;
+	    	} while ( ($intRows ==0) && ($maxloop<2));
 		}
 		/*
 		___  ____ _  _ _  _ ____ ____    _  _ ____ ____ _  _ ____ _  _ ___  ____ _  _ 
@@ -394,7 +405,9 @@ class ModuleBanner extends Module
             while ($objBanners->next()) 
             {
 	            self::$arrBannerSeen[] = $objBanners->id;
-	            if (!$this->statusRandomBlocker) {
+	            if (!$this->statusRandomBlocker) 
+	            {
+	                //nur wenn es noch keinen gibt, bei Multibanner daher der erste
 	                $this->BannerSetRandomBlocker($objBanners->id);
 	            }
 			    $arrValue = deserialize($objBanners->banner_imgSize);
@@ -407,22 +420,27 @@ class ModuleBanner extends Module
 			    // 4 = SWF, 13 = SWC (zip-like swf file)
 			    // 5 = PSD, 6 = BMP, 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order)
 			    // 9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF
-			    if ($objBanners->banner_type == 'banner_image') {
+			    if ($objBanners->banner_type == 'banner_image') 
+			    {
 	    		    //Interne Banner Grafik
 	    		    $arrImageSize = @getimagesize(TL_ROOT . '/' . $objBanners->banner_image);
-	    		    if ($arrImageSize===false) {
+	    		    if ($arrImageSize===false) 
+	    		    {
 				    	//Workaround fuer PHP ohne zlib bei SWC Files
 				    	$arrImageSize = $this->getimagesizecompressed(TL_ROOT . '/' . $objBanners->banner_image);
 				    }
 	    		} 
-	    		if ($objBanners->banner_type == 'banner_image_extern') {
+	    		if ($objBanners->banner_type == 'banner_image_extern') 
+	    		{
 	                $arrImageSize = $this->getImageSizeExternal($objBanners->banner_image_extern);
 	    		}
-	    		if ($objBanners->banner_type == 'banner_text') {
+	    		if ($objBanners->banner_type == 'banner_text') 
+	    		{
 	    			$arrImageSize = false;
 	    		}
 	    		//Banner Ziel per Page?
-	            if ($objBanners->banner_jumpTo >0) {
+	            if ($objBanners->banner_jumpTo >0) 
+	            {
 	            	//url generieren
 	            	$objBannerNextPage = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
 	                                                    ->limit(1)
@@ -448,12 +466,14 @@ class ModuleBanner extends Module
 	    		          $size[1] = $arrImageSize[1];  // eigene Höhe   (Flash braucht das)
 	    		          $oriSize = true; // Merkmal fuer Bilder ohne Umrechnung
 	    		    }
-	    		    if ($this->strFormat == 'xhtml') {
+	    		    if ($this->strFormat == 'xhtml') 
+	    		    {
 	    		    	$banner_target = ($objBanners->banner_target == '1') ? LINK_BLUR : LINK_NEW_WINDOW;
 	    		    } else {
 	    		    	$banner_target = ($objBanners->banner_target == '1') ? '' : ' target="_blank"';
 	    		    }
-	                switch ($arrImageSize[2]) {
+	                switch ($arrImageSize[2]) 
+	                {
 	                	case 1:
 	                	case 2:
 	                    case 3:
@@ -889,8 +909,9 @@ class ModuleBanner extends Module
 	    { // kein Banner, nichts zu tun
 	        return;
 	    }
-	    $this->Database->prepare("DELETE FROM tl_banner_random_blocker WHERE ip=?")
-	                   ->execute($ClientIP);
+	    // Eigene IP oder aeltere Eintraege loeschen
+	    $this->Database->prepare("DELETE FROM tl_banner_random_blocker WHERE ip=? OR tstamp <?")
+	                   ->execute($ClientIP, time() -(24*60*60));
 	    $arrSet = array
 	    (
 	            'bid'    => $BannerID,
@@ -913,8 +934,8 @@ class ModuleBanner extends Module
 	    //log_message('BannerStatViewUpdate $intCatID:'.$intCatID,'Banner.log');
 	    $ClientIP = bin2hex(sha1($intCatID . $this->Environment->remoteAddr,true)); // sha1 20 Zeichen, bin2hex 40 zeichen
 	    $objBanners = $this->Database->prepare("SELECT * FROM tl_banner_random_blocker WHERE ip=?")
-                    	   ->limit(1)
-                    	   ->execute($ClientIP);
+                    	             ->limit(1)
+                    	             ->execute($ClientIP);
 	    $objBanners->fetchAssoc();
 	    if (0 == $objBanners->numRows) 
 	    {
