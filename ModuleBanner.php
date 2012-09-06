@@ -438,22 +438,27 @@ class ModuleBanner extends \Module
 			    // 4 = SWF, 13 = SWC (zip-like swf file)
 			    // 5 = PSD, 6 = BMP, 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order)
 			    // 9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF
-			    if ($objBanners->banner_type == 'banner_image') {
+			    if ($objBanners->banner_type == 'banner_image') 
+			    {
 	    		    //Interne Banner Grafik
 	    		    $arrImageSize = @getimagesize(TL_ROOT . '/' . $objBanners->banner_image);
-	    		    if ($arrImageSize===false) {
+	    		    if ($arrImageSize===false) 
+	    		    {
 				    	//Workaround fuer PHP ohne zlib bei SWC Files
 				    	$arrImageSize = $this->getimagesizecompressed(TL_ROOT . '/' . $objBanners->banner_image);
 				    }
 	    		} 
-	    		if ($objBanners->banner_type == 'banner_image_extern') {
+	    		if ($objBanners->banner_type == 'banner_image_extern') 
+	    		{
 	                $arrImageSize = $this->getImageSizeExternal($objBanners->banner_image_extern);
 	    		}
-	    		if ($objBanners->banner_type == 'banner_text') {
+	    		if ($objBanners->banner_type == 'banner_text') 
+	    		{
 	    			$arrImageSize = false;
 	    		}
 	    		//Banner Ziel per Page?
-	            if ($objBanners->banner_jumpTo >0) {
+	            if ($objBanners->banner_jumpTo >0) 
+	            {
 	            	//url generieren
 	            	$objBannerNextPage = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
 	                                                    ->limit(1)
@@ -479,12 +484,14 @@ class ModuleBanner extends \Module
 	    		          $size[1] = $arrImageSize[1];  // eigene Höhe   (Flash braucht das)
 	    		          $oriSize = true; // Merkmal fuer Bilder ohne Umrechnung
 	    		    }
-	    		    if ($this->strFormat == 'xhtml') {
+	    		    if ($this->strFormat == 'xhtml') 
+	    		    {
 	    		    	$banner_target = ($objBanners->banner_target == '1') ? LINK_BLUR : LINK_NEW_WINDOW;
 	    		    } else {
 	    		    	$banner_target = ($objBanners->banner_target == '1') ? '' : ' target="_blank"';
 	    		    }
-	                switch ($arrImageSize[2]) {
+	                switch ($arrImageSize[2]) 
+	                {
 	                	case 1:
 	                	case 2:
 	                    case 3:
