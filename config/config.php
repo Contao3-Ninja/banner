@@ -48,17 +48,17 @@
 $GLOBALS['BE_MOD']['content']['banner'] = array
 (
 	'tables'     => array('tl_banner_category', 'tl_banner'),
-	'icon'       => 'system/modules/banner/iconBanner.gif',
-	'stylesheet' => 'system/modules/banner/mod_banner_be.css'
+	'icon'       => 'system/modules/banner/assets/iconBanner.gif',
+	'stylesheet' => 'system/modules/banner/assets/mod_banner_be.css'
 );
 
 array_insert($GLOBALS['BE_MOD']['system'], 0, array
 (
 	'bannerstat' => array
 	(
-		'callback'   => 'ModuleBannerStat',
-		'icon'       => 'system/modules/banner/iconBannerStat.gif',
-		'stylesheet' => 'system/modules/banner/mod_banner_be.css'
+		'callback'   => '\Banner\ModuleBannerStat',
+		'icon'       => 'system/modules/banner/assets/iconBannerStat.gif',
+		'stylesheet' => 'system/modules/banner/assets/mod_banner_be.css'
 	)
 ));
 
@@ -82,7 +82,7 @@ array_insert($GLOBALS['BE_MOD']['system'], 0, array
  */
 array_insert($GLOBALS['FE_MOD']['miscellaneous'], 0, array
 (
-	'banner' => 'ModuleBanner')
+	'banner' => '\Banner\ModuleBanner')
 );
 
 ?>

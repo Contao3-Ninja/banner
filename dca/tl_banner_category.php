@@ -114,7 +114,7 @@ $GLOBALS['TL_DCA']['tl_banner_category'] = array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_banner_category']['stat'],
 				'href'                => 'do=bannerstat',
-				'icon'                => 'system/modules/banner/iconBannerStat.gif'
+				'icon'                => 'system/modules/banner/assets/iconBannerStat.gif'
 			)
 		)
 	),
