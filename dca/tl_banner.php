@@ -1,20 +1,20 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
- * Formerly known as TYPOlight Open Source CMS.
+ * @link http://www.contao.org
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  * 
  * Modul Banner - Backend DCA tl_banner
  * 
  * This is the data container array for table tl_banner.
  *
  * PHP version 5
- * @copyright  Glen Langer 2007..2011
+ * @copyright  Glen Langer 2007..2012
  * @author     Glen Langer
  * @package    Banner
  * @license    GPL
- * @filesource
  */
 
 /**
@@ -42,10 +42,19 @@ class tl_banner extends Backend
 	        //Interne Banner Grafik
 	        $BannerSourceIntern = true;
 	        $oriSize = false;
-    	    $arrImageSize = @getimagesize(TL_ROOT . '/' . $row['banner_image']);
+
+	        // Check for version 3 format
+	        if (!is_numeric($row['banner_image']))
+	        {
+	            return '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['version2format'].'</p>';
+	        }
+	        //convert DB file ID into file path ($objFile->path)
+	        $objFile = \FilesModel::findByPk($row['banner_image']);
+	        
+    	    $arrImageSize = @getimagesize(TL_ROOT . '/' . $objFile->path);
     	    if ($arrImageSize===false) {
     	    	//Workaround fuer PHP ohne zlib bei SWC Files
-    	    	$arrImageSize = $this->getimagesizecompressed(TL_ROOT . '/' . $row['banner_image']);
+    	    	$arrImageSize = $this->getimagesizecompressed(TL_ROOT . '/' . $objFile->path);
     	    }
     	    //log_message('Objekt gefunden: '.print_r($arrImageSize,true).'', 'debug.log');
     	    // Groessen umrechnen wenn noetig
@@ -83,7 +92,7 @@ class tl_banner extends Backend
         		    }
         		    //check for fallback image
         		    $fallback_content = '<br><span style="font-weight: normal;">'.$GLOBALS['TL_LANG']['tl_banner']['source_fallback_no'].'</span>';
-        		    $path_parts = pathinfo($row['banner_image']);
+        		    $path_parts = pathinfo($objFile->path);
         		    if (@getimagesize(TL_ROOT . '/' . $path_parts['dirname'].'/'.$path_parts['filename'].'.jpg') !== false) {
         		        $fallback_ext = '.jpg';
         		        $fallback_content = true;
@@ -97,7 +106,7 @@ class tl_banner extends Backend
         		    if ($fallback_content === true) 
         		    {
         		        //Get Image with sizes of flash
-        		        $src_fallback = $this->getImage($this->urlEncode($path_parts['dirname'].'/'.$path_parts['filename'].$fallback_ext), $intWidth, $intHeight,'proportional');
+        		        $src_fallback = Image::get($this->urlEncode($path_parts['dirname'].'/'.$path_parts['filename'].$fallback_ext), $intWidth, $intHeight,'proportional');
        		            $fallback_content = '<br><img src="' . $src_fallback . '" alt="'.specialchars(ampersand($row['banner_name'])).'" height="'.$intHeight.'" width="'.$intWidth.'"><br><span style="font-weight: normal;">'.$GLOBALS['TL_LANG']['tl_banner']['source_fallback'].'</span>';
         		    }
         		    break;
@@ -110,14 +119,14 @@ class tl_banner extends Backend
                 case 2:
                 case 3:
                     if ($oriSize) {
-                    	$banner_image = $this->urlEncode($row['banner_image']); 
+                    	$banner_image = $this->urlEncode($objFile->path); 
                     } else {
-                    	$banner_image = $this->getImage($this->urlEncode($row['banner_image']), $intWidth, $intHeight);
+                    	$banner_image = Image::get($this->urlEncode($objFile->path), $intWidth, $intHeight);
                     }
             	    break;
             	case 4:  // Flash swf
             	case 13: // Flash swc
-        		    $banner_image = $row['banner_image'];
+        		    $banner_image = $objFile->path;
                     break;
                 default:
                     break;
@@ -521,31 +530,6 @@ class tl_banner extends Backend
 	}
 	
 	/**
-	 * Return the current date format to be used with the date picker
-	 * @param integer
-	 * @param string
-	 * @param integer
-	 * @param integer
-	 * @return string
-	 */
-	public static function getDateTimePickerString() 
-	{
-		if (version_compare(VERSION . '.' . BUILD, '2.10.0', '<'))
-		{
-		    // Code für Versionen < 2.10.0
-			if (preg_match('/[AaBbCcDEeFfGgJjKkLlMNnOoPpQqRrSTtUuVvWwXxyZz]+/', $GLOBALS['TL_CONFIG']['datimFormat']))
-			{
-				return '';
-			}
-	       	return "new Calendar({ %s: '" . $GLOBALS['TL_CONFIG']['dateFormat'] . " 00:00' }, { navigation: 2, days: ['" . implode("','", $GLOBALS['TL_LANG']['DAYS']) . "'], months: ['" . implode("','", $GLOBALS['TL_LANG']['MONTHS']) . "'], offset: ". intval($GLOBALS['TL_LANG']['MSC']['weekOffset']) . ", titleFormat: '" . $GLOBALS['TL_LANG']['MSC']['titleFormat'] . "' });";
-		} else {
-			// Code für Versionen ab 2.10 :-)
-			return true;
-		}
-	}
-
-
-	/**
 	 * Return the "toggle visibility" button
 	 * @param array
 	 * @param string
@@ -557,9 +541,9 @@ class tl_banner extends Backend
 	 */
 	public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
 	{
-		if (strlen($this->Input->get('tid')))
+		if (strlen(Input::get('tid')))
 		{
-			$this->toggleVisibility($this->Input->get('tid'), ($this->Input->get('state') == 1));
+			$this->toggleVisibility(Input::get('tid'), (Input::get('state') == 1));
 			$this->redirect($this->getReferer());
 		}
 		
@@ -576,7 +560,7 @@ class tl_banner extends Backend
 			$icon = 'invisible.gif';
 		}		
 
-		return '<a href="'.$this->addToUrl($href.'&amp;id='.$this->Input->get('id')).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
+		return '<a href="'.$this->addToUrl($href.'&amp;id='.Input::get('id')).'" title="'.specialchars($title).'"'.$attributes.'>'.$this->generateImage($icon, $label).'</a> ';
 	}
 
 	/**
@@ -785,7 +769,7 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_banner']['banner_start'],
 			'inputType'               => 'text',
 			'explanation'	          => 'banner_help',
-			'eval'                    => array('maxlength'=>20, 'rgxp'=>'datim', 'datepicker'=>tl_banner::getDateTimePickerString(), 'helpwizard'=>true, 'tl_class'=>'w50 wizard')
+			'eval'                    => array('maxlength'=>20, 'rgxp'=>'datim', 'datepicker'=>true, 'helpwizard'=>true, 'tl_class'=>'w50 wizard')
 		),
 		'banner_stop' => array
 		(
@@ -793,7 +777,7 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_banner']['banner_stop'],
 			'inputType'               => 'text',
 			'explanation'	          => 'banner_help',
-			'eval'                    => array('maxlength'=>20, 'rgxp'=>'datim', 'datepicker'=>tl_banner::getDateTimePickerString(), 'helpwizard'=>true, 'tl_class'=>'w50 wizard')
+			'eval'                    => array('maxlength'=>20, 'rgxp'=>'datim', 'datepicker'=>true, 'helpwizard'=>true, 'tl_class'=>'w50 wizard')
 		),
 		'banner_until'  => array
 		(

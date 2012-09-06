@@ -2,31 +2,31 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
- * Formerly known as TYPOlight Open Source CMS.
+ * @link http://www.contao.org
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  * 
  * Modul Banner - Backend DCA tl_banner_category
  *
  * This is the data container array for table tl_banner_category.
  *
  * PHP version 5
- * @copyright  Glen Langer 2007..2011
+ * @copyright  Glen Langer 2007..2012
  * @author     Glen Langer 
  * @package    Banner
  * @license    GPL
- * @filesource
  */
 class tl_banner_category extends Backend
 {
 	public function labelCallback($arrRow)
 	{
 		$label_1 = $arrRow['title'];
-		if (version_compare(VERSION . '.' . BUILD, '2.8.9', '>'))
+		if (version_compare(VERSION, '2.99', '>'))
 		{
 			$version_warning = '';
 		} else {
-			$version_warning = '<br /><span style="color:#ff0000;">[ERROR: Banner-Module requires at least Contao 2.9]</span>';
+			$version_warning = '<br /><span style="color:#ff0000;">[ERROR: Banner-Module requires at least Contao 3.0]</span>';
 		}
 		
 		$bpc = $GLOBALS['TL_LANG']['tl_banner_category']['banner_protected_catagory'];

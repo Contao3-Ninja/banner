@@ -200,7 +200,7 @@ window.addEvent('domready', function() {
 <div class="tl_formbody_edit">
 
 
-<table cellpadding="0" cellspacing="0" summary="Table lists records" class="tl_listing">
+<table summary="Table lists records" class="tl_listing">
 <tbody>
 <tr onmouseout="Theme.hoverRow(this, 0);" onmouseover="Theme.hoverRow(this, 1);">
     <td style="padding-left: 2px;" class="tl_folder_tlist"><?php echo $this->header_picture." / ".$this->header_name." / ".$this->header_url; ?></td>

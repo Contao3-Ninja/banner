@@ -1,9 +1,10 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php 
 /**
  * Contao Open Source CMS
  * Copyright (C) 2005-2012 Leo Feyer
  *
- * Formerly known as TYPOlight Open Source CMS.
+ * @link http://www.contao.org
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  * 
  * Modul Banner Stat - Backend
  * 
@@ -12,10 +13,14 @@
  * @author     Glen Langer
  * @package    Banner
  * @license    GPL
- * @filesource
  */
 
+/**
+ * Run in a custom namespace, so the class can be replaced
+ */
+namespace BugBuster\Banner;
 
+if (!defined('TL_ROOT')) die('You can not access this file directly!');
 /**
  * Class ModuleBannerStat
  *
@@ -23,7 +28,7 @@
  * @author     Glen Langer
  * @package    Banner
  */
-class ModuleBannerStat extends BackendModule
+class ModuleBannerStat extends \BackendModule
 {
 
 	/**
@@ -45,16 +50,16 @@ class ModuleBannerStat extends BackendModule
 	{
 	    parent::__construct();
 	    
-	    if ($this->Input->get('id') === null)
+	    if (\Input::get('id') === null)
 	    {
-	        $this->intKatID = (int)$this->Input->post('id'); //banner reset, category reset
+	        $this->intKatID = (int)\Input::post('id'); //banner reset, category reset
 	    }
 	    else 
 	    {
-	        $this->intKatID = (int)$this->Input->get('id'); //directly category link
+	        $this->intKatID = (int)\Input::get('id'); //directly category link
 	    }
 	    
-	    if ($this->Input->post('act',true)=='zero') //banner reset, category reset
+	    if (\Input::post('act',true)=='zero') //banner reset, category reset
 	    {
 	    	$this->setZero();
 	    }
@@ -153,6 +158,17 @@ class ModuleBannerStat extends BackendModule
     		    // 9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF
     		    if ($objBanners->banner_type == 'banner_image') 
     		    {
+    		        // Check for version 3 format
+    		        if (!is_numeric($objBanners->banner_image))
+    		        {
+    		            //TODO: anpassen
+    		            //return '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['version2format'].'</p>';
+    		        }
+    		        //convert DB file ID into file path ($objFile->path)
+    		        $objFile = \FilesModel::findByPk($objBanners->banner_image);
+    		        //ugly
+    		        $objBanners->banner_image = $objFile->path;
+    		        
     		        //Interne Banner Grafik
     		        $arrImageSize = @getimagesize(TL_ROOT . '/' . $objBanners->banner_image);
     		        if ($arrImageSize===false) 
@@ -347,8 +363,8 @@ class ModuleBannerStat extends BackendModule
 		$this->Template->header_views     = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['views'];
 		$this->Template->banner_version   = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['modname'] . ' ' . BANNER_VERSION .'.'. BANNER_BUILD;
 		$this->Template->banner_footer    = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['comment'];
-		$this->Template->banner_base      = $this->Environment->base;
-		$this->Template->theme            = $this->getTheme();
+		$this->Template->banner_base      = \Environment::get('base'); //$this->Environment->base;
+		$this->Template->theme            = static::getTheme();//$this->getTheme();
 		$this->Template->theme0           = 'default';
 		
 		if (version_compare(VERSION . '.' . BUILD, '2.9.0', '<'))
@@ -419,14 +435,14 @@ class ModuleBannerStat extends BackendModule
 	protected function setZero()
 	{
 	    //Banner
-	    $intBID = preg_replace('@\D@', '', $this->Input->post('zid')); //  only digits 
+	    $intBID = preg_replace('@\D@', '', \Input::post('zid')); //  only digits 
 	    if ($intBID>0) 
 	    {
             $this->Database->prepare("UPDATE tl_banner_stat SET tstamp=?, banner_views=0, banner_clicks=0 WHERE id=?")
     					   ->execute( time() , $intBID );
 	    }
 	    //Category
-        $intCatBID = preg_replace('@\D@', '', $this->Input->post('catzid')); //  only digits
+        $intCatBID = preg_replace('@\D@', '', \Input::post('catzid')); //  only digits
 	    if ($intCatBID>0)
 	    {
 	        $this->Database->prepare("UPDATE tl_banner_stat INNER JOIN tl_banner USING ( id ) SET tl_banner_stat.tstamp=?, banner_views=0, banner_clicks=0 WHERE pid=?")
@@ -559,19 +575,19 @@ class ModuleBannerStat extends BackendModule
 	    //log_message('[getimagesizeexternal] Externe Banner Grafik gefunden', 'debug.log');
 	    $token = md5(uniqid(rand(), true));
 	    $tmpImage = 'system/tmp/mod_banner_st_'.$token.'.tmp';
-	    $objRequest = new Request();
+	    $objRequest = new \Request();
 		$objRequest->send(html_entity_decode($BannerImageExternal, ENT_NOQUOTES, 'UTF-8'));
 		// Test auf chunked
 		if ( array_key_exists('Transfer-Encoding',$objRequest->headers) && $objRequest->headers['Transfer-Encoding'] == 'chunked') 
 		{
 			try
 			{ 
-	    		$objFile = new File($tmpImage);
+	    		$objFile = new \File($tmpImage);
 	    		$objFile->write($this->decodeChunked($objRequest->response));
 	    		$objFile->close();
 			}
 			// Temp directory not writeable
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				if ($e->getCode() == 0)
 				{
@@ -587,12 +603,12 @@ class ModuleBannerStat extends BackendModule
 		{
 			try
 			{ 
-	    		$objFile = new File($tmpImage);
+	    		$objFile = new \File($tmpImage);
 	    		$objFile->write($objRequest->response);
 	    		$objFile->close();
 			}
 			// Temp directory not writeable
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				if ($e->getCode() == 0)
 				{

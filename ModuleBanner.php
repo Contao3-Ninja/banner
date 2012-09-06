@@ -1,9 +1,10 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php 
 /**
  * Contao Open Source CMS
  * Copyright (C) 2005-2012 Leo Feyer
  *
- * Formerly known as TYPOlight Open Source CMS.
+ * @link http://www.contao.org
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  * 
  * Modul Banner - Frontend
  *
@@ -12,10 +13,14 @@
  * @author     Glen Langer 
  * @package    Banner
  * @license    GPL
- * @filesource
  */
 
+/**
+ * Run in a custom namespace, so the class can be replaced
+ */
+namespace BugBuster\Banner;
 
+if (!defined('TL_ROOT')) die('You can not access this file directly!');
 /**
  * Class ModuleBanner
  *
@@ -23,7 +28,7 @@
  * @author     Glen Langer 
  * @package    Banner
  */
-class ModuleBanner extends Module
+class ModuleBanner extends \Module
 {
 
 	/**
@@ -82,20 +87,20 @@ class ModuleBanner extends Module
 	{
 		if (TL_MODE == 'BE')
 		{
-			$objTemplate = new BackendTemplate('be_wildcard');
+			$objTemplate = new \BackendTemplate('be_wildcard');
 			$objTemplate->wildcard = '### BANNER MODUL ###';
 			$objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;
             $objTemplate->link = $this->name;
-            if (version_compare(VERSION . '.' . BUILD, '2.8.9', '>'))
+            if (version_compare(VERSION , '2.99', '>'))
 			{
-			   // Code für Versionen ab 2.9.0
+			   // Code für Versionen ab 3.0.0
 			   $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 			}
 			else
 			{
-			   // Code für Versionen < 2.9.0
-			   $objTemplate->wildcard = '### BANNER MODULE ONLY FOR CONTAO 2.9 AND ABOVE ###';
+			   // Code für Versionen < 3.0.0
+			   $objTemplate->wildcard = '### BANNER MODULE ONLY FOR CONTAO 3.0 AND ABOVE ###';
 			}
 			return $objTemplate->parse();
 		}
@@ -112,6 +117,7 @@ class ModuleBanner extends Module
 	 */
 	protected function compile()
 	{
+	    //log_message('Start '.__CLASS__.'-'.__METHOD__,'debug.log');
 		require_once(TL_ROOT . '/system/modules/banner/ModuleBannerVersion.php');
 		
 		//alte und neue Art gemeinsam zum Array bringen
@@ -135,7 +141,7 @@ class ModuleBanner extends Module
     	    // Eingeloggter FE Nutzer darf nichts sehen
     	    // auf Leer umschalten
             $this->strTemplate='mod_banner_empty';
-            $this->Template = new FrontendTemplate($this->strTemplate); 
+            $this->Template = new \FrontendTemplate($this->strTemplate); 
             return ;
 		}
 		$arrBanners = array();
@@ -146,7 +152,7 @@ class ModuleBanner extends Module
 		//$aresult = array();
 		$intTime = time();
 		//Domain Name ermitteln
-		$http_host = $this->Environment->host;
+		$http_host = \Environment::get('host');
 		
 		// Test auf Banner ALL und Limit
 		$objBannerAll = $this->Database->prepare("SELECT id AS BALL, banner_random, banner_limit FROM tl_banner_category "
@@ -416,6 +422,18 @@ class ModuleBanner extends Module
 			    $size[3] = '';
 			    $oriSize = false;
 			    $arrBanners = array();
+			    // Check for version 3 format
+			    if (!is_numeric($objBanners->banner_image))
+			    {
+			        //TODO: ausgabe ins template
+			        log_message('Error '.__METHOD__.' '.$GLOBALS['TL_LANG']['ERR']['version2format'],'banner.log');
+			        //return '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['version2format'].'</p>';
+			    }
+			    //convert DB file ID into file path ($objFile->path)
+			    $objFile = \FilesModel::findByPk($objBanners->banner_image);
+			    //ugly
+			    $objBanners->banner_image = $objFile->path;
+			    
 			    // 1 = GIF, 2 = JPG, 3 = PNG
 			    // 4 = SWF, 13 = SWC (zip-like swf file)
 			    // 5 = PSD, 6 = BMP, 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order)
@@ -479,7 +497,7 @@ class ModuleBanner extends Module
 	                            } 
 	                            else 
 	                            {
-	                                $src = $this->getImage($this->urlEncode($objBanners->banner_image), $size[0], $size[1]);
+	                                $src = \Image::get($this->urlEncode($objBanners->banner_image), $size[0], $size[1]);
 	                            }
 	                            if (($imgSize = @getimagesize(TL_ROOT . '/' . $src)) !== false)
 	                    		{
@@ -547,7 +565,7 @@ class ModuleBanner extends Module
 	            					}
 	            				} else {
 	            					//Get Image with sizes of flash
-	            					$src_fallback = $this->getImage($this->urlEncode($path_parts['dirname'].'/'.$path_parts['filename'].$fallback_ext), $size[0], $size[1],'proportional');
+	            					$src_fallback = \Image::get($this->urlEncode($path_parts['dirname'].'/'.$path_parts['filename'].$fallback_ext), $size[0], $size[1],'proportional');
 	            					if ($this->strFormat == 'xhtml') {
 	            						$fallback_content = '<img src="' . $src_fallback . '" alt="'.specialchars(ampersand($objBanners->banner_comment)).'" height="'.$size[1].'" width="'.$size[0].'" />'; 
 	            					} else {
@@ -597,7 +615,7 @@ class ModuleBanner extends Module
 	                if (($this->banner_template != $this->strTemplate) && ($this->banner_template != '')) 
 	                {
 	                    $this->strTemplate = $this->banner_template;
-	                    $this->Template = new FrontendTemplate($this->strTemplate);
+	                    $this->Template = new \FrontendTemplate($this->strTemplate);
 	    		    }
 	                $arrResults[] = $arrBanners[0];
 	        		//$this->Template->banners = $arrResults;
@@ -613,7 +631,7 @@ class ModuleBanner extends Module
 		    		    $banner_error = ($objBanners->banner_type == 'banner_image') ? $objBanners->banner_image : $objBanners->banner_image_extern;
 		    		    $this->log('Banner File read error '.$banner_error.'', 'ModulBanner Compile', 'ERROR');
 		    		    $this->strTemplate='mod_banner_empty';
-		                $this->Template = new FrontendTemplate($this->strTemplate);
+		                $this->Template = new \FrontendTemplate($this->strTemplate);
 		                //$this->Template->banners = $arrResults; 
 	                } 
 	                else 
@@ -649,7 +667,7 @@ class ModuleBanner extends Module
 	        			//if (($objBanners->banner_template != $this->strTemplate) && ($objBanners->banner_template != '')) {
 	        			if (($this->banner_template != $this->strTemplate) && ($this->banner_template != '')) {
 			                $this->strTemplate = $this->banner_template;
-			                $this->Template = new FrontendTemplate($this->strTemplate);
+			                $this->Template = new \FrontendTemplate($this->strTemplate);
 					    }
 			            $arrResults[] = $arrBanners[0];
 			    		//$this->Template->banners = $arrResults;
@@ -692,7 +710,7 @@ class ModuleBanner extends Module
 				//if (($objBanners->banner_template != $this->strTemplate) && ($objBanners->banner_template != '')) {
 				if (($this->banner_template != $this->strTemplate) && ($this->banner_template != '')) {
                     $this->strTemplate = $this->banner_template;
-                    $this->Template = new FrontendTemplate($this->strTemplate);
+                    $this->Template = new \FrontendTemplate($this->strTemplate);
     		    }
     		    if ($this->strFormat == 'xhtml') {
     		    	$banner_default_target = ($objBanners->banner_default_target == '1') ? LINK_BLUR : LINK_NEW_WINDOW;
@@ -785,7 +803,7 @@ class ModuleBanner extends Module
                 {
                     // auf Leer umschalten
                     $this->strTemplate='mod_banner_empty';
-                    $this->Template = new FrontendTemplate($this->strTemplate);
+                    $this->Template = new \FrontendTemplate($this->strTemplate);
                 }
                 /*
                 $objBannersHide = $this->Database->prepare("SELECT banner_hideempty FROM tl_module WHERE type =?")
@@ -819,7 +837,7 @@ class ModuleBanner extends Module
 	    // Blocker
 	    $intCatID = ($this->arrBannerCategories[0] >0) ? $this->arrBannerCategories[0] : 42 ; // Answer to the Ultimate Question of Life, the Universe, and Everything
 	    //log_message('BannerStatViewUpdate $intCatID:'.$intCatID,'Banner.log');
-	    $ClientIP = bin2hex(sha1($intCatID . $this->Environment->remoteAddr,true)); // sha1 20 Zeichen, bin2hex 40 zeichen
+	    $ClientIP = bin2hex(sha1($intCatID . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
 	    $lastBanner = array_pop($this->arrBannerData);
 	    $BannerID = $lastBanner['banner_id'];
 	    if ($BannerID==0) 
@@ -896,7 +914,7 @@ class ModuleBanner extends Module
 	    // Blocker
 	    $intCatID = ($this->arrBannerCategories[0] >0) ? $this->arrBannerCategories[0] : 42 ; // Answer to the Ultimate Question of Life, the Universe, and Everything
 	    //log_message('BannerStatViewUpdate $intCatID:'.$intCatID,'Banner.log');
-	    $ClientIP = bin2hex(sha1($intCatID . $this->Environment->remoteAddr,true)); // sha1 20 Zeichen, bin2hex 40 zeichen
+	    $ClientIP = bin2hex(sha1($intCatID . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
 	    //log_message('BannerSetRandomBlocker $bid:'.$BannerID,'Banner.log');
 	    if ($BannerID==0) 
 	    { // kein Banner, nichts zu tun
@@ -924,7 +942,7 @@ class ModuleBanner extends Module
 	    // Blocker
 	    $intCatID = ($this->arrBannerCategories[0] >0) ? $this->arrBannerCategories[0] : 42 ; // Answer to the Ultimate Question of Life, the Universe, and Everything
 	    //log_message('BannerStatViewUpdate $intCatID:'.$intCatID,'Banner.log');
-	    $ClientIP = bin2hex(sha1($intCatID . $this->Environment->remoteAddr,true)); // sha1 20 Zeichen, bin2hex 40 zeichen
+	    $ClientIP = bin2hex(sha1($intCatID . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
 	    $objBanners = $this->Database->prepare("SELECT * FROM tl_banner_random_blocker WHERE ip=?")
                     	   ->limit(1)
                     	   ->execute($ClientIP);
@@ -943,7 +961,7 @@ class ModuleBanner extends Module
 	{
 	    //ugly hack, bid is here category, not banner id
 	    $cid = ($this->arrBannerCategories[0] >0) ? $this->arrBannerCategories[0] : 42 ; // Answer to the Ultimate Question of Life, the Universe, and Everything
-	    $ClientIP = bin2hex(sha1($cid . $this->Environment->remoteAddr,true)); // sha1 20 Zeichen, bin2hex 40 zeichen
+	    $ClientIP = bin2hex(sha1($cid . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
 	    $BannerFirstViewBlockTime = time() - 60*10; // 10 Minuten, Einträge >= 10 Minuten werden gelöscht
 	    
 	    $this->import('ModuleVisitorReferrer');
@@ -1025,18 +1043,18 @@ class ModuleBanner extends Module
 	    //log_message('[getimagesizeexternal] Externe Banner Grafik gefunden', 'debug.log');
 	    $token = md5(uniqid(rand(), true));
 	    $tmpImage = 'system/tmp/mod_banner_fe_'.$token.'.tmp';
-	    $objRequest = new Request();
+	    $objRequest = new \Request();
 		$objRequest->send(html_entity_decode($BannerImageExternal, ENT_NOQUOTES, 'UTF-8'));
 		// Test auf chunked
 		if ( array_key_exists('Transfer-Encoding',$objRequest->headers) && $objRequest->headers['Transfer-Encoding'] == 'chunked') {
 			try
 			{ 
-	    		$objFile = new File($tmpImage);
+	    		$objFile = new \File($tmpImage);
 	    		$objFile->write($this->decodeChunked($objRequest->response));
 	    		$objFile->close();
 			}
 			// Temp directory not writeable
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				if ($e->getCode() == 0)
 				{
@@ -1049,12 +1067,12 @@ class ModuleBanner extends Module
 		} else {
 			try
 			{ 
-	    		$objFile = new File($tmpImage);
+	    		$objFile = new \File($tmpImage);
 	    		$objFile->write($objRequest->response);
 	    		$objFile->close();
 			}
 			// Temp directory not writeable
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				if ($e->getCode() == 0)
 				{
@@ -1257,8 +1275,8 @@ class ModuleBanner extends Module
 	 */
 	protected function CheckUserAgent()
 	{
-   	    if (isset($this->Environment->httpUserAgent)) { 
-	        $UserAgent = trim($this->Environment->httpUserAgent); 
+   	    if (\Environment::get('httpUserAgent')) { 
+	        $UserAgent = trim(\Environment::get('httpUserAgent')); 
 	    } else { 
 	        return false; // Ohne Absender keine Suche
 	    }
