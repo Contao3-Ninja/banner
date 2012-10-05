@@ -352,7 +352,7 @@ class ModuleBanner extends Module
 			if ($bolBRAND) 
 			{
 				$strBannerSort = 'RAND()';
-				$intRandomBlocker = " AND TLB.id !=" .$this->BannerGetRandomBlocker();
+				$intRandomBlocker = " AND TLB.id !=" . $this->BannerGetRandomBlocker();
 				$maxloop =0;
 			} 
 			else 
@@ -365,6 +365,10 @@ class ModuleBanner extends Module
 
 			do
 			{
+			    if ($intBannerLimit == 0)
+			    {
+			        $intRandomBlocker = "";
+			    }
     			$objBannersStmt = $this->Database->prepare("SELECT TLB.* FROM tl_banner AS TLB "
     	                                                . " LEFT JOIN tl_banner_category ON (tl_banner_category.id=TLB.pid)"
     	                                                . " LEFT OUTER JOIN tl_banner_stat AS TLS ON TLB.id=TLS.id"
@@ -382,6 +386,11 @@ class ModuleBanner extends Module
     			}
     			$objBanners = $objBannersStmt->executeUncached($intBannerCategory, '', '', '', '', '', $intTime, '', $intTime, '', $http_host);
     	    	$intRows = $objBanners->numRows;
+    	    	//wenn weniger als per Limit festgelegt wurde dann ohne Blocker
+    	    	if ($intRows < $intBannerLimit && $maxloop == 0) 
+    	    	{
+    	    	    $intRows = 0; //Zwang zweiter Durchlauf
+    	    	}
     	    	$intRandomBlocker=''; //next loop without RandomBlocker
     	    	$maxloop++;
 	    	} while ( ($intRows ==0) && ($maxloop<2));
