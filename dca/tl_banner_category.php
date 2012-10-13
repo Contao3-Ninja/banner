@@ -1,4 +1,4 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php 
 
 /**
  * Contao Open Source CMS
@@ -227,4 +227,3 @@ $GLOBALS['TL_DCA']['tl_banner_category'] = array
 	)
 );
 
-?>

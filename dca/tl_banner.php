@@ -1,4 +1,4 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php 
 /**
  * Contao Open Source CMS
  * Copyright (C) 2005-2012 Leo Feyer
@@ -813,5 +813,3 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 );
 
 
-
-?>
