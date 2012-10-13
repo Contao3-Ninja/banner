@@ -1,12 +1,2 @@
-.svn/
 wiki/
-LocalConfig-Features.txt
-iconBanner.pspimage
-iconBannerStat.pspimage
-config/config_copy.php
-config/config_direkt.php
-config/RunonceJob.debug.php
-config/RunonceJob.org.php
-config/RunonceJobClass.php
-dw_rand_test.php
-pastie-2456032.php
+doc/
