@@ -25,14 +25,11 @@ ClassLoader::addNamespaces(array
  */
 ClassLoader::addClasses(array
 (
-	// Export
-	'BannerStatExport'                      => 'system/modules/banner/export/BannerStatExport.php',
-	'csv'                                   => 'system/modules/banner/export/csv.php',
-	'excel'                                 => 'system/modules/banner/export/excel.php',
-	'excel95'                               => 'system/modules/banner/export/excel95.php',
-	'BugBuster\Banner\ModuleBanner'         => 'system/modules/banner/ModuleBanner.php',
-	'BugBuster\Banner\ModuleBannerReferrer' => 'system/modules/banner/ModuleBannerReferrer.php',
-	'BugBuster\Banner\ModuleBannerStat'     => 'system/modules/banner/ModuleBannerStat.php',
+	// Tests
+	'BugBuster\Banner\BannerImageTest' => 'system/modules/banner/tests/BannerImageTest.php',
+
+	// Classes
+	'BugBuster\Banner\BannerImage'     => 'system/modules/banner/classes/BannerImage.php',
 ));
 
 
