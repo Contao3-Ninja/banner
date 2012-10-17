@@ -105,7 +105,7 @@ class BannerImage extends \Frontend
 		$tmpImage = 'system/tmp/mod_banner_fe_'.$token.'.tmp';
 		$objRequest = new \Request();
 		$objRequest->send(html_entity_decode($BannerImage, ENT_NOQUOTES, 'UTF-8'));
-		//TODO: Test auf chunked
+		//old: Test auf chunked, nicht noetig solange Contao bei HTTP/1.0 bleibt
 		try
 		{
 		    $objFile = new \File($tmpImage);
@@ -118,7 +118,9 @@ class BannerImage extends \Frontend
 		    if ($e->getCode() == 0)
 		    {
 		        log_message('[getImageSizeExternal] tmpFile Problem: notWriteable', 'debug.log');
-		    } else {
+		    } 
+		    else 
+		    {
 		        log_message('[getImageSizeExternal] tmpFile Problem: error', 'debug.log');
 		    }
 		    return false;
@@ -132,7 +134,7 @@ class BannerImage extends \Frontend
 		    $arrImageSize = $this->getImageSizeCompressed($tmpImage);
 		}
 		$objFile->delete();
-		$objFile=null;
+		$objFile = null;
 		unset($objFile);
 
 		return $arrImageSize;
@@ -142,13 +144,114 @@ class BannerImage extends \Frontend
 	 * getimagesize without zlib doesn't work
 	 * workaround for this
 	 * 
-	 * @param	string	$BannerImage	Image link
+	 * @param	string	$BannerImage	Image 
 	 * @return	mixed	$array / false
 	 */
 	protected function getImageSizeCompressed($BannerImage)
 	{
-		//TODO: coding
-		return false;
+		$arrImageSize = false;
+		$res = $this->swc_data($BannerImage);
+		if ($res) 
+		{
+			// width,height
+			$arrImageSize = array($res[0], $res[1], 13); // 13 = SWC
+		}
+		return $arrImageSize; 
 	}
+	
+	private function swc_data($filename) 
+	{
+	    $size   = 0;
+	    $width  = 0;
+	    $height = 0;
+	
+	    $file = @fopen(TL_ROOT . '/' . $filename,"rb");
+	    if (!$file) 
+	    {
+	        return false;
+	    }
+	    if ("CWS" != fread($file,3)) 
+	    {
+	        return false;
+	    }
+	    // Version
+	    fread($file,1) ;
+	    for ($i=0;$i<4;$i++) 
+	    {
+	        $t = ord(fread($file,1));
+	        $size += ($t<<(8*$i));
+	    }
+	    $buffer = gzuncompress(gzread($file,$size),$size);
+	    $buffer = substr($buffer,0,20); // first 20 Byte enough
+	
+	    $b = ord(substr($buffer,0,1));
+	    $buffer = substr($buffer,1);
+	    $cbyte 	= $b;
+	    $bits 	= $b>>3;
+	
+	    $cval 	= "";
+	    $cbyte &= 7;
+	    $cbyte<<= 5;
+	    $cbit 	= 2;
+	    // RECT
+	    for ($vals=0;$vals<4;$vals++) 
+	    {
+	        $bitcount = 0;
+	        while ($bitcount<$bits) 
+	        {
+	            if ($cbyte&128) 
+	            {
+	                $cval .= "1";
+	            } 
+	            else 
+	            {
+	                $cval .= "0";
+	            }
+	            $cbyte<<=1;
+	            $cbyte &= 255;
+	            $cbit-- ;
+	            $bitcount++ ;
+	            if ($cbit<0) 
+	            {
+	                $cbyte	= ord(substr($buffer,0,1));
+	                $buffer = substr($buffer,1);
+	                $cbit   = 7;
+	            }
+	        }
+	        $c 	  = 1;
+	        $val  = 0;
+	        $tval = strrev($cval);
+	        for ($n=0;$n<strlen($tval);$n++) 
+	        {
+	            $atom = substr($tval,$n,1);
+	            if ($atom=="1") $val+=$c;
+	            $c*=2;
+	        }
+	        // TWIPS to PIXELS
+	        $val/=20 ;
+	        switch ($vals) 
+	        {
+	            case 0:
+	                // tmp value
+	                $width = $val;
+	                break;
+	            case 1:
+	                $width = $val - $width;
+	                break;
+	            case 2:
+	                // tmp value
+	                $height = $val;
+	                break;
+	            case 3:
+	                $height = $val - $height;
+	                break ;
+	        }
+	        $cval = "";
+	    }
+	    fclose($file);
+	    $buffer ='';
+	    return array($width,$height);
+	}//swc_data
+	
 }
 

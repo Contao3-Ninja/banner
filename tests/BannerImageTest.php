@@ -96,14 +96,40 @@ class BannerImageTest extends \PHPUnit_Framework_TestCase
     public function providerbannerimage()
     {
         return array(
-                array( array('0'=>'500','1'=>'350','2'=>'2','3'=>'width="500" height="350"','bits'=>8,'channels'=>3,'mime'=>'image/jpeg') 
-                 	       , 'files/music_academy/campus/campus_building.jpg' , 'banner_image' ),
-        		array(false, 'files/music_academy/campus/non_existent.jpg'    , 'banner_image' ),
-        		array( array('0'=>'80','1'=>'15','2'=>'3','3'=>'width="80" height="15"','bits'=>8,'mime'=>'image/png')
-        			       , 'http://www.glen-langer.de/tl_files/hacker.png'  , 'banner_image_extern' ),
-        		array(false, 'http://www.glen-langer.de/non_existent.jpg'     , 'banner_image_extern' ),
-        		array(false, 'Textbanner kann keine Pixel Groesse haben'      , 'banner_text')
-        		//TODO: test with flash files
+        		//jpg
+        		array( array('0'=>'192','1'=>'54','2'=>'2','3'=>'width="192" height="54"','bits'=>8,'channels'=>3,'mime'=>'image/jpeg')
+        		          , 'system/modules/banner/tests/images/bugbuster-phpunit.jpg' , 'banner_image' ),
+        		//png
+        		array( array('0'=>'192','1'=>'54','2'=>'3','3'=>'width="192" height="54"','bits'=>8,'mime'=>'image/png')
+        		          , 'system/modules/banner/tests/images/bugbuster-phpunit.png' , 'banner_image' ),
+        		//gif
+        		array( array('0'=>'192','1'=>'54','2'=>'1','3'=>'width="192" height="54"','bits'=>8,'channels'=>3,'mime'=>'image/gif')
+        		          , 'system/modules/banner/tests/images/bugbuster-phpunit.gif' , 'banner_image' ),
+        		//false test
+        		array(false, 'system/modules/banner/tests/images/non_existent.jpg'     , 'banner_image' ),
+
+        		//jpg extern
+        		array( array('0'=>'192','1'=>'54','2'=>'2','3'=>'width="192" height="54"','bits'=>8,'channels'=>3,'mime'=>'image/jpeg')
+        			      , 'http://phpunit.glen-langer.de/banner/bugbuster-phpunit.jpg'  , 'banner_image_extern' ),
+        		//png extern
+        		array( array('0'=>'192','1'=>'54','2'=>'3','3'=>'width="192" height="54"','bits'=>8,'mime'=>'image/png')
+        		          , 'http://phpunit.glen-langer.de/banner/bugbuster-phpunit.png'  , 'banner_image_extern' ),
+        		//gif
+        		array( array('0'=>'192','1'=>'54','2'=>'1','3'=>'width="192" height="54"','bits'=>8,'channels'=>3,'mime'=>'image/gif')
+        		          , 'http://phpunit.glen-langer.de/banner/bugbuster-phpunit.gif'  , 'banner_image_extern' ),
+        		
+				//false test extern
+        		array(false, 'http://phpunit.glen-langer.de/banner/non_existent.jpg'      , 'banner_image_extern' ),
+        		
+        		//false test with text banner
+        		array(false, 'Textbanner kann keine Pixel Groesse haben'      , 'banner_text'),
+        		
+		        //flash swc (zip-like swf file)
+        		array( array('0'=>'160','1'=>'40','2'=>'13','3'=>'width="160" height="40"','mime'=>'application/x-shockwave-flash')
+        		        , 'system/modules/banner/tests/flash/bugbuster-phpunit.swc.swf' , 'banner_image' ),
+        		//flash swf
+        		array( array('0'=>'234','1'=>'60','2'=>'4' ,'3'=>'width="234" height="60"','mime'=>'application/x-shockwave-flash')
+        		        , 'system/modules/banner/tests/flash/bugbuster-phpunit.swf.swf' , 'banner_image' )
         		);
     }
     
