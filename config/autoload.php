@@ -25,11 +25,10 @@ ClassLoader::addNamespaces(array
  */
 ClassLoader::addClasses(array
 (
-	// Tests
-	'BugBuster\Banner\BannerImageTest' => 'system/modules/banner/tests/BannerImageTest.php',
-
 	// Classes
-	'BugBuster\Banner\BannerImage'     => 'system/modules/banner/classes/BannerImage.php',
+	'BugBuster\Banner\BannerCheckHelper' => 'system/modules/banner/classes/BannerCheckHelper.php',
+	'BugBuster\Banner\BannerReferrer'    => 'system/modules/banner/classes/BannerReferrer.php',
+	'BugBuster\Banner\BannerImage'       => 'system/modules/banner/classes/BannerImage.php',
 ));
 
 
