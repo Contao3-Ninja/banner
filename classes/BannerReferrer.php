@@ -61,23 +61,11 @@ class BannerReferrer
     }
     
     	
-	public function checkReferrer($referrer='') 
+	public function checkReferrer() 
 	{
 		$this->reset();
-		if( $referrer != "" ) 
-		{
-			//NEVER TRUST USER INPUT
-			if (function_exists('filter_var'))	// Adjustment for hoster without the filter extension
-	    	{
-				$this->_http_referrer = filter_var($referrer,  FILTER_SANITIZE_URL);
-	    	} 
-	    	else 
-	    	{
-	    		$this->_http_referrer = $referrer;
-	    	}
-		}
 		if ($this->_http_referrer !== self::REFERRER_UNKNOWN && 
-		    $this->_referrer_DNS  !== self::REFERRER_WRONG) 
+			$this->_referrer_DNS  !== self::REFERRER_WRONG) 
 		{ 
 			$this->detect();
 		}
@@ -99,7 +87,7 @@ class BannerReferrer
 	    }
 	    $this->_referrer_DNS = self::REFERRER_UNKNOWN;
 	    if ($this->_http_referrer == '' ||
-	            $this->_http_referrer == '-')
+            $this->_http_referrer == '-')
 	    {
 	        //ungueltiger Referrer
 	        $this->_referrer_DNS = self::REFERRER_WRONG;
@@ -134,41 +122,21 @@ class BannerReferrer
 	 */
 	protected function vhost()
 	{
-		$host = rtrim($_SERVER['HTTP_HOST']);
-		if (empty($host))
+		if (isset($_SERVER['HTTP_X_FORWARDED_HOST']))
 		{
-			$host = $_SERVER['SERVER_NAME'];
+			return preg_replace('/[^A-Za-z0-9\[\]\.:-]/', '', rtrim($_SERVER['HTTP_X_FORWARDED_HOST'],'/'));
+		}
+		
+		$host = rtrim($_SERVER['HTTP_HOST']);
+		if ($host == '')
+		{
+			$host = rtrim($_SERVER['SERVER_NAME']);
 		}
 		$host  = preg_replace('/[^A-Za-z0-9\[\]\.:-]/', '', $host);
-		
-		if (isset($_SERVER['HTTP_X_FORWARDED_HOST'])) 
-		{
-			$xhost = preg_replace('/[^A-Za-z0-9\[\]\.:-]/', '', rtrim($_SERVER['HTTP_X_FORWARDED_HOST'],'/'));
-		} 
-		else 
-		{
-			$xhost = '';
-		}
-		
-		return (!empty($xhost) ? $xhost : $host) ;
+		return $host;
 	}
 	
-	/**
-	 * Return the request URI 
-	 * @return string
-	 */
-	protected function requestURI()
-	{
-		if (!empty($_SERVER['REQUEST_URI']))
-		{
-			return htmlspecialchars($_SERVER['REQUEST_URI']); 
-		}
-		else
-		{
-			return '';
-		}
-	}
-    
+	    
 	public function getReferrerDNS()  { return $this->_referrer_DNS;  }
 	
 	public function getReferrerFull() { return $this->_http_referrer; }

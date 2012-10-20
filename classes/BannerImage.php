@@ -311,7 +311,7 @@ class BannerImage extends \Frontend
 			$Height  = ceil($newWidth * $oldHeight / $oldWidth);
 			$oriSize = false;
 		}
-		else //$newHeight > 0
+		elseif ($newHeight > 0)
 		{
 			$Width   = ceil($newHeight * $oldWidth / $oldHeight);
 			$Height  = $newHeight;
