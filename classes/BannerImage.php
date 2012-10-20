@@ -14,7 +14,7 @@
  * @copyright  Glen Langer 2007..2012
  * @author     Glen Langer
  * @package    Banner
- * @license    GPL
+ * @license    LGPL
  */
 
 /**
@@ -23,19 +23,37 @@
 namespace BugBuster\Banner;
 
 /** 
- * @author Data
- * 
- * 
+ * Class BannerImage
+ *
+ * @copyright  Glen Langer 2007..2012
+ * @author     Glen Langer 
+ * @package    Banner
+ * @license    LGPL
  */
 class BannerImage extends \Frontend
 {
 	/**
 	 * Current version of the class.
+	 * @var string
 	 */
 	const BANNER_IMAGE_VERSION = '3.0.0';
 	
+	/**
+	 * Banner intern
+	 * @var string
+	 */
 	const BANNER_TYPE_INTERN = 'banner_image';
+	
+	/**
+	 * Banner extern
+	 * @var string
+	 */
 	const BANNER_TYPE_EXTERN = 'banner_image_extern';
+	
+	/**
+	 * Banner text
+	 * @var string
+	 */
 	const BANNER_TYPE_TEXT   = 'banner_text';
 	
 	/**
@@ -57,6 +75,13 @@ class BannerImage extends \Frontend
 	    return self::BANNER_IMAGE_VERSION;
 	}
 	
+	/**
+	 * Get the size of an image
+	 *
+	 * @param	string	$BannerImage	Image path/link
+	 * @param	string	$BannerType		intern,extern,text
+	 * @return	mixed	$array / false
+	 */
 	public function getBannerImageSize($BannerImage,$BannerType)
 	{
 		switch ($BannerType)
@@ -87,7 +112,7 @@ class BannerImage extends \Frontend
 		$arrImageSize = @getimagesize(TL_ROOT . '/' . $BannerImage);
 		if ($arrImageSize === false)
 		{
-		    //Workaround fuer PHP ohne zlib bei SWC Files
+		    //Workaround for PHP without zlib on SWC files
 		    $arrImageSize = $this->getImageSizeCompressed($BannerImage);
 		}
 		return $arrImageSize;
@@ -159,6 +184,12 @@ class BannerImage extends \Frontend
 		return $arrImageSize; 
 	}
 	
+	/**
+	 * Uncompress swc files (zip-like swf)
+	 * 
+	 * @param string $filename
+	 * @return boolean|array	false|$width,$height
+	 */
 	private function swc_data($filename) 
 	{
 	    $size   = 0;
@@ -253,5 +284,40 @@ class BannerImage extends \Frontend
 	    return array($width,$height);
 	}//swc_data
 	
+	/**
+	 * Calculate the new size for witdh and height
+	 * 
+	 * @param int 		$oldWidth	,mandatory
+	 * @param int 		$oldHeight	,mandatory
+	 * @param int 		$newWidth	,optional
+	 * @param int 		$newHeight	,optional
+	 * @return array	$Width,$Height,$oriSize
+	 */
+	public function getBannerImageSizeNew($oldWidth,$oldHeight,$newWidth=0,$newHeight=0)
+	{
+		$Width   = $oldWidth;  //Default, and flash require this
+		$Height  = $oldHeight; //Default, and flash require this
+		$oriSize = true;       //Attribute for images without conversion
+		
+		if ($newWidth > 0 && $newHeight > 0) 
+		{
+			$Width   = $newWidth;
+			$Height  = $newHeight;
+			$oriSize = false;
+		}
+		elseif ($newWidth > 0)
+		{
+			$Width   = $newWidth;
+			$Height  = ceil($newWidth * $oldHeight / $oldWidth);
+			$oriSize = false;
+		}
+		else //$newHeight > 0
+		{
+			$Width   = ceil($newHeight * $oldWidth / $oldHeight);
+			$Height  = $newHeight;
+			$oriSize = false;
+		}
+		return array($Width,$Height,$oriSize);
+	}
 }
 
