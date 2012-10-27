@@ -14,7 +14,7 @@
  * @copyright  Glen Langer 2007..2012
  * @author     Glen Langer
  * @package    Banner
- * @license    GPL
+ * @license    LGPL
  */
 
 /**
@@ -39,9 +39,9 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['banner_hideempty'] = array
 );
 $GLOBALS['TL_DCA']['tl_module']['fields']['banner_firstview'] = array
 (
-        'label'         => &$GLOBALS['TL_LANG']['tl_module']['banner_firstview'],
-        'exclude'       => true,
-        'inputType'     => 'checkbox'
+    'label'         => &$GLOBALS['TL_LANG']['tl_module']['banner_firstview'],
+    'exclude'       => true,
+    'inputType'     => 'checkbox'
 );
 $GLOBALS['TL_DCA']['tl_module']['fields']['banner_categories'] = array
 (
@@ -57,7 +57,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['banner_template'] = array
     'default'                 => 'mod_banner_list_all',
     'exclude'                 => true,
     'inputType'               => 'select',
-    //'options'                 => $this->getTemplateGroup('mod_banner_list_'),
     'options_callback'        => array('tl_module_banner', 'getBannerTemplates'), 
     'eval'                    => array('tl_class'=>'w50')
 );

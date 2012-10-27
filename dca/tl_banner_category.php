@@ -15,7 +15,7 @@
  * @copyright  Glen Langer 2007..2012
  * @author     Glen Langer 
  * @package    Banner
- * @license    GPL
+ * @license    LGPL
  */
 class tl_banner_category extends Backend
 {
@@ -123,7 +123,6 @@ $GLOBALS['TL_DCA']['tl_banner_category'] = array
 	'palettes' => array
 	(
 	    '__selector__'                => array('banner_default', 'banner_protected', 'banner_numbers'), 
-		//'default'                     => '{title_legend},title,banner_template;{default_legend:hide},banner_default;{number_legend:hide},banner_numbers;{protected_legend:hide},banner_protected'
 		'default'                     => '{title_legend},title;{default_legend:hide},banner_default;{number_legend:hide},banner_numbers;{protected_legend:hide},banner_protected'
 	),
 	// Subpalettes
@@ -144,15 +143,6 @@ $GLOBALS['TL_DCA']['tl_banner_category'] = array
 			'search'                  => true,
 			'inputType'               => 'text',
 			'eval'                    => array('mandatory'=>true, 'maxlength'=>60, 'tl_class'=>'w50')
-		),
-		'banner_template'             => array // nicht mehr in palette
-		(
-            'label'                   => &$GLOBALS['TL_LANG']['tl_banner_category']['banner_template'],
-            'default'                 => 'mod_banner_list_all',
-            'exclude'                 => true,
-            'inputType'               => 'select',
-            'options'                 => $this->getTemplateGroup('mod_banner_list_'),
-            'eval'                    => array('tl_class'=>'w50')
 		),
 		'banner_default'              => array
 		(

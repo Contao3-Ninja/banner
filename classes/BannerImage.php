@@ -30,7 +30,7 @@ namespace BugBuster\Banner;
  * @package    Banner
  * @license    LGPL
  */
-class BannerImage extends \Frontend
+class BannerImage extends \System //\Frontend
 {
 	/**
 	 * Current version of the class.
@@ -318,6 +318,108 @@ class BannerImage extends \Frontend
 			$oriSize = false;
 		}
 		return array($Width,$Height,$oriSize);
+	}
+	
+	/**
+	 * Calculate the new size if necessary by comparing with maxWidth and maxHeight
+	 * 
+	 * @param array		$arrImageSize
+	 * @param int		$maxWidth
+	 * @param int		$maxHeight
+	 * @return array	$Width,$Height,$oriSize
+	 */
+	public function getCheckBannerImageSize($arrImageSize, $maxWidth, $maxHeight)
+	{
+		//$arrImageSize[0] Breite (max 250px in BE)
+		//$arrImageSize[1] Hoehe  (max  40px in BE)
+		//$arrImageSize[2] Type
+		if ($arrImageSize[0] > $arrImageSize[1]) // Breite > Hoehe = Landscape ==
+		{ 
+		    if ($arrImageSize[0] > $maxWidth)
+		    {	//neue feste Breite
+		    	$newImageSize = $this->getBannerImageSizeNew($arrImageSize[0],$arrImageSize[1], $maxWidth, 0);
+		        $intWidth  = $newImageSize[0];
+		        $intHeight = $newImageSize[1];
+		        $oriSize   = $newImageSize[2];
+		    }
+		    else
+		    {
+		        $intWidth  = $arrImageSize[0];
+		        $intHeight = $arrImageSize[1];
+		        $oriSize   = true; // Merkmal fuer Bilder ohne Umrechnung
+		    }
+		}
+		else
+		{ 	// Hoehe >= Breite, ggf. Hoehe verkleinern
+			if ($arrImageSize[1] > $maxWidth) // Hoehe > max Breite = Portrait ||
+			{
+			    // pruefen ob bei neuer Hoehe die Breite zu klein wird
+			    if (($maxWidth*$arrImageSize[0]/$arrImageSize[1]) < $maxHeight)
+			    {
+			        // Breite statt Hoehe setzen, Breite auf maximale Hoehe
+			    	$newImageSize = $this->getBannerImageSizeNew($arrImageSize[0],$arrImageSize[1], $maxHeight, 0);
+			        //$intWidth  = $maxHeight;
+			        //$intHeight = ceil($intWidth*$arrImageSize[1]/$arrImageSize[0]);
+			    	$intWidth  = $newImageSize[0];
+			    	$intHeight = $newImageSize[1];
+			    	$oriSize   = $newImageSize[2];
+			    } 
+			    else 
+			    {
+			    	$newImageSize = $this->getBannerImageSizeNew($arrImageSize[0],$arrImageSize[1], 0, $maxHeight);
+			        $intWidth  = $newImageSize[0];
+			    	$intHeight = $newImageSize[1];
+			    	$oriSize   = $newImageSize[2];
+			    }
+			}
+			else
+			{
+			    $intWidth  = $arrImageSize[0];
+			    $intHeight = $arrImageSize[1];
+			    $oriSize = true; // Merkmal fuer Bilder ohne Umrechnung
+			}
+		}
+		return array($intWidth,$intHeight,$oriSize);
+	}
+	
+	/**
+	 * Search and get a flash fallback image path if exists
+	 * 
+	 * @param string	$BannerImage	Image path (flash file)
+	 * @param int		$maxWidth		Flash file width
+	 * @param int		$maxHeight		Flash file height
+	 * @return	mixed	$string/false	Fallback image path / false
+	 */
+	public function getCheckBannerImageFallback($BannerImage, $intWidth, $intHeight)
+	{
+		$fallback_content = false;
+		$path_parts = pathinfo($BannerImage);
+		if     ( is_file(TL_ROOT . '/' . $path_parts['dirname'] . '/' . $path_parts['filename'].'.jpg') )
+		{
+			$fallback_ext     = '.jpg';
+        	$fallback_content = true;
+		}
+		elseif ( is_file(TL_ROOT . '/' . $path_parts['dirname'] . '/' . $path_parts['filename'].'.png') )
+		{
+			$fallback_ext     = '.png';
+			$fallback_content = true;
+		}
+		elseif ( is_file(TL_ROOT . '/' . $path_parts['dirname'] . '/' . $path_parts['filename'].'.gif') )
+		{
+		    $fallback_ext     = '.gif';
+		    $fallback_content = true;
+		}
+		
+		//if fallback image found, get image with size of flash size
+		if ($fallback_content === true)
+		{
+		    //Get Image with sizes of flash
+		    $src_fallback = \Image::get($this->urlEncode($path_parts['dirname'].'/'.$path_parts['filename'].$fallback_ext), $intWidth, $intHeight,'proportional');
+		    return $src_fallback;
+		}
+
+		//no fallback image found
+		return false;
 	}
 }
 
