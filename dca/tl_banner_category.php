@@ -89,7 +89,15 @@ $GLOBALS['TL_DCA']['tl_banner_category'] = array
 			(
 				'label'               => &$GLOBALS['TL_LANG']['tl_banner_category']['edit'],
 				'href'                => 'table=tl_banner',
-				'icon'                => 'edit.gif'
+				'icon'                => 'edit.gif',
+				'attributes'          => 'class="contextmenu"'
+			),
+			'editheader' => array
+			(
+		        'label'               => &$GLOBALS['TL_LANG']['tl_banner_category']['editheader'],
+		        'href'                => 'act=edit',
+		        'icon'                => 'header.gif',
+		        'attributes'          => 'class="edit-header"'
 			),
 			'copy' => array
 			(

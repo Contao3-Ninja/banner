@@ -48,7 +48,6 @@ CREATE TABLE `tl_banner_category` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `tstamp` int(10) unsigned NOT NULL default '0',
   `title` varchar(60) NOT NULL default '', 
-  `banner_template` varchar(32) NOT NULL default '', 
   `banner_default` char(1) NOT NULL default '', 
   `banner_default_name` varchar(64) NOT NULL default '', 
   `banner_default_image` varchar(255) NOT NULL default '', 

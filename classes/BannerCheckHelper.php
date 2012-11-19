@@ -28,7 +28,7 @@ namespace BugBuster\Banner;
  * @author     Glen Langer
  * @package    Banner
  */
-class BannerCheckHelper extends \BackendModule
+class BannerCheckHelper extends \System
 {
    /**
     * Current object instance
@@ -41,15 +41,9 @@ class BannerCheckHelper extends \BackendModule
      */
     public function __construct()
     {
-        $this->import('BackendUser', 'User');
         parent::__construct();
     }
     
-    
-    protected function compile()
-    {
-        
-    }
     /**
      * Return the current object instance (Singleton)
      * @return BannerCheckHelper
@@ -82,7 +76,8 @@ class BannerCheckHelper extends \BackendModule
     
             // required extensions
             $arrRequiredExtensions = array(
-            		'Bot Detection' => 'botdetection'
+            		'Bot Detection' => 'botdetection',
+            		'xls_export'    => 'xls_export'
             );
     
             // required files

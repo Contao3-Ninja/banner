@@ -57,6 +57,8 @@ $GLOBALS['TL_LANG']['tl_banner_category']['copy']   = array('Copy category', 'Co
 $GLOBALS['TL_LANG']['tl_banner_category']['delete'] = array('Delete category', 'Delete category ID %s');
 $GLOBALS['TL_LANG']['tl_banner_category']['show']   = array('Category details', 'Show details of category ID %s');
 $GLOBALS['TL_LANG']['tl_banner_category']['stat']   = array('Categorie statistics', 'Show categorie statistics of category ID %s');
+$GLOBALS['TL_LANG']['tl_banner_category']['editheader'] = array('Edit category settings', 'Edit the settings of category ID %s');
+
 
 /**
  * Icon
