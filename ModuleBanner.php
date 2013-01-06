@@ -1,17 +1,13 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2012 Leo Feyer
+ * Contao Open Source CMS, Copyright (C) 2005-2013 Leo Feyer
  *
- * Formerly known as TYPOlight Open Source CMS.
- * 
  * Modul Banner - Frontend
  *
- * PHP version 5
- * @copyright  Glen Langer 2007..2012
- * @author     Glen Langer 
- * @package    Banner
- * @license    GPL
+ * @copyright	Glen Langer 2007..2013 <http://www.contao.glen-langer.de>
+ * @author      Glen Langer (BugBuster)
+ * @package     Banner
+ * @license     GPL
  * @filesource
  */
 
@@ -19,7 +15,7 @@
 /**
  * Class ModuleBanner
  *
- * @copyright  Glen Langer 2007..2012
+ * @copyright  Glen Langer 2007..2013
  * @author     Glen Langer 
  * @package    Banner
  */
@@ -302,7 +298,7 @@ class ModuleBanner extends Module
         			$maxloop++;
         			//log_message('BannerSingle Banner Loop '.$maxloop,'Banner.log');
     	        } while ( ($intRows ==0) && ($maxloop<2));
-    	
+
     			if($intRows == 1) 
     			{ // one Banner
     			    $intShowBannerId = 0;
@@ -963,9 +959,9 @@ class ModuleBanner extends Module
 	    $ClientIP = bin2hex(sha1($cid . $this->Environment->remoteAddr,true)); // sha1 20 Zeichen, bin2hex 40 zeichen
 	    $BannerFirstViewBlockTime = time() - 60*10; // 10 Minuten, Einträge >= 10 Minuten werden gelöscht
 	    
-	    $this->import('ModuleVisitorReferrer');
-	    $this->ModuleVisitorReferrer->checkReferrer();
-	    $ReferrerDNS = $this->ModuleVisitorReferrer->getReferrerDNS();
+	    $this->import('ModuleBannerReferrer');
+	    $this->ModuleBannerReferrer->checkReferrer();
+	    $ReferrerDNS = $this->ModuleBannerReferrer->getReferrerDNS();
 	    // o own , w wrong
 
 	    if ($ReferrerDNS === 'o')

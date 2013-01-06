@@ -1,17 +1,13 @@
 <?php
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2012 Leo Feyer
- *
- * Formerly known as TYPOlight Open Source CMS.
+ * Contao Open Source CMS, Copyright (C) 2005-2013 Leo Feyer
  * 
  * Modul Banner Referrer - Frontend
  *
- * PHP version 5
- * @copyright  Glen Langer 2009..2012
- * @author     Glen Langer 
- * @package    Banner 
- * @license    LGPL 
+ * @copyright	Glen Langer 2007..2013 <http://www.contao.glen-langer.de>
+ * @author      Glen Langer (BugBuster)
+ * @package     Banner
+ * @license     GPL
  * @filesource
  */
 
@@ -19,10 +15,10 @@
 /**
  * Class ModuleBannerReferrer
  *
- * @copyright  Glen Langer 2012
+ * @copyright  Glen Langer 2007..2013
  * @author     Glen Langer 
  * @package    Banner
- * @license    LGPL 
+ * @license    GPL 
  */
 class ModuleBannerReferrer	//extends Frontend
 {

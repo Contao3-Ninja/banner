@@ -1,19 +1,15 @@
 <?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
- *
- * Formerly known as TYPOlight Open Source CMS.
+ * Contao Open Source CMS, Copyright (C) 2005-2013 Leo Feyer
  * 
  * Modul Banner Config - Backend
  *
  * This is the banner configuration file.
  *
- * PHP version 5
- * @copyright  Glen Langer 2007..2011
- * @author     Glen Langer
- * @package    Banner 
- * @license    GPL 
+ * @copyright	Glen Langer 2007..2013 <http://www.contao.glen-langer.de>
+ * @author      Glen Langer (BugBuster)
+ * @package     Banner 
+ * @license     GPL 
  * @filesource
  */
 
