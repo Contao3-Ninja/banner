@@ -20,7 +20,7 @@
 /**
  * Load tl_page language definitions
  */
-$this->loadLanguageFile('tl_page');  
+$this->loadLanguageFile('tl_page');  //TODO: nötig?
 
 /**
  * Add a palette to tl_module
@@ -35,13 +35,15 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['banner_hideempty'] = array
 (
 	'label'         => &$GLOBALS['TL_LANG']['tl_module']['banner_hideempty'],
 	'exclude'       => true,
-	'inputType'     => 'checkbox'
+	'inputType'     => 'checkbox',
+    'sql'           => "char(1) NOT NULL default '0'"
 );
 $GLOBALS['TL_DCA']['tl_module']['fields']['banner_firstview'] = array
 (
     'label'         => &$GLOBALS['TL_LANG']['tl_module']['banner_firstview'],
     'exclude'       => true,
-    'inputType'     => 'checkbox'
+    'inputType'     => 'checkbox',
+    'sql'           => "char(1) NOT NULL default '0'"
 );
 $GLOBALS['TL_DCA']['tl_module']['fields']['banner_categories'] = array
 (
@@ -49,6 +51,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['banner_categories'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'foreignKey'              => 'tl_banner_category.title',
+    'sql'                     => "varchar(255) NOT NULL default ''",
 	'eval'                    => array('multiple'=>false, 'mandatory'=>true, 'tl_class'=>'w50')
 );
 $GLOBALS['TL_DCA']['tl_module']['fields']['banner_template'] = array
@@ -57,7 +60,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['banner_template'] = array
     'default'                 => 'mod_banner_list_all',
     'exclude'                 => true,
     'inputType'               => 'select',
-    'options_callback'        => array('tl_module_banner', 'getBannerTemplates'), 
+    'options_callback'        => array('BugBuster\Banner\DCA_module_banner', 'getBannerTemplates'),
+    'sql'                     => "varchar(32) NOT NULL default ''",
     'eval'                    => array('tl_class'=>'w50')
 );
 $GLOBALS['TL_DCA']['tl_module']['fields']['banner_redirect'] = array
@@ -67,7 +71,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['banner_redirect'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'options'                 => array('permanent', 'temporary'),
-	'reference'               => &$GLOBALS['TL_LANG']['tl_page']
+	'reference'               => &$GLOBALS['TL_LANG']['tl_page'],
+    'sql'                     => "varchar(32) NOT NULL default ''",
 );
 $GLOBALS['TL_DCA']['tl_module']['fields']['banner_useragent'] = array
 (
@@ -75,23 +80,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['banner_useragent'] = array
 	'inputType'               => 'text',
 	'search'                  => true,
 	'explanation'	          => 'banner_help',
+    'sql'                     => "varchar(64) NOT NULL default ''",
 	'eval'                    => array('mandatory'=>false, 'maxlength'=>64, 'helpwizard'=>true)
 );
-
-class tl_module_banner	extends Backend 
-{
-	/**
-	 * Import the back end user object
-	 */
-/*	public function __construct()
-	{
-		parent::__construct();
-		//$this->import('BackendUser', 'User');
-	}
-*/
-	public function getBannerTemplates(DataContainer $dc)
-	{
-	    return $this->getTemplateGroup('mod_banner_list_', $dc->activeRecord->pid);
-	}  
-}
-

@@ -1,20 +1,16 @@
 <?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2012 Leo Feyer
- *
- * @link http://www.contao.org
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * Contao Open Source CMS, Copyright (C) 2005-2013 Leo Feyer
  *
  * Modul Banner - Frontend 
  *
- *
- * PHP version 5
- * @copyright  Glen Langer 2007..2012
- * @author     Glen Langer
+ * @copyright  Glen Langer 2007..2013 <http://www.contao.glen-langer.de>
+ * @author     Glen Langer (BugBuster)
  * @package    Banner
  * @license    LGPL
+ * @filesource
+ * @see        https://github.com/BugBuster1701/banner
  */
 
 /**
@@ -25,8 +21,8 @@ namespace BugBuster\Banner;
 /**
  * Class ModuleBanner
  *
- * @copyright  Glen Langer 2007..2012
- * @author     Glen Langer
+ * @copyright  Glen Langer 2007..2013 <http://www.contao.glen-langer.de>
+ * @author     Glen Langer (BugBuster)
  * @package    Banner
  * @license    LGPL
  */
@@ -94,6 +90,52 @@ class ModuleBanner extends \BugBuster\Banner\BannerHelper
 			return ;			
 		}
 		
+		//OK, Banner vorhanden, dann weiter
+		//BannerSeen vorhanden? Dann beachten.
+		if ( count(self::$arrBannerSeen) ) 
+		{
+		    //$arrAllBannersBasic dezimieren um die bereits angezeigten
+		    foreach (self::$arrBannerSeen as $BannerSeenID) 
+		    {
+		        if (array_key_exists($BannerSeenID,$this->arrAllBannersBasic)) 
+		        {
+		            unset($this->arrAllBannersBasic[$BannerSeenID]);
+		        };
+		    }
+		    //noch Banner übrig?
+		    if ( count($this->arrAllBannersBasic) == 0 )
+		    {
+		        //default Banner holen
+		        //kein default Banner, ausblenden wenn leer?
+		        $this->getDefaultBanner();
+		        return ;
+		    }
+		}
+		
+		//OK, noch Banner übrig, weiter gehts	
+		//FirstViewBanner? | Single Banner? 
+		if ($this->arrCategoryValues['banner_numbers'] != 1) 
+		{
+		    //FirstViewBanner?
+		    if ($this->getSetFirstView() === true) 
+		    {
+		        $this->getSingleBannerFirst();
+		        return ;
+		    }
+		    else 
+		    {
+    		    //single banner
+    		    //Gewichtung nach vorhandenen Wichtungen
+		        $SingleBannerWeighting = $this->getSingleWeighting();
+		        $this->getSingleBanner();
+		        return ;
+		    }
+		}
+		else
+		{
+		    //multi banner
+		    return ;
+		}
 		
 	}
 	
