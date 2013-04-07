@@ -71,7 +71,7 @@ class ModuleBanner extends \BugBuster\Banner\BannerHelper
 			echo "Init false! ".$this; //TODO: kill
 			return ;
 		}
-		echo $this; //TODO: kill
+		//echo $this; //TODO: kill
 		if ($this->statusBannerFrontendGroupView === false)
 		{
 			// Eingeloggter FE Nutzer darf nichts sehen, falsche Gruppe
@@ -108,6 +108,7 @@ class ModuleBanner extends \BugBuster\Banner\BannerHelper
 		        //default Banner holen
 		        //kein default Banner, ausblenden wenn leer?
 		        $this->getDefaultBanner();
+		        //echo "<h1>Default Banner</h1>".$this; //TODO: kill
 		        return ;
 		    }
 		}
@@ -119,7 +120,9 @@ class ModuleBanner extends \BugBuster\Banner\BannerHelper
 		    //FirstViewBanner?
 		    if ($this->getSetFirstView() === true) 
 		    {
+		        //echo "<h1>FirstView Banner</h1>"; //TODO: kill
 		        $this->getSingleBannerFirst();
+		        //echo $this; //TODO: kill
 		        return ;
 		    }
 		    else 
@@ -128,12 +131,14 @@ class ModuleBanner extends \BugBuster\Banner\BannerHelper
     		    //Gewichtung nach vorhandenen Wichtungen
 		        $SingleBannerWeighting = $this->getSingleWeighting();
 		        $this->getSingleBanner();
+		        echo "<h1>Single Banner</h1>".$this; //TODO: kill
 		        return ;
 		    }
 		}
 		else
 		{
 		    //multi banner
+		    echo "<h1>Multi Banner</h1>".$this; //TODO: kill
 		    return ;
 		}
 		
@@ -146,6 +151,8 @@ class ModuleBanner extends \BugBuster\Banner\BannerHelper
 		Category: <pre>".print_r($this->arrCategoryValues,true)."</pre>\n<br>
 		FrontendGroupView: ".print_r((int)$this->statusBannerFrontendGroupView,true)."\n<br>
 		AllBannersBasic: <pre>".print_r($this->arrAllBannersBasic,true)."</pre>\n<br>
-		";
+		CountBannerSeen: ".count(self::$arrBannerSeen)."\n<br>
+		EinzelBanner 0:single,1:multi: ".print_r((int)$this->arrCategoryValues['banner_numbers'],true)."\n<br>
+		<hr>";
 	}
 }

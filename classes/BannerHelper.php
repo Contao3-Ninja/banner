@@ -167,8 +167,13 @@ class BannerHelper extends \Module
 			$this->arrCategoryValues = false;
 			return false;
 		}
-		$objBannerCategory = $this->Database->prepare("SELECT * FROM  tl_banner_category WHERE id=?")
-											->execute($this->banner_categories); 
+		$objBannerCategory = \Database::getInstance()->prepare("SELECT 
+                                                                    * 
+                                                                FROM  
+                                                                    tl_banner_category 
+                                                                WHERE 
+                                                                    id=?")
+											         ->execute($this->banner_categories); 
 		if ($objBannerCategory->numRows == 0) 
 		{
 			$this->log($GLOBALS['TL_LANG']['tl_banner']['banner_cat_not_found'], 'ModulBanner Compile', 'ERROR');
@@ -240,24 +245,45 @@ class BannerHelper extends \Module
 		//mit Beachtung der Domain
 		//sortiert nach "sorting"
 		//nur Basic Felder `id`, `banner_weighting` 
-		$objBanners = $this->Database->prepare("SELECT TLB.`id`, TLB.`banner_weighting`"
-				. " FROM tl_banner AS TLB "
-		        . " LEFT JOIN tl_banner_category ON (tl_banner_category.id=TLB.pid)"
-		        . " LEFT OUTER JOIN tl_banner_stat AS TLS ON TLB.id=TLS.id"
-		        . " WHERE pid=?"
-		        . " AND ((TLB.banner_until=?) OR (TLB.banner_until=1 AND TLB.banner_views_until>TLS.banner_views)   OR (TLB.banner_until=1 AND TLB.banner_views_until=?)  OR (TLB.banner_until=1 AND TLS.banner_views is NULL))"
-		        . " AND ((TLB.banner_until=?) OR (TLB.banner_until=1 AND TLB.banner_clicks_until>TLS.banner_clicks) OR (TLB.banner_until=1 AND TLB.banner_clicks_until=?) OR (TLB.banner_until=1 AND TLS.banner_clicks is NULL))"
-		        . " AND TLB.banner_published =?"
-		        . " AND (TLB.banner_start=? OR TLB.banner_start<=?) AND (TLB.banner_stop=? OR TLB.banner_stop>=?)"
-		        . " AND (TLB.banner_domain=? OR RIGHT(?, CHAR_LENGTH(TLB.banner_domain)) = TLB.banner_domain)"
-				. " GROUP BY TLB.`sorting`"
-				)
-				->execute($this->banner_categories
-							, '', ''
-							, '', ''
-							, 1
-							, '', $intTime, '', $intTime
-							, '', $http_host);
+		$objBanners = \Database::getInstance()
+		                ->prepare("SELECT 
+                                        TLB.`id`, TLB.`banner_weighting`
+                                   FROM 
+                                        tl_banner AS TLB 
+                                   LEFT JOIN 
+                                        tl_banner_category ON tl_banner_category.id=TLB.pid
+                                   LEFT OUTER JOIN 
+                                        tl_banner_stat AS TLS ON TLB.id=TLS.id
+                                   WHERE 
+                                        pid=?
+                                   AND (
+                                           (TLB.banner_until=?) 
+		                                OR (TLB.banner_until=1 AND TLB.banner_views_until>TLS.banner_views)   
+                                        OR (TLB.banner_until=1 AND TLB.banner_views_until=?)  
+                                        OR (TLB.banner_until=1 AND TLS.banner_views is NULL)
+                                       )
+                                   AND (
+                                           (TLB.banner_until=?) 
+                                        OR (TLB.banner_until=1 AND TLB.banner_clicks_until>TLS.banner_clicks) 
+                                        OR (TLB.banner_until=1 AND TLB.banner_clicks_until=?) 
+                                        OR (TLB.banner_until=1 AND TLS.banner_clicks is NULL)
+                                       )
+                                   AND 
+                                        TLB.banner_published =?
+                                   AND 
+                                       (TLB.banner_start=? OR TLB.banner_start<=?) 
+                                   AND 
+                                       (TLB.banner_stop=? OR TLB.banner_stop>=?)
+                                   AND 
+                                       (TLB.banner_domain=? OR RIGHT(?, CHAR_LENGTH(TLB.banner_domain)) = TLB.banner_domain)
+                                   GROUP BY TLB.`sorting`"
+				                )
+                        ->execute($this->banner_categories
+        							, '', ''
+        							, '', ''
+        							, 1
+        							, '', $intTime, '', $intTime
+        							, '', $http_host);
 		while ($objBanners->next())
 		{
 			$this->arrAllBannersBasic[$objBanners->id] = $objBanners->banner_weighting;
@@ -445,15 +471,20 @@ class BannerHelper extends \Module
 	    //log_message('setRandomBlockerId BannerID:'.$BannerID,'Banner.log');
 	    
 	    // Eigene IP oder aeltere Eintraege loeschen
-	    $this->Database->prepare("DELETE FROM tl_banner_random_blocker WHERE ip=? OR tstamp <?")
-	                   ->execute($ClientIP, time() -(24*60*60));
+	    \Database::getInstance()->prepare("DELETE FROM 
+                                                tl_banner_random_blocker 
+                                           WHERE 
+                                                ip=? 
+                                           OR 
+                                                tstamp <?")
+                                ->execute($ClientIP, time() -(24*60*60));
 	    $arrSet = array
 	    (
 	            'bid'    => $BannerID,
 	            'tstamp' => time(),
 	            'ip'     => $ClientIP,
 	    );
-	    $this->Database->prepare("INSERT INTO tl_banner_random_blocker %s")->set($arrSet)->execute();
+	    \Database::getInstance()->prepare("INSERT INTO tl_banner_random_blocker %s")->set($arrSet)->execute();
 	    $this->statusRandomBlocker = true;
 	    return ;
 	}
@@ -465,9 +496,14 @@ class BannerHelper extends \Module
 	protected function getRandomBlockerId()
 	{
 	    $ClientIP = bin2hex(sha1($this->banner_categories . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
-	    $objBanners = $this->Database->prepare("SELECT * FROM tl_banner_random_blocker WHERE ip=?")
-                            	     ->limit(1)
-                            	     ->execute($ClientIP);
+	    $objBanners = \Database::getInstance()->prepare("SELECT 
+                                                            * 
+                                                         FROM 
+                                                            tl_banner_random_blocker 
+                                                         WHERE 
+                                                            ip=?")
+                                              ->limit(1)
+                                              ->execute($ClientIP);
 	    $objBanners->fetchAssoc();
 	    if (0 == $objBanners->numRows)
 	    {
@@ -486,6 +522,7 @@ class BannerHelper extends \Module
 	 */
 	protected function getSetFirstView()
 	{
+	    return true; // for Test TODO kill
 	    //FirstViewBanner gewünscht?
 	    if ($this->banner_firstview !=1) { return false; }
 	    
@@ -502,12 +539,12 @@ class BannerHelper extends \Module
 	        $this->statusBannerFirstView = false;
 	        return false;
 	    }
-	    
-	    $this->Database->prepare("DELETE FROM tl_banner_blocker WHERE bid =? AND tstamp<? AND type=?")
-	                   ->execute($this->banner_categories, $BannerFirstViewBlockTime, 'f');
-	    $objBanners = $this->Database->prepare("SELECT id FROM tl_banner_blocker WHERE bid =? AND tstamp>? AND ip=? AND type=?")
-                        	         ->limit(1)
-                        	         ->executeUncached($this->banner_categories, $BannerFirstViewBlockTime, $ClientIP, 'f' );
+	    //TODO: #37
+	    \Database::getInstance()->prepare("DELETE FROM tl_banner_blocker WHERE bid =? AND tstamp<? AND type=?")
+	                            ->execute($this->banner_categories, $BannerFirstViewBlockTime, 'f');
+	    $objBanners = \Database::getInstance()->prepare("SELECT id FROM tl_banner_blocker WHERE bid =? AND tstamp>? AND ip=? AND type=?")
+                        	                  ->limit(1)
+                        	                  ->executeUncached($this->banner_categories, $BannerFirstViewBlockTime, $ClientIP, 'f' );
 	    if (0 == $objBanners->numRows)
 	    {
 	        // noch kein Eintrag bzw. ausserhalb Blockzeit
@@ -518,7 +555,7 @@ class BannerHelper extends \Module
 	                'ip'     => $ClientIP,
 	                'type'   => 'f'
 	        );
-	        $this->Database->prepare("INSERT INTO tl_banner_blocker %s")->set($arrSet)->executeUncached();
+	        \Database::getInstance()->prepare("INSERT INTO tl_banner_blocker %s")->set($arrSet)->executeUncached();
 	        // kein firstview block gefunden, Anzeigen erlaubt
 	        $this->statusBannerFirstView = true;
 	        return true;
@@ -538,18 +575,28 @@ class BannerHelper extends \Module
 	    $intTime = time();
 	    $arrBanners = array();
 	    $arrResults = array();
+	    $FileSrc = '';
 	    
 	    //first aktiv banner in category
-	    $objBanners = $this->Database->prepare("SELECT TLB.* 
-                                                FROM tl_banner AS TLB 
-                                                LEFT JOIN tl_banner_category ON (tl_banner_category.id=TLB.pid)
-                                                WHERE pid=?
-                                                AND TLB.banner_published =1
-                                                AND (TLB.banner_start=? OR TLB.banner_start<=?) 
-	                                            AND (TLB.banner_stop=?  OR TLB.banner_stop>=?)
-                                                AND (TLB.banner_domain=? OR RIGHT(?, CHAR_LENGTH(TLB.banner_domain)) = TLB.banner_domain)
-                                                ORDER BY sorting"
-	                                          )
+	    $objBanners = \Database::getInstance()
+                            ->prepare("SELECT 
+                                            TLB.* 
+                                       FROM 
+                                            tl_banner AS TLB 
+                                       LEFT JOIN 
+                                            tl_banner_category ON (tl_banner_category.id=TLB.pid)
+                                       WHERE 
+                                            pid=?
+                                       AND 
+                                            TLB.banner_published =1
+                                       AND 
+                                            (TLB.banner_start=? OR TLB.banner_start<=?) 
+                                       AND 
+                                            (TLB.banner_stop=?  OR TLB.banner_stop>=?)
+                                       AND 
+                                            (TLB.banner_domain=? OR RIGHT(?, CHAR_LENGTH(TLB.banner_domain)) = TLB.banner_domain)
+                                       ORDER BY sorting"
+	                                 )
 	                       ->limit(1)
 	                       ->execute($this->banner_categories,'', $intTime, '', $intTime, '', $http_host);
         $intRows = $objBanners->numRows;
@@ -557,15 +604,66 @@ class BannerHelper extends \Module
         if($intRows > 0)
         {
             $objBanners->next();
-            //Pfad+Dateiname holen ueber ID
-            $objFile = \FilesModel::findByPk($objBanners->banner_image);
-            
-            //BannerImage Class
-            $this->import('\Banner\BannerImage', 'BannerImage');
-            //Banner Art und Größe bestimmen
-            $arrImageSize = $this->BannerImage->getBannerImageSize($objFile->path, self::BANNER_TYPE_INTERN);
-
-            if ($arrImageSize !== false)
+            //echo "getSingleBannerFirst Banneranzahl: ".$intRows."\n<br>"; // TODO kill
+            //echo "getSingleBannerFirst BannerType: ".$objBanners->banner_type."\n<br>"; //TODO kill
+            switch ($objBanners->banner_type)
+            {
+                case self::BANNER_TYPE_INTERN :
+                    //Pfad+Dateiname holen ueber ID
+                    $objFile = \FilesModel::findByPk($objBanners->banner_image);
+                    //BannerImage Class
+                    $this->import('\Banner\BannerImage', 'BannerImage');
+                    //Banner Art und Größe bestimmen
+                    $arrImageSize = $this->BannerImage->getBannerImageSize($objFile->path, self::BANNER_TYPE_INTERN);
+                    //Banner Neue Größe 0:$Width 1:$Height
+                    $arrNewSizeValues = deserialize($objBanners->banner_imgSize);
+                    //Banner Neue Größe ermitteln, return array $Width,$Height,$oriSize
+                    $arrImageSizenNew = $this->BannerImage->getBannerImageSizeNew($arrImageSize[0],$arrImageSize[1],$arrNewSizeValues[0],$arrNewSizeValues[1]);
+                    
+                    //wenn oriSize = true, oder bei GIF/SWF/SWC = original Pfad nehmen
+                    if ($arrImageSizenNew[2] === true 
+                         || $arrImageSize[2] == 1  // GIF
+                         || $arrImageSize[2] == 4  // SWF
+                         || $arrImageSize[2] == 13 // SWC
+                         ) 
+                    {
+                        $FileSrc = $objFile->path;
+                        $arrImageSize[0] = $arrImageSizenNew[0];
+                        $arrImageSize[1] = $arrImageSizenNew[1];
+                        $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
+                    }
+                    else
+                    {
+                        $FileSrc = \Image::get($this->urlEncode($objFile->path), $arrImageSizenNew[0], $arrImageSizenNew[1],'proportional');
+                        $arrImageSize[0] = $arrImageSizenNew[0];
+                        $arrImageSize[1] = $arrImageSizenNew[1];
+                        $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
+                    }
+                    break;
+                case self::BANNER_TYPE_EXTERN :
+                    //BannerImage Class
+                    $this->import('\Banner\BannerImage', 'BannerImage');
+                    //Banner Art und Größe bestimmen
+                    $arrImageSize = $this->BannerImage->getBannerImageSize($objBanners->banner_image_extern, self::BANNER_TYPE_EXTERN);
+                    //Banner Neue Größe 0:$Width 1:$Height
+                    $arrNewSizeValues = deserialize($objBanners->banner_imgSize);
+                    //Banner Neue Größe ermitteln, return array $Width,$Height,$oriSize
+                    $arrImageSizenNew = $this->BannerImage->getBannerImageSizeNew($arrImageSize[0],$arrImageSize[1],$arrNewSizeValues[0],$arrNewSizeValues[1]);
+                    //Umwandlung bei Parametern
+                    $FileSrc = html_entity_decode($objBanners->banner_image_extern, ENT_NOQUOTES, 'UTF-8');
+                    //$src = $objBanners->banner_image_extern;
+                    $arrImageSize[0] = $arrImageSizenNew[0];
+                    $arrImageSize[1] = $arrImageSizenNew[1];
+                    $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
+                    break;
+                case self::BANNER_TYPE_TEXT :
+                    $arrImageSize = false;
+                    break;
+            }
+            //TODO kill
+            //echo "getSingleBannerFirst arrImageSize: <pre>".print_r($arrImageSize,true)."</pre>\n<br>"; // TODO kill
+            //echo "getSingleBannerFirst FileSrc: $FileSrc";
+            if ($arrImageSize !== false) //Bilder extern/intern
             {
                 if ($this->strFormat == 'xhtml')
                 {
@@ -605,7 +703,7 @@ class BannerHelper extends \Module
                                 'banner_url'     => $objBanners->banner_url,
                                 'banner_target'  => $banner_target,
                                 'banner_comment' => specialchars(ampersand($objBanners->banner_comment)),
-                                'src'            => specialchars(ampersand($this->urlEncode($objFile->path))),
+                                'src'            => specialchars(ampersand($FileSrc)),//specialchars(ampersand($this->urlEncode($FileSrc))),
                                 'alt'            => specialchars(ampersand($objBanners->banner_name)),
                                 'size'           => $arrImageSize[3],
                                 'banner_pic'     => true,
@@ -619,7 +717,7 @@ class BannerHelper extends \Module
                         list($usec, ) = explode(" ", microtime());
                         
                         //Check for Fallback Image, only for local flash files (Path,Breite,Höhe)
-                        $src_fallback = $this->BannerImage->getCheckBannerImageFallback($objFile->path,$arrImageSize[0],$arrImageSize[1]);
+                        $src_fallback = $this->BannerImage->getCheckBannerImageFallback($FileSrc,$arrImageSize[0],$arrImageSize[1]);
                         if ($src_fallback !== false)
                         {
                             //Fallback gefunden
@@ -637,11 +735,11 @@ class BannerHelper extends \Module
                             //kein Fallback
                             if ($this->strFormat == 'xhtml')
                             {
-                                $fallback_content = $objBanners->banner_image ."<br />". specialchars(ampersand($objBanners->banner_comment)) ."<br />". specialchars(ampersand($objBanners->banner_name));
+                                $fallback_content = $FileSrc ."<br />". specialchars(ampersand($objBanners->banner_comment)) ."<br />". specialchars(ampersand($objBanners->banner_name));
                             } 
                             else 
                             {
-                                $fallback_content = $objBanners->banner_image ."<br>". specialchars(ampersand($objBanners->banner_comment)) ."<br>". specialchars(ampersand($objBanners->banner_name));
+                                $fallback_content = $FileSrc ."<br>". specialchars(ampersand($objBanners->banner_comment)) ."<br>". specialchars(ampersand($objBanners->banner_name));
                             }
                         }
                         $arrBanners[] = array
@@ -652,7 +750,7 @@ class BannerHelper extends \Module
                             'banner_url'     => $objBanners->banner_url,
                             'banner_target'  => $banner_target,
                             'banner_comment' => specialchars(ampersand($objBanners->banner_comment)),
-                            'swf_src'        => ($objBanners->banner_type == 'banner_image') ? $objBanners->banner_image : $objBanners->banner_image_extern,
+                            'swf_src'        => specialchars(ampersand($FileSrc)),
                             'swf_width'      => $arrImageSize[0],
                             'swf_height'     => $arrImageSize[1],
                             'swf_id'         => round((float)$usec*100000,0).'_'.$objBanners->id,
@@ -693,8 +791,55 @@ class BannerHelper extends \Module
                 return true;
                 
             }//$arrImageSize !== false
+            
+            // Text Banner
+            if ($objBanners->banner_type == 'banner_text') 
+            {
+                if ($this->strFormat == 'xhtml')
+                {
+                    $banner_target = ($objBanners->banner_target == '1') ? LINK_BLUR : LINK_NEW_WINDOW;
+                } 
+                else 
+                {
+                    $banner_target = ($objBanners->banner_target == '1') ? '' : ' target="_blank"';
+                }
+                // Kurz URL (nur Domain)
+                $treffer = '';
+                if (preg_match('@^(?:http://)?([^/]+)@i',$objBanners->banner_url, $treffer))
+                {
+                    $banner_url_kurz = $treffer[1];
+                } else {
+                    $banner_url_kurz = '';
+                }
+                $arrBanners[] = array
+                (
+                        'banner_key'     => 'bid=',
+                        'banner_id'      => $objBanners->id,
+                        'banner_name'    => specialchars(ampersand($objBanners->banner_name)),
+                        'banner_url'     => $objBanners->banner_url,
+                        'banner_url_kurz'=> $banner_url_kurz,
+                        'banner_target'  => $banner_target,
+                        'banner_comment' => ampersand(nl2br($objBanners->banner_comment)),
+                        'banner_pic'     => false,
+                        'banner_flash'   => false,
+                        'banner_text'    => true,
+                        'banner_empty'   => false	// issues 733
+                );
+                if (($this->banner_template != $this->strTemplate) && ($this->banner_template != '')) {
+                    $this->strTemplate = $this->banner_template;
+                    $this->Template = new \FrontendTemplate($this->strTemplate);
+                }
+                $arrResults[] = $arrBanners[0];
+                $this->Template->banners = $arrResults;
+                 
+                //TODO $this->arrBannerData = $arrResults;
+                //TODO $this->BannerStatViewUpdate();
+                
+                
+                
+            }
         }//Banner vorhanden
-        //falls $arrImageSize = false  
+        //falls $arrImageSize = false  und kein Text Banner
         $this->Template->banners = $arrBanners; // leeres array
 	}
 	
