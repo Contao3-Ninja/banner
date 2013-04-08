@@ -114,7 +114,7 @@ class ModuleBanner extends \BugBuster\Banner\BannerHelper
 		}
 		
 		//OK, noch Banner übrig, weiter gehts	
-		//FirstViewBanner? | Single Banner? 
+		//Single Banner? 
 		if ($this->arrCategoryValues['banner_numbers'] != 1) 
 		{
 		    //FirstViewBanner?
@@ -128,10 +128,8 @@ class ModuleBanner extends \BugBuster\Banner\BannerHelper
 		    else 
 		    {
     		    //single banner
-    		    //Gewichtung nach vorhandenen Wichtungen
-		        $SingleBannerWeighting = $this->getSingleWeighting();
 		        $this->getSingleBanner();
-		        echo "<h1>Single Banner</h1>".$this; //TODO: kill
+		        //echo "<h1>Single Banner</h1>".$this; //TODO: kill
 		        return ;
 		    }
 		}

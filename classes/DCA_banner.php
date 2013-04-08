@@ -142,8 +142,8 @@ class DCA_banner extends \Backend
         {
             //url generieren
             $objBannerNextPage = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
-            ->limit(1)
-            ->execute($row['banner_jumpTo']);
+                                                ->limit(1)
+                                                ->execute($row['banner_jumpTo']);
             if ($objBannerNextPage->numRows)
             {
                 $row['banner_url'] = $this->generateFrontendUrl($objBannerNextPage->fetchAssoc());
@@ -307,8 +307,8 @@ class DCA_banner extends \Backend
         {
             //url generieren
             $objBannerNextPage = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
-            ->limit(1)
-            ->execute($row['banner_jumpTo']);
+                                                ->limit(1)
+                                                ->execute($row['banner_jumpTo']);
             if ($objBannerNextPage->numRows)
             {
                 $row['banner_url'] = $this->generateFrontendUrl($objBannerNextPage->fetchAssoc());
@@ -440,6 +440,19 @@ class DCA_banner extends \Backend
      */
     protected function listBannerText($row)
     {
+        //Banner Ziel per Page?
+        if ($row['banner_jumpTo'] >0)
+        {
+            //url generieren
+            $objBannerNextPage = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
+                                                ->limit(1)
+                                                ->execute($row['banner_jumpTo']);
+            if ($objBannerNextPage->numRows)
+            {
+                $row['banner_url'] = $this->generateFrontendUrl($objBannerNextPage->fetchAssoc());
+            }
+        }
+        
         $banner_url = html_entity_decode($row['banner_url'], ENT_NOQUOTES, 'UTF-8');
         if (strlen($banner_url)>0)
         {
@@ -451,7 +464,7 @@ class DCA_banner extends \Backend
         }
         //Output
         $output = '<div class="mod_banner_be">' .
-                '<div class="name"><br />'.$row['banner_name'].'<br /><span style="font-weight:normal;">'.nl2br($row['banner_comment']).'<br />'.(strlen($banner_url)<60 ? $banner_url : substr($banner_url, 0, 31)."[...]".substr($banner_url,-21,21) ).'</span></div>' .
+                '<div class="name"><br />'.$row['banner_name'].'<br /><span style="font-weight:normal;">'.nl2br($row['banner_comment']).'<br />'.$banner_url_text .(strlen($banner_url)<60 ? $banner_url : substr($banner_url, 0, 31)."[...]".substr($banner_url,-21,21) ).'</span></div>' .
                 '<div class="right">' .
                 '<div class="left">'.
                 '<div class="published_head">'.$GLOBALS['TL_LANG']['tl_banner']['banner_published'][0].'</div>'.
