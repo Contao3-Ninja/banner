@@ -488,7 +488,9 @@ class BannerHelper extends \Module
 	            'tstamp' => time(),
 	            'ip'     => $ClientIP,
 	    );
-	    \Database::getInstance()->prepare("INSERT INTO tl_banner_random_blocker %s")->set($arrSet)->execute();
+	    \Database::getInstance()->prepare("INSERT INTO tl_banner_random_blocker %s")
+                                ->set($arrSet)
+                                ->execute();
 	    $this->statusRandomBlocker = true;
 	    return ;
 	}
@@ -1341,7 +1343,9 @@ class BannerHelper extends \Module
 	 */
 	protected function BannerCheckBot()
 	{
-	    if (isset($GLOBALS['TL_CONFIG']['mod_banner_bot_check']) && intval($GLOBALS['TL_CONFIG']['mod_banner_bot_check'])==0)
+	    if (isset($GLOBALS['TL_CONFIG']['mod_banner_bot_check']) 
+	      && (int)$GLOBALS['TL_CONFIG']['mod_banner_bot_check'] == 0
+	       )
 	    {
 	        //log_message('BannerCheckBot abgeschaltet','Banner.log');
 	        return false; //Bot Suche abgeschaltet ueber localconfig.php
