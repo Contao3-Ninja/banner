@@ -46,6 +46,10 @@ class BannerHelper extends \Module
 	 */
 	const BANNER_TYPE_TEXT   = 'banner_text';
 	
+	/**
+	 * Banner Data, for BannerStatViewUpdate
+	 */
+	protected $arrBannerData = array();
 	
 	/**
 	 * Banner Seen
@@ -540,11 +544,31 @@ class BannerHelper extends \Module
 	        return false;
 	    }
 	    //TODO: #37
-	    \Database::getInstance()->prepare("DELETE FROM tl_banner_blocker WHERE bid =? AND tstamp<? AND type=?")
+	    \Database::getInstance()->prepare("DELETE FROM 
+                                                tl_banner_stat_blocker 
+                                           WHERE 
+                                                bid =? 
+                                           AND 
+                                                tstamp<? 
+                                           AND 
+                                                type=?")
 	                            ->execute($this->banner_categories, $BannerFirstViewBlockTime, 'f');
-	    $objBanners = \Database::getInstance()->prepare("SELECT id FROM tl_banner_blocker WHERE bid =? AND tstamp>? AND ip=? AND type=?")
-                        	                  ->limit(1)
-                        	                  ->executeUncached($this->banner_categories, $BannerFirstViewBlockTime, $ClientIP, 'f' );
+	    
+	    $objBanners = \Database::getInstance()
+                                ->prepare("SELECT 
+                                                id 
+                                           FROM 
+                                                tl_banner_stat_blocker 
+                                           WHERE 
+                                                bid =? 
+                                           AND 
+                                                tstamp>? 
+                                           AND 
+                                                ip=? 
+                                           AND 
+                                                type=?")
+                                ->limit(1)
+                        	    ->executeUncached($this->banner_categories, $BannerFirstViewBlockTime, $ClientIP, 'f');
 	    if (0 == $objBanners->numRows)
 	    {
 	        // noch kein Eintrag bzw. ausserhalb Blockzeit
@@ -555,7 +579,9 @@ class BannerHelper extends \Module
 	                'ip'     => $ClientIP,
 	                'type'   => 'f'
 	        );
-	        \Database::getInstance()->prepare("INSERT INTO tl_banner_blocker %s")->set($arrSet)->executeUncached();
+	        \Database::getInstance()->prepare("INSERT INTO tl_banner_stat_blocker %s")
+                                    ->set($arrSet)
+                                    ->executeUncached();
 	        // kein firstview block gefunden, Anzeigen erlaubt
 	        $this->statusBannerFirstView = true;
 	        return true;
@@ -791,8 +817,8 @@ class BannerHelper extends \Module
                     $this->strTemplate = $this->banner_template;
                     $this->Template = new \FrontendTemplate($this->strTemplate);
                 }
-                //TODO $this->arrBannerData = $arrBanners; wird von BannerStatViewUpdate genutzt
-                //TODO $this->BannerStatViewUpdate();
+                $this->arrBannerData = $arrBanners; //wird von BannerStatViewUpdate genutzt
+                $this->BannerStatViewUpdate();
                 $this->Template->banners = $arrBanners;
                 return true;
                 
@@ -851,8 +877,8 @@ class BannerHelper extends \Module
                 $arrResults[] = $arrBanners[0];
                 $this->Template->banners = $arrResults;
                  
-                //TODO $this->arrBannerData = $arrResults;
-                //TODO $this->BannerStatViewUpdate();
+                $this->arrBannerData = $arrResults;
+                $this->BannerStatViewUpdate();
                 return true;
             }
         }//Banner vorhanden
@@ -1106,8 +1132,8 @@ class BannerHelper extends \Module
 	                $this->strTemplate = $this->banner_template;
 	                $this->Template = new \FrontendTemplate($this->strTemplate);
 	            }
-	            //TODO $this->arrBannerData = $arrBanners; wird von BannerStatViewUpdate genutzt
-	            //TODO $this->BannerStatViewUpdate();
+	            $this->arrBannerData = $arrBanners; //wird von BannerStatViewUpdate genutzt
+	            $this->BannerStatViewUpdate();
 	            $this->Template->banners = $arrBanners;
 	            return true;
 	    
@@ -1166,14 +1192,149 @@ class BannerHelper extends \Module
 	            $arrResults[] = $arrBanners[0];
 	            $this->Template->banners = $arrResults;
 	             
-	            //TODO $this->arrBannerData = $arrResults;
-	            //TODO $this->BannerStatViewUpdate();
+	            $this->arrBannerData = $arrResults;
+	            $this->BannerStatViewUpdate();
 	            return true;
 	        }
 	    }//Banner vorhanden
 	    //falls $arrImageSize = false  und kein Text Banner
 	    $this->Template->banners = $arrBanners; // leeres array
 	}
+
+/*
+   _____                  _   _                      __         _                     
+  / ____|                | | (_)                    / _|       (_)                    
+ | |     ___  _   _ _ __ | |_ _ _ __   __ _    ___ | |_  __   ___  _____      _____   
+ | |    / _ \| | | | '_ \| __| | '_ \ / _` |  / _ \|  _| \ \ / / |/ _ \ \ /\ / / __|  
+ | |___| (_) | |_| | | | | |_| | | | | (_| | | (_) | |    \ V /| |  __/\ V  V /\__ \_ 
+  \_____\___/ \__,_|_| |_|\__|_|_| |_|\__, |  \___/|_|     \_/ |_|\___| \_/\_/ |___(_)
+                                       __/ |                                          
+   & Blocking                         |___/       
+*/	
+	
+	/**
+	 * Insert/Update Banner View Stat
+	 */
+	protected function BannerStatViewUpdate()
+	{
+	    if ($this->BannerCheckBot() == true)
+	    {
+	        return; //Bot gefunden, wird nicht gezaehlt
+	    }
+	    if ($this->CheckUserAgent() == true)
+	    {
+	        return ; //User Agent Filterung
+	    }
+	    
+	    // Blocker
+	    
+	    $intCatID = ($this->banner_categories >0) ? $this->banner_categories : 42 ; // Answer to the Ultimate Question of Life, the Universe, and Everything
+	    //log_message('BannerStatViewUpdate $intCatID:'.$intCatID,'Banner.log');
+	    $ClientIP = bin2hex(sha1($intCatID . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
+	    $lastBanner = array_pop($this->arrBannerData);
+	    $BannerID = $lastBanner['banner_id'];
+	    if ($BannerID==0)
+	    { // kein Banner, nichts zu tun
+	        return;
+	    }
+	    $BannerBlockTime = time() - 60*10;   // 10 Minuten, 0-10 min wird geblockt
+	    $BannerCleanTime = time() - 60*10*3; // 30 Minuten, Einträge >= 30 Minuten werden gelöscht
+	    if ( isset($GLOBALS['TL_CONFIG']['mod_banner_block_time'] ) 
+	     && intval($GLOBALS['TL_CONFIG']['mod_banner_block_time'])>0
+	       )
+	    {
+	        $BannerBlockTime = time() - 60*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
+	        $BannerCleanTime = time() - 60*3*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
+	    }
+	    
+	    \Database::getInstance()->prepare("DELETE FROM 
+                                                tl_banner_stat_blocker 
+                                           WHERE 
+                                                tstamp<? 
+                                           AND 
+                                                type=?")
+                                ->execute($BannerCleanTime, 'v');
+	    
+	    $objBanners = \Database::getInstance()->prepare("SELECT 
+                                                            id 
+                                                         FROM 
+                                                            tl_banner_stat_blocker 
+                                                         WHERE 
+                                                            bid=? 
+                                                         AND 
+                                                            tstamp>? 
+                                                         AND 
+                                                            ip=? 
+                                                         AND 
+                                                            type=?")
+                                            ->limit(1)
+                                            ->execute( $BannerID, $BannerBlockTime, $ClientIP, 'v' );
+	    if (0 == $objBanners->numRows)
+	    {
+	        // noch kein Eintrag bzw. ausserhalb Blockzeit
+	        $arrSet = array
+	        (
+	                'bid'    => $BannerID,
+	                'tstamp' => time(),
+	                'ip'     => $ClientIP,
+	                'type'   => 'v'
+	        );
+	        \Database::getInstance()->prepare("INSERT INTO tl_banner_stat_blocker %s")
+                                    ->set($arrSet)
+                                    ->execute();
+	        // nicht blocken
+	    }
+	    else
+	    {
+	        // Eintrag innerhalb der Blockzeit
+	        return; // blocken, nicht zählen
+	    }
+	    
+	    //Zählung
+	    //TODO Optimierung durch INSERT IGNORE
+	    //alte Daten lesen
+	    $objBanners = \Database::getInstance()->prepare("SELECT 
+                                                            * 
+                                                         FROM 
+                                                            tl_banner_stat 
+                                                         WHERE 
+                                                            id=?")
+                                              ->limit(1)
+                                              ->execute($BannerID);
+	    $objBanners->fetchAssoc();
+	    if (0 == $objBanners->numRows)
+	    {
+	        //insert
+	        $arrSet = array
+	        (
+	                'id'     => $BannerID,
+	                'tstamp' => time(),
+	                'banner_views' => 1
+	        );
+	        \Database::getInstance()->prepare("INSERT INTO tl_banner_stat %s")
+                                    ->set($arrSet)
+                                    ->execute();
+	    }
+	    else
+	    {
+	        //update
+	        $arrSet = array
+	        (
+	                'id'     => $BannerID,
+	                'tstamp' => time(),
+	                'banner_views' => $objBanners->banner_views + 1
+	        );
+	        \Database::getInstance()->prepare("UPDATE 
+                                                    tl_banner_stat 
+                                               SET 
+                                                    tstamp=?
+                                                   ,banner_views=? 
+                                               WHERE 
+                                                    id=?")
+                                    ->execute($arrSet['tstamp'], $arrSet['banner_views'], $arrSet['id']);
+	    }
+	    
+	}//BannerStatViewUpdate()
 	
 	/**
 	 * Spider Bot Check
@@ -1207,7 +1368,7 @@ class BannerHelper extends \Module
 	 */
 	protected function CheckUserAgent()
 	{
-	    if ( isset(\Environment::get('httpUserAgent')) ) 
+	    if ( \Environment::get('httpUserAgent') )  
 	    {
 	        $UserAgent = trim(\Environment::get('httpUserAgent'));
 	    } 
