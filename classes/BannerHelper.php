@@ -818,7 +818,7 @@ class BannerHelper extends \Module
                     $this->Template = new \FrontendTemplate($this->strTemplate);
                 }
                 $this->arrBannerData = $arrBanners; //wird von BannerStatViewUpdate genutzt
-                $this->BannerStatViewUpdate();
+                $this->setStatViewUpdate();
                 $this->Template->banners = $arrBanners;
                 return true;
                 
@@ -878,7 +878,7 @@ class BannerHelper extends \Module
                 $this->Template->banners = $arrResults;
                  
                 $this->arrBannerData = $arrResults;
-                $this->BannerStatViewUpdate();
+                $this->setStatViewUpdate();
                 return true;
             }
         }//Banner vorhanden
@@ -1133,7 +1133,7 @@ class BannerHelper extends \Module
 	                $this->Template = new \FrontendTemplate($this->strTemplate);
 	            }
 	            $this->arrBannerData = $arrBanners; //wird von BannerStatViewUpdate genutzt
-	            $this->BannerStatViewUpdate();
+	            $this->setStatViewUpdate();
 	            $this->Template->banners = $arrBanners;
 	            return true;
 	    
@@ -1193,7 +1193,7 @@ class BannerHelper extends \Module
 	            $this->Template->banners = $arrResults;
 	             
 	            $this->arrBannerData = $arrResults;
-	            $this->BannerStatViewUpdate();
+	            $this->setStatViewUpdate();
 	            return true;
 	        }
 	    }//Banner vorhanden
@@ -1215,7 +1215,7 @@ class BannerHelper extends \Module
 	/**
 	 * Insert/Update Banner View Stat
 	 */
-	protected function BannerStatViewUpdate()
+	protected function setStatViewUpdate()
 	{
 	    if ($this->BannerCheckBot() == true)
 	    {
