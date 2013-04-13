@@ -1232,7 +1232,8 @@ class BannerHelper extends \Module
 	            array_pop($this->arrAllBannersBasic);
 	        }
 	    }
-	    
+	    //TODO KILL
+	    log_message('AllBannersBasic1:'.print_r($this->arrAllBannersBasic,true),'Banner.log');
 	    //Rest soll nun angezeigt werden.
 	    //Schleife
 	    while ( list($banner_id, $banner_weigth) = each($this->arrAllBannersBasic) )
@@ -1251,7 +1252,14 @@ class BannerHelper extends \Module
 	        //Banner vorhanden?
 	        if($intRows > 0)
 	        {
+	            $arrBanners = array();
 	            $objBanners->next();
+	            
+	            if (!$this->statusRandomBlocker) 
+	            {
+	                //Random Blocker setzen für den ersten Banner
+	                $this->setRandomBlockerId($banner_id);
+	            }
 	            
 	            switch ($objBanners->banner_type)
 	            {
@@ -1340,7 +1348,6 @@ class BannerHelper extends \Module
 	                    $objBanners->banner_url = $domain . $this->generateFrontendUrl($objParent->row(), '', $objParent->language);
 	                }
 	                
-	                $arrBanners = array();
 	                //$arrImageSize[0]  eigene Breite
 	                //$arrImageSize[1]  eigene Höhe
 	                //$arrImageSize[3]  Breite und Höhe in der Form height="yyy" width="xxx"

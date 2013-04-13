@@ -136,7 +136,8 @@ class ModuleBanner extends \BugBuster\Banner\BannerHelper
 		else
 		{
 		    //multi banner
-		    echo "<h1>Multi Banner</h1>".$this; //TODO: kill
+		    //echo "<h1>Multi Banner</h1>".$this; //TODO: kill
+		    $this->getMultiBanner();
 		    return ;
 		}
 		
