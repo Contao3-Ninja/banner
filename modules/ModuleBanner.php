@@ -129,15 +129,15 @@ class ModuleBanner extends \BugBuster\Banner\BannerHelper
 		    {
     		    //single banner
 		        $this->getSingleBanner();
-		        //echo "<h1>Single Banner</h1>".$this; //TODO: kill
+		        //echo "<h1>Single Banner</h1>"; //TODO: kill
 		        return ;
 		    }
 		}
 		else
 		{
 		    //multi banner
-		    //echo "<h1>Multi Banner</h1>".$this; //TODO: kill
-		    $this->getMultiBanner();
+		    echo "<h1>Multi Banner</h1>"; //TODO: kill
+		    //$this->getMultiBanner();
 		    return ;
 		}
 		

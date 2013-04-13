@@ -421,17 +421,18 @@ class BannerHelper extends \Module
 	{
 	    $arrPrio = array();
 	    $arrPrioW = array();
-	    
+	    $arrWeights = array_flip($this->arrAllBannersBasic);
+
 	    //welche Wichtungen gibt es?
-	    if (array_key_exists(1, $this->arrAllBannersBasic)) { $arrPrioW[] = 1; };
-	    if (array_key_exists(2, $this->arrAllBannersBasic)) { $arrPrioW[] = 2; };
-	    if (array_key_exists(3, $this->arrAllBannersBasic)) { $arrPrioW[] = 3; };
+	    if (array_key_exists(1, $arrWeights)) { $arrPrioW[1] = 1; };
+	    if (array_key_exists(2, $arrWeights)) { $arrPrioW[2] = 2; };
+	    if (array_key_exists(3, $arrWeights)) { $arrPrioW[3] = 3; };
 	    
 	    $arrPrio[0] = array('start'=>0,  'stop'=>0);
 	    $arrPrio[1] = array('start'=>1,  'stop'=>90);
 	    $arrPrio[2] = array('start'=>91, 'stop'=>150);
 	    $arrPrio[3] = array('start'=>151,'stop'=>180);
-	    if ( !array_key_exists(2,$arrPrioW) )
+	    if ( !array_key_exists(2, $arrPrioW) )
 	    {
 	        // no prio 2 banner
 	        $arrPrio[2] = array('start'=>0,  'stop'=>0);
@@ -439,11 +440,12 @@ class BannerHelper extends \Module
 	    }
 	    $intPrio1 = (count($arrPrioW)) ? min($arrPrioW) : 0 ;
 	    $intPrio2 = (count($arrPrioW)) ? max($arrPrioW) : 0 ;
-
+	    
 	    //wenn Wichtung vorhanden, dann per Zufall eine auswählen
 	    if ($intPrio1>0)
 	    {
 	        $intWeightingHigh = mt_rand($arrPrio[$intPrio1]['start'],$arrPrio[$intPrio2]['stop']);
+	    
 	        // 1-180 auf 1-3 umrechnen
 	        if ($intWeightingHigh<=$arrPrio[3]['stop'])
 	        {
@@ -888,8 +890,19 @@ class BannerHelper extends \Module
 	
 	protected function getSingleBanner()
 	{
+	    //RandomBlocker entfernen falls möglich und nötig
+	    if ( count($this->arrAllBannersBasic) >1 ) // einer muss ja übrig bleiben
+	    {
+	        $intRandomBlockerID = $this->getRandomBlockerId();
+	        if (isset($this->arrAllBannersBasic[$intRandomBlockerID]))
+	        {
+	            unset($this->arrAllBannersBasic[$intRandomBlockerID]);
+	        }
+	    }
+	    
 	    //Gewichtung nach vorhandenen Wichtungen
 	    $SingleBannerWeighting = $this->getSingleWeighting();
+
 	    //alle Basic Daten durchgehen und die löschen die nicht der Wichtung entsprechen
 	    while ( list($key, $val) = each($this->arrAllBannersBasic) ) 
 	    {
@@ -899,16 +912,6 @@ class BannerHelper extends \Module
 	        }
 	    }
 	    reset($this->arrAllBannersBasic); //sicher ist sicher
-	    
-	    //RandomBlocker entfernen falls möglich und nötig
-	    if ( count($this->arrAllBannersBasic) >1 ) // einer muss ja übrig bleiben
-	    {
-	        $intRandomBlockerID = $this->getRandomBlockerId();
-	        if (isset($this->arrAllBannersBasic[$intRandomBlockerID])) 
-	        {
-	            unset($this->arrAllBannersBasic[$intRandomBlockerID]);
-	        } 
-	    }
 	    
 	    //Zufallszahl
 	    //array_shuffle und array_rand zu "ungenau"
@@ -1232,8 +1235,7 @@ class BannerHelper extends \Module
 	            array_pop($this->arrAllBannersBasic);
 	        }
 	    }
-	    //TODO KILL
-	    log_message('AllBannersBasic1:'.print_r($this->arrAllBannersBasic,true),'Banner.log');
+
 	    //Rest soll nun angezeigt werden.
 	    //Schleife
 	    while ( list($banner_id, $banner_weigth) = each($this->arrAllBannersBasic) )
