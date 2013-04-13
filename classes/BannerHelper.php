@@ -132,6 +132,8 @@ class BannerHelper extends \Module
 		 * banner_template
 		 * banner_redirect
 		 * banner_useragent		- old: $this->useragent_filter
+		 * banner_random
+		 * banner_limit         - 0 all, other:max
 		 */
 		
 		//set $arrCategoryValues over tl_banner_category
@@ -1202,6 +1204,350 @@ class BannerHelper extends \Module
 	    //falls $arrImageSize = false  und kein Text Banner
 	    $this->Template->banners = $arrBanners; // leeres array
 	}
+	
+	protected function getMultiBanner()
+	{
+	    /* $this->arrCategoryValues[...]
+	     * banner_random
+		 * banner_limit         - 0 all, other:max
+	     */
+	    
+	    reset($this->arrAllBannersBasic); //sicher ist sicher
+	     
+	    //RandomBlocker entfernen falls möglich und nötig
+	    if ( count($this->arrAllBannersBasic) >1 ) // einer muss ja übrig bleiben
+	    {
+	        $intRandomBlockerID = $this->getRandomBlockerId();
+	        //TODO kill echo "geblockte Banner ID: $intRandomBlockerID \n<br>";
+	        if (isset($this->arrAllBannersBasic[$intRandomBlockerID]))
+	        {
+	            unset($this->arrAllBannersBasic[$intRandomBlockerID]);
+	        }
+	    }
+	    
+	    if ( $this->arrCategoryValues['banner_random'] == 1 ) 
+	    {
+	        $this->shuffle_assoc($this->arrAllBannersBasic);
+	    }
+	    
+	    //wenn limit gesetzt, array arrAllBannersBasic dezimieren
+	    if ( $this->arrCategoryValues['banner_limit'] >0 ) 
+	    {
+	        $del = count($this->arrAllBannersBasic) - $this->arrCategoryValues['banner_limit'];
+	        for ($i = 0; $i < $del; $i++) 
+	        {
+	            array_pop($this->arrAllBannersBasic);
+	        }
+	    }
+	    
+	    //Rest soll nun angezeigt werden.
+	    //Schleife
+	    while ( list($banner_id, $banner_weigth) = each($this->arrAllBannersBasic) )
+	    {
+	        $objBanners  = \Database::getInstance()
+                                ->prepare("SELECT
+                                                TLB.*
+                                           FROM
+                                	            tl_banner AS TLB
+                                           WHERE
+                                                TLB.`id`=?"
+                                         )
+                                ->limit(1)
+                                ->execute( $banner_id );
+	        $intRows = $objBanners->numRows;
+	        //Banner vorhanden?
+	        if($intRows > 0)
+	        {
+	            $objBanners->next();
+	            
+	            switch ($objBanners->banner_type)
+	            {
+	                case self::BANNER_TYPE_INTERN :
+	                    //Pfad+Dateiname holen ueber ID
+	                    $objFile = \FilesModel::findByPk($objBanners->banner_image);
+	                    //BannerImage Class
+	                    $this->import('\Banner\BannerImage', 'BannerImage');
+	                    //Banner Art und Größe bestimmen
+	                    $arrImageSize = $this->BannerImage->getBannerImageSize($objFile->path, self::BANNER_TYPE_INTERN);
+	                    //Banner Neue Größe 0:$Width 1:$Height
+	                    $arrNewSizeValues = deserialize($objBanners->banner_imgSize);
+	                    //Banner Neue Größe ermitteln, return array $Width,$Height,$oriSize
+	                    $arrImageSizenNew = $this->BannerImage->getBannerImageSizeNew($arrImageSize[0],$arrImageSize[1],$arrNewSizeValues[0],$arrNewSizeValues[1]);
+	                     
+	                    //wenn oriSize = true, oder bei GIF/SWF/SWC = original Pfad nehmen
+	                    if ($arrImageSizenNew[2] === true
+	                            || $arrImageSize[2] == 1  // GIF
+	                            || $arrImageSize[2] == 4  // SWF
+	                            || $arrImageSize[2] == 13 // SWC
+	                    )
+	                    {
+	                        $FileSrc = $objFile->path;
+	                        $arrImageSize[0] = $arrImageSizenNew[0];
+	                        $arrImageSize[1] = $arrImageSizenNew[1];
+	                        $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
+	                    }
+	                    else
+	                    {
+	                        $FileSrc = \Image::get($this->urlEncode($objFile->path), $arrImageSizenNew[0], $arrImageSizenNew[1],'proportional');
+	                        $arrImageSize[0] = $arrImageSizenNew[0];
+	                        $arrImageSize[1] = $arrImageSizenNew[1];
+	                        $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
+	                    }
+	                    break;
+	                case self::BANNER_TYPE_EXTERN :
+	                    //BannerImage Class
+	                    $this->import('\Banner\BannerImage', 'BannerImage');
+	                    //Banner Art und Größe bestimmen
+	                    $arrImageSize = $this->BannerImage->getBannerImageSize($objBanners->banner_image_extern, self::BANNER_TYPE_EXTERN);
+	                    //Banner Neue Größe 0:$Width 1:$Height
+	                    $arrNewSizeValues = deserialize($objBanners->banner_imgSize);
+	                    //Banner Neue Größe ermitteln, return array $Width,$Height,$oriSize
+	                    $arrImageSizenNew = $this->BannerImage->getBannerImageSizeNew($arrImageSize[0],$arrImageSize[1],$arrNewSizeValues[0],$arrNewSizeValues[1]);
+	                    //Umwandlung bei Parametern
+	                    $FileSrc = html_entity_decode($objBanners->banner_image_extern, ENT_NOQUOTES, 'UTF-8');
+	                    //$src = $objBanners->banner_image_extern;
+	                    $arrImageSize[0] = $arrImageSizenNew[0];
+	                    $arrImageSize[1] = $arrImageSizenNew[1];
+	                    $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
+	                    break;
+	                case self::BANNER_TYPE_TEXT :
+	                    $arrImageSize = false;
+	                    break;
+	            }
+	            //TODO kill
+	            //echo "getSingleBannerFirst arrImageSize: <pre>".print_r($arrImageSize,true)."</pre>\n<br>"; // TODO kill
+	            //echo "getSingleBannerFirst FileSrc: $FileSrc";
+	            if ($arrImageSize !== false) //Bilder extern/intern
+	            {
+	                if ($this->strFormat == 'xhtml')
+	                {
+	                    $banner_target = ($objBanners->banner_target == '1') ? LINK_BLUR : LINK_NEW_WINDOW;
+	                }
+	                else
+	                {
+	                    $banner_target = ($objBanners->banner_target == '1') ? '' : ' target="_blank"';
+	                }
+	                 
+	                if ( strlen($objBanners->banner_comment) > 1 )
+	                {
+	                    $banner_comment_pos = strpos($objBanners->banner_comment,"\n",1);
+	                    if ($banner_comment_pos !== false)
+	                    {
+	                        $objBanners->banner_comment = substr($objBanners->banner_comment,0,$banner_comment_pos);
+	                    }
+	                }
+	                 
+	                // Banner Seite als Ziel?
+	                if ($objBanners->banner_jumpTo > 0)
+	                {
+	                    $domain = \Environment::get('base');
+	                    $objParent = $this->getPageDetails($objBanners->banner_jumpTo);
+	                    if ($objParent->domain != '')
+	                    {
+	                        $domain = (\Environment::get('ssl') ? 'https://' : 'http://') . $objParent->domain . TL_PATH . '/';
+	                    }
+	                    $objBanners->banner_url = $domain . $this->generateFrontendUrl($objParent->row(), '', $objParent->language);
+	                }
+	                
+	                $arrBanners = array();
+	                //$arrImageSize[0]  eigene Breite
+	                //$arrImageSize[1]  eigene Höhe
+	                //$arrImageSize[3]  Breite und Höhe in der Form height="yyy" width="xxx"
+	                //$arrImageSize[2]
+	                // 1 = GIF, 2 = JPG, 3 = PNG
+	                // 4 = SWF, 13 = SWC (zip-like swf file)
+	                // 5 = PSD, 6 = BMP, 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order)
+	                // 9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF
+	                switch ($arrImageSize[2])
+	                {
+	                    case 1:
+	                    case 2:
+	                    case 3:
+	                        $arrBanners[] = array
+	                        (
+	                        'banner_key'     => 'bid=',
+	                        'banner_id'      => $objBanners->id,
+	                        'banner_name'    => specialchars(ampersand($objBanners->banner_name)),
+	                        'banner_url'     => $objBanners->banner_url,
+	                        'banner_target'  => $banner_target,
+	                        'banner_comment' => specialchars(ampersand($objBanners->banner_comment)),
+	                        'src'            => specialchars(ampersand($FileSrc)),//specialchars(ampersand($this->urlEncode($FileSrc))),
+	                        'alt'            => specialchars(ampersand($objBanners->banner_name)),
+	                        'size'           => $arrImageSize[3],
+	                        'banner_pic'     => true,
+	                        'banner_flash'   => false,
+	                        'banner_text'    => false,
+	                        'banner_empty'   => false
+	                        );
+	                        break;
+	                    case 4:  // Flash swf
+	                    case 13: // Flash swc
+	                        list($usec, ) = explode(" ", microtime());
+	                         
+	                        //Check for Fallback Image, only for local flash files (Path,Breite,Höhe)
+	                        $src_fallback = $this->BannerImage->getCheckBannerImageFallback($FileSrc,$arrImageSize[0],$arrImageSize[1]);
+	                        if ($src_fallback !== false)
+	                        {
+	                            //Fallback gefunden
+	                            if ($this->strFormat == 'xhtml')
+	                            {
+	                                $fallback_content = '<img src="' . $src_fallback . '" alt="'.specialchars(ampersand($objBanners->banner_comment)).'" height="'.$arrImageSize[1].'" width="'.$arrImageSize[0].'" />';
+	                            }
+	                            else
+	                            {
+	                                $fallback_content = '<img src="' . $src_fallback . '" alt="'.specialchars(ampersand($objBanners->banner_comment)).'" height="'.$arrImageSize[1].'" width="'.$arrImageSize[0].'">';
+	                            }
+	                        }
+	                        else
+	                        {
+	                            //kein Fallback
+	                            if ($this->strFormat == 'xhtml')
+	                            {
+	                                $fallback_content = $FileSrc ."<br />". specialchars(ampersand($objBanners->banner_comment)) ."<br />". specialchars(ampersand($objBanners->banner_name));
+	                            }
+	                            else
+	                            {
+	                                $fallback_content = $FileSrc ."<br>". specialchars(ampersand($objBanners->banner_comment)) ."<br>". specialchars(ampersand($objBanners->banner_name));
+	                            }
+	                        }
+	                        $arrBanners[] = array
+	                        (
+	                                'banner_key'     => 'bid=',
+	                                'banner_id'      => $objBanners->id,
+	                                'banner_name'    => specialchars(ampersand($objBanners->banner_name)),
+	                                'banner_url'     => $objBanners->banner_url,
+	                                'banner_target'  => $banner_target,
+	                                'banner_comment' => specialchars(ampersand($objBanners->banner_comment)),
+	                                'swf_src'        => specialchars(ampersand($FileSrc)),
+	                                'swf_width'      => $arrImageSize[0],
+	                                'swf_height'     => $arrImageSize[1],
+	                                'swf_id'         => round((float)$usec*100000,0).'_'.$objBanners->id,
+	                                'alt'            => specialchars(ampersand($objBanners->banner_name)),
+	                                'fallback_content'=> $fallback_content,
+	                                'banner_pic'     => false,
+	                                'banner_flash'   => true,
+	                                'banner_text'    => false,
+	                                'banner_empty'   => false
+	                        );
+	                        break;
+	                    default:
+	                        $arrBanners[] = array
+	                        (
+	                        'banner_key'     => 'bid=',
+	                        'banner_id'      => 0,
+	                        'banner_name'    => '',
+	                        'banner_url'     => '',
+	                        'banner_target'  => '',
+	                        'banner_comment' => '',
+	                        'src'            => '',
+	                        'alt'            => '',
+	                        'size'           => '',
+	                        'banner_pic'     => true,
+	                        );
+	                        break;
+	                }//switch
+	                $arrResults[] = $arrBanners[0];
+	                
+	                $this->arrBannerData = $arrBanners[0]; //wird von setStatViewUpdate genutzt
+	                $this->setStatViewUpdate();
+	                //$this->Template->banners = $arrBanners;
+	                //return true;
+	                 
+	            }//$arrImageSize !== false
+	             
+	            // Text Banner
+	            if ($objBanners->banner_type == 'banner_text')
+	            {
+	                if ($this->strFormat == 'xhtml')
+	                {
+	                    $banner_target = ($objBanners->banner_target == '1') ? LINK_BLUR : LINK_NEW_WINDOW;
+	                }
+	                else
+	                {
+	                    $banner_target = ($objBanners->banner_target == '1') ? '' : ' target="_blank"';
+	                }
+	                 
+	                // Banner Seite als Ziel?
+	                if ($objBanners->banner_jumpTo > 0)
+	                {
+	                    $domain = \Environment::get('base');
+	                    $objParent = $this->getPageDetails($objBanners->banner_jumpTo);
+	                    if ($objParent->domain != '')
+	                    {
+	                        $domain = (\Environment::get('ssl') ? 'https://' : 'http://') . $objParent->domain . TL_PATH . '/';
+	                    }
+	                    $objBanners->banner_url = $domain . $this->generateFrontendUrl($objParent->row(), '', $objParent->language);
+	                }
+	                 
+	                // Kurz URL (nur Domain)
+	                $treffer = parse_url($objBanners->banner_url);
+	                $banner_url_kurz = $treffer['host'];
+	                if (isset($treffer['port']))
+	                {
+	                    $banner_url_kurz .= ':'.$treffer['port'];
+	                }
+	                 
+	                $arrBanners[] = array
+	                (
+	                        'banner_key'     => 'bid=',
+	                        'banner_id'      => $objBanners->id,
+	                        'banner_name'    => specialchars(ampersand($objBanners->banner_name)),
+	                        'banner_url'     => $objBanners->banner_url,
+	                        'banner_url_kurz'=> $banner_url_kurz,
+	                        'banner_target'  => $banner_target,
+	                        'banner_comment' => ampersand(nl2br($objBanners->banner_comment)),
+	                        'banner_pic'     => false,
+	                        'banner_flash'   => false,
+	                        'banner_text'    => true,
+	                        'banner_empty'   => false	// issues 733
+	                );
+	                
+	                $arrResults[] = $arrBanners[0];
+	                //$this->Template->banners = $arrResults;
+	            
+	                $this->arrBannerData = $arrBanners[0]; //wird von setStatViewUpdate genutzt
+	                $this->setStatViewUpdate();
+	                
+	            }//text banner
+	            
+	            
+	            
+	            
+	            
+	        }//Banner vorhanden
+	    } // while each($this->arrAllBannersBasic)
+	    
+	    //anderes Template?
+	    if (($this->banner_template != $this->strTemplate) && ($this->banner_template != ''))
+	    {
+	        $this->strTemplate = $this->banner_template;
+	        $this->Template = new \FrontendTemplate($this->strTemplate);
+	    }
+	    
+	    //falls $arrImageSize = false  und kein Text Banner ist es ein leeres array
+	    $this->Template->banners = $arrResults;
+	}
+	
+	/**
+     * shuffle for associative arrays, preserves key=>value pairs.
+     * http://www.php.net/manual/de/function.shuffle.php
+     */
+    protected function shuffle_assoc(&$array) 
+    {
+        $keys = array_keys($array);
+        shuffle($keys);
+        shuffle($keys);
+    
+        foreach($keys as $key) 
+        {
+            $new[$key] = $array[$key];
+            unset($array[$key]); /* save memory */
+        }
+        $array = $new;
+        
+        return true;
+    }
+    
 
 /*
    _____                  _   _                      __         _                     
