@@ -310,10 +310,10 @@ class BannerHelper extends \Module
 		if ( $this->arrCategoryValues['banner_default'] == '1' && strlen($this->arrCategoryValues['banner_default_image']) > 2 ) 
 		{
 			//Template setzen
-			if ( ($this->arrCategoryValues['banner_template'] != $this->strTemplate) 
-			  && ($this->arrCategoryValues['banner_template'] != '') ) 
+			if ( ($this->banner_template != $this->strTemplate) 
+			  && ($this->banner_template != '') ) 
 			{
-			    $this->strTemplate = $this->arrCategoryValues['banner_template'];
+			    $this->strTemplate = $this->banner_template;
 			    $this->Template = new \FrontendTemplate($this->strTemplate);
 			}
 			//Link je nach Ausgabeformat
@@ -531,7 +531,7 @@ class BannerHelper extends \Module
 	 */
 	protected function getSetFirstView()
 	{
-	    //return true; // for Test TODO kill
+	    //return true; // for Test only
 	    //FirstViewBanner gewünscht?
 	    if ($this->banner_firstview !=1) { return false; }
 	    
@@ -600,10 +600,6 @@ class BannerHelper extends \Module
 	
 	protected function getSingleBannerFirst()
 	{
-	    //Domain Name ermitteln
-	    // TODO kill $http_host = \Environment::get('host');
-	    //aktueller Zeitstempel
-	    // TODO kill $intTime = time();
 	    $arrBanners = array();
 	    $arrResults = array();
 	    $FileSrc = '';
@@ -628,8 +624,6 @@ class BannerHelper extends \Module
         if($intRows > 0)
         {
             $objBanners->next();
-            //echo "getSingleBannerFirst Banneranzahl: ".$intRows."\n<br>"; // TODO kill
-            //echo "getSingleBannerFirst BannerType: ".$objBanners->banner_type."\n<br>"; //TODO kill
             switch ($objBanners->banner_type)
             {
                 case self::BANNER_TYPE_INTERN :
@@ -684,9 +678,7 @@ class BannerHelper extends \Module
                     $arrImageSize = false;
                     break;
             }
-            //TODO kill
-            //echo "getSingleBannerFirst arrImageSize: <pre>".print_r($arrImageSize,true)."</pre>\n<br>"; // TODO kill
-            //echo "getSingleBannerFirst FileSrc: $FileSrc";
+
             if ($arrImageSize !== false) //Bilder extern/intern
             {
                 if ($this->strFormat == 'xhtml')
@@ -817,10 +809,10 @@ class BannerHelper extends \Module
                 }//switch
                 
                 //anderes Template?
-                if (($this->arrCategoryValues['banner_template'] != $this->strTemplate) 
-                 && ($this->arrCategoryValues['banner_template'] != ''))
+                if (($this->banner_template != $this->strTemplate) 
+                 && ($this->banner_template != ''))
                 {
-                    $this->strTemplate = $this->arrCategoryValues['banner_template'];
+                    $this->strTemplate = $this->banner_template;
                     $this->Template = new \FrontendTemplate($this->strTemplate);
                 }
                 $this->arrBannerData = $arrBanners; //wird von BannerStatViewUpdate genutzt
@@ -876,10 +868,10 @@ class BannerHelper extends \Module
                         'banner_text'    => true,
                         'banner_empty'   => false	// issues 733
                 );
-                if (($this->arrCategoryValues['banner_template'] != $this->strTemplate) 
-                 && ($this->arrCategoryValues['banner_template'] != '')) 
+                if (($this->banner_template != $this->strTemplate) 
+                 && ($this->banner_template != '')) 
                 {
-                    $this->strTemplate = $this->arrCategoryValues['banner_template'];
+                    $this->strTemplate = $this->banner_template;
                     $this->Template = new \FrontendTemplate($this->strTemplate);
                 }
                 $arrResults[] = $arrBanners[0];
@@ -912,7 +904,6 @@ class BannerHelper extends \Module
 	    if ( count($this->arrAllBannersBasic) >1 ) // einer muss ja übrig bleiben
 	    {
 	        $intRandomBlockerID = $this->getRandomBlockerId();
-	        //TODO kill echo "geblockte Banner ID: $intRandomBlockerID \n<br>";
 	        if (isset($this->arrAllBannersBasic[$intRandomBlockerID])) 
 	        {
 	            unset($this->arrAllBannersBasic[$intRandomBlockerID]);
@@ -946,8 +937,6 @@ class BannerHelper extends \Module
 	    if($intRows > 0)
 	    {
 	        $objBanners->next();
-	        //echo "getSingleBannerFirst Banneranzahl: ".$intRows."\n<br>"; // TODO kill
-	        //echo "getSingleBannerFirst BannerType: ".$objBanners->banner_type."\n<br>"; //TODO kill
 	        switch ($objBanners->banner_type)
 	        {
 	            case self::BANNER_TYPE_INTERN :
@@ -1002,9 +991,7 @@ class BannerHelper extends \Module
 	                $arrImageSize = false;
 	                break;
 	        }
-	        //TODO kill
-	        //echo "getSingleBannerFirst arrImageSize: <pre>".print_r($arrImageSize,true)."</pre>\n<br>"; // TODO kill
-	        //echo "getSingleBannerFirst FileSrc: $FileSrc";
+
 	        if ($arrImageSize !== false) //Bilder extern/intern
 	        {
 	            if ($this->strFormat == 'xhtml')
@@ -1135,10 +1122,10 @@ class BannerHelper extends \Module
 	            }//switch
 	    
 	            //anderes Template?
-	            if (($this->arrCategoryValues['banner_template'] != $this->strTemplate) 
-	             && ($this->arrCategoryValues['banner_template'] != ''))
+	            if (($this->banner_template != $this->strTemplate) 
+	             && ($this->banner_template != ''))
 	            {
-	                $this->strTemplate = $this->arrCategoryValues['banner_template'];
+	                $this->strTemplate = $this->banner_template;
 	                $this->Template = new \FrontendTemplate($this->strTemplate);
 	            }
 	            $this->arrBannerData = $arrBanners; //wird von BannerStatViewUpdate genutzt
@@ -1194,10 +1181,10 @@ class BannerHelper extends \Module
 	                    'banner_text'    => true,
 	                    'banner_empty'   => false	// issues 733
 	            );
-	            if (($this->arrCategoryValues['banner_template'] != $this->strTemplate) 
-	             && ($this->arrCategoryValues['banner_template'] != '')) 
+	            if (($this->banner_template != $this->strTemplate) 
+	             && ($this->banner_template != '')) 
 	            {
-	                $this->strTemplate = $this->arrCategoryValues['banner_template'];
+	                $this->strTemplate = $this->banner_template;
 	                $this->Template = new \FrontendTemplate($this->strTemplate);
 	            }
 	            $arrResults[] = $arrBanners[0];
@@ -1225,7 +1212,6 @@ class BannerHelper extends \Module
 	    if ( count($this->arrAllBannersBasic) >1 ) // einer muss ja übrig bleiben
 	    {
 	        $intRandomBlockerID = $this->getRandomBlockerId();
-	        //TODO kill echo "geblockte Banner ID: $intRandomBlockerID \n<br>";
 	        if (isset($this->arrAllBannersBasic[$intRandomBlockerID]))
 	        {
 	            unset($this->arrAllBannersBasic[$intRandomBlockerID]);
@@ -1321,9 +1307,7 @@ class BannerHelper extends \Module
 	                    $arrImageSize = false;
 	                    break;
 	            }
-	            //TODO kill
-	            //echo "getSingleBannerFirst arrImageSize: <pre>".print_r($arrImageSize,true)."</pre>\n<br>"; // TODO kill
-	            //echo "getSingleBannerFirst FileSrc: $FileSrc";
+
 	            if ($arrImageSize !== false) //Bilder extern/intern
 	            {
 	                if ($this->strFormat == 'xhtml')
@@ -1525,10 +1509,10 @@ class BannerHelper extends \Module
 	    } // while each($this->arrAllBannersBasic)
 	    
 	    //anderes Template?
-	    if (($this->arrCategoryValues['banner_template'] != $this->strTemplate) 
-	     && ($this->arrCategoryValues['banner_template'] != ''))
+	    if (($this->banner_template != $this->strTemplate) 
+	     && ($this->banner_template != ''))
 	    {
-	        $this->strTemplate = $this->arrCategoryValues['banner_template'];
+	        $this->strTemplate = $this->banner_template;
 	        $this->Template = new \FrontendTemplate($this->strTemplate);
 	    }
 	    
@@ -1562,8 +1546,8 @@ class BannerHelper extends \Module
   / ____|                | | (_)                    / _|       (_)                    
  | |     ___  _   _ _ __ | |_ _ _ __   __ _    ___ | |_  __   ___  _____      _____   
  | |    / _ \| | | | '_ \| __| | '_ \ / _` |  / _ \|  _| \ \ / / |/ _ \ \ /\ / / __|  
- | |___| (_) | |_| | | | | |_| | | | | (_| | | (_) | |    \ V /| |  __/\ V  V /\__ \_ 
-  \_____\___/ \__,_|_| |_|\__|_|_| |_|\__, |  \___/|_|     \_/ |_|\___| \_/\_/ |___(_)
+ | |___| (_) | |_| | | | | |_| | | | | (_| | | (_) | |    \ V /| |  __/\ V  V /\__ \ 
+  \_____\___/ \__,_|_| |_|\__|_|_| |_|\__, |  \___/|_|     \_/ |_|\___| \_/\_/ |___/
                                        __/ |                                          
    & Blocking                         |___/       
 */	
