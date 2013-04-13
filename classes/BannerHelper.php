@@ -310,9 +310,10 @@ class BannerHelper extends \Module
 		if ( $this->arrCategoryValues['banner_default'] == '1' && strlen($this->arrCategoryValues['banner_default_image']) > 2 ) 
 		{
 			//Template setzen
-			if ( ($this->banner_template != $this->strTemplate) && ($this->banner_template != '') ) 
+			if ( ($this->arrCategoryValues['banner_template'] != $this->strTemplate) 
+			  && ($this->arrCategoryValues['banner_template'] != '') ) 
 			{
-			    $this->strTemplate = $this->banner_template;
+			    $this->strTemplate = $this->arrCategoryValues['banner_template'];
 			    $this->Template = new \FrontendTemplate($this->strTemplate);
 			}
 			//Link je nach Ausgabeformat
@@ -816,9 +817,10 @@ class BannerHelper extends \Module
                 }//switch
                 
                 //anderes Template?
-                if (($this->banner_template != $this->strTemplate) && ($this->banner_template != ''))
+                if (($this->arrCategoryValues['banner_template'] != $this->strTemplate) 
+                 && ($this->arrCategoryValues['banner_template'] != ''))
                 {
-                    $this->strTemplate = $this->banner_template;
+                    $this->strTemplate = $this->arrCategoryValues['banner_template'];
                     $this->Template = new \FrontendTemplate($this->strTemplate);
                 }
                 $this->arrBannerData = $arrBanners; //wird von BannerStatViewUpdate genutzt
@@ -874,8 +876,10 @@ class BannerHelper extends \Module
                         'banner_text'    => true,
                         'banner_empty'   => false	// issues 733
                 );
-                if (($this->banner_template != $this->strTemplate) && ($this->banner_template != '')) {
-                    $this->strTemplate = $this->banner_template;
+                if (($this->arrCategoryValues['banner_template'] != $this->strTemplate) 
+                 && ($this->arrCategoryValues['banner_template'] != '')) 
+                {
+                    $this->strTemplate = $this->arrCategoryValues['banner_template'];
                     $this->Template = new \FrontendTemplate($this->strTemplate);
                 }
                 $arrResults[] = $arrBanners[0];
@@ -1131,9 +1135,10 @@ class BannerHelper extends \Module
 	            }//switch
 	    
 	            //anderes Template?
-	            if (($this->banner_template != $this->strTemplate) && ($this->banner_template != ''))
+	            if (($this->arrCategoryValues['banner_template'] != $this->strTemplate) 
+	             && ($this->arrCategoryValues['banner_template'] != ''))
 	            {
-	                $this->strTemplate = $this->banner_template;
+	                $this->strTemplate = $this->arrCategoryValues['banner_template'];
 	                $this->Template = new \FrontendTemplate($this->strTemplate);
 	            }
 	            $this->arrBannerData = $arrBanners; //wird von BannerStatViewUpdate genutzt
@@ -1189,8 +1194,10 @@ class BannerHelper extends \Module
 	                    'banner_text'    => true,
 	                    'banner_empty'   => false	// issues 733
 	            );
-	            if (($this->banner_template != $this->strTemplate) && ($this->banner_template != '')) {
-	                $this->strTemplate = $this->banner_template;
+	            if (($this->arrCategoryValues['banner_template'] != $this->strTemplate) 
+	             && ($this->arrCategoryValues['banner_template'] != '')) 
+	            {
+	                $this->strTemplate = $this->arrCategoryValues['banner_template'];
 	                $this->Template = new \FrontendTemplate($this->strTemplate);
 	            }
 	            $arrResults[] = $arrBanners[0];
@@ -1518,9 +1525,10 @@ class BannerHelper extends \Module
 	    } // while each($this->arrAllBannersBasic)
 	    
 	    //anderes Template?
-	    if (($this->banner_template != $this->strTemplate) && ($this->banner_template != ''))
+	    if (($this->arrCategoryValues['banner_template'] != $this->strTemplate) 
+	     && ($this->arrCategoryValues['banner_template'] != ''))
 	    {
-	        $this->strTemplate = $this->banner_template;
+	        $this->strTemplate = $this->arrCategoryValues['banner_template'];
 	        $this->Template = new \FrontendTemplate($this->strTemplate);
 	    }
 	    
