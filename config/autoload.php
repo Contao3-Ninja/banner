@@ -26,16 +26,18 @@ ClassLoader::addNamespaces(array
 ClassLoader::addClasses(array
 (
 	// Modules
-	'BugBuster\Banner\ModuleBanner'        => 'system/modules/banner/modules/ModuleBanner.php',
+	'BugBuster\Banner\ModuleBanner'                     => 'system/modules/banner/modules/ModuleBanner.php',
+	'BugBuster\BannerStatistics\ModuleBannerStatistics' => 'system/modules/banner/modules/ModuleBannerStatistics.php',
 
 	// Classes
-	'BugBuster\Banner\BannerHelper'        => 'system/modules/banner/classes/BannerHelper.php',
-	'BugBuster\Banner\DCA_banner'          => 'system/modules/banner/classes/DCA_banner.php',
-	'BugBuster\Banner\BannerCheckHelper'   => 'system/modules/banner/classes/BannerCheckHelper.php',
-	'BugBuster\Banner\BannerImage'         => 'system/modules/banner/classes/BannerImage.php',
-	'BugBuster\Banner\DCA_banner_category' => 'system/modules/banner/classes/DCA_banner_category.php',
-	'BugBuster\Banner\BannerReferrer'      => 'system/modules/banner/classes/BannerReferrer.php',
-	'BugBuster\Banner\DCA_module_banner'   => 'system/modules/banner/classes/DCA_module_banner.php',
+	'BugBuster\Banner\BannerHelper'                     => 'system/modules/banner/classes/BannerHelper.php',
+	'BugBuster\Banner\DCA_banner'                       => 'system/modules/banner/classes/DCA_banner.php',
+	'BugBuster\BannerStatistics\BannerStatisticsHelper' => 'system/modules/banner/classes/BannerStatisticsHelper.php',
+	'BugBuster\Banner\BannerCheckHelper'                => 'system/modules/banner/classes/BannerCheckHelper.php',
+	'BugBuster\Banner\BannerImage'                      => 'system/modules/banner/classes/BannerImage.php',
+	'BugBuster\Banner\DCA_banner_category'              => 'system/modules/banner/classes/DCA_banner_category.php',
+	'BugBuster\Banner\BannerReferrer'                   => 'system/modules/banner/classes/BannerReferrer.php',
+	'BugBuster\Banner\DCA_module_banner'                => 'system/modules/banner/classes/DCA_module_banner.php',
 	
 ));
 

@@ -1,22 +1,19 @@
 <?php 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2012 Leo Feyer
+ * Contao Open Source CMS, Copyright (C) 2005-2012 Leo Feyer
  *
- * @link http://www.contao.org
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
- * 
  * Modul Banner Config - Backend
  *
  * This is the banner configuration file.
  *
- * PHP version 5
- * @copyright  Glen Langer 2007..2012
+ * @copyright  Glen Langer 2007..2013
  * @author     Glen Langer
  * @package    Banner 
  * @license    LGPL 
  */
 
+define('BANNER_VERSION', '3.0');
+define('BANNER_BUILD'  , '0');
 
 /**
  * -------------------------------------------------------------------------
@@ -32,7 +29,7 @@ $GLOBALS['BE_MOD']['content']['banner'] = array
 
 $GLOBALS['BE_MOD']['system']['bannerstat'] = array
 (
-	'callback'   => '\Banner\ModuleBannerStat',
+	'callback'   => 'BannerStatistics\ModuleBannerStatistics',
 	'icon'       => 'system/modules/banner/assets/iconBannerStat.gif',
 	'stylesheet' => 'system/modules/banner/assets/mod_banner_be.css'
 );
