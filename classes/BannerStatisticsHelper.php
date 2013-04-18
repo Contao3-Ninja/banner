@@ -173,7 +173,7 @@ class BannerStatisticsHelper extends \BackendModule
                                        AND
                                             tb.pid =?
                                        ORDER BY
-                                            tb.banner_name")
+                                            tb.sorting")
                             ->execute($CatID);
         }
         $intRows = $objBanners->numRows;

@@ -102,14 +102,14 @@ class DCA_banner extends \Backend
         $arrImageSizeNew = array();
         switch ($arrImageSize[2])
         {
-            case 1:
-            case 2:
-            case 3:
+            case 1: // GIF
+            case 2: // JPG
+            case 3: // PNG
                 $arrImageSizeNew = $this->BannerImage->getCheckBannerImageSize($arrImageSize,250,40);
                 $intWidth  = $arrImageSizeNew[0];
                 $intHeight = $arrImageSizeNew[1];
                 $oriSize   = $arrImageSizeNew[2];
-                if ($oriSize)
+                if ($oriSize || $arrImageSize[2] == 1) // GIF)
                 {
                     $banner_image = $this->urlEncode($objFile->path);
                 }
@@ -162,9 +162,9 @@ class DCA_banner extends \Backend
         //Output
         switch ($arrImageSize[2])
         {
-            case 1:
-            case 2:
-            case 3:
+            case 1: // GIF
+            case 2: // JPG
+            case 3: // PNG
                 $output = '<div class="mod_banner_be">' .
                         '<div class="name"><img alt="'.specialchars(ampersand($row['banner_name'])).'" src="'. $banner_image .'" height="'.$intHeight.'" width="'.$intWidth.'" /></div>' .
                         '<div class="right">' .
@@ -234,8 +234,7 @@ class DCA_banner extends \Backend
                         '</div>' .
                         '<div class="url">'.$banner_url_text . (strlen($banner_url)<80 ? $banner_url : substr($banner_url, 0, 36)."[...]".substr($banner_url,-36,36) ). '</div>' .
                         '</div>' .
-                        '<script type="text/javascript">
-	/* <![CDATA[ */
+                        '<script>
 	new Swiff("'.$banner_image.'", {
 	  id: "flash_'.$row['id'].'",
 	  width: '.$intWidth.',
@@ -246,7 +245,6 @@ class DCA_banner extends \Backend
 	  flashvars: ""
 	  }
 	}).replaces($("flash_'.$row['id'].'"));
-	/* ]]> */
 	</script>';
                 break;
             default:
@@ -282,9 +280,9 @@ class DCA_banner extends \Backend
         $arrImageSizeNew = array();
         switch ($arrImageSize[2])
         {
-            case 1:
-            case 2:
-            case 3:
+            case 1: // GIF
+            case 2: // JPG
+            case 3: // PNG
                 $arrImageSizeNew = $this->BannerImage->getCheckBannerImageSize($arrImageSize,250,40);
                 $intWidth  = $arrImageSizeNew[0];
                 $intHeight = $arrImageSizeNew[1];
@@ -327,9 +325,9 @@ class DCA_banner extends \Backend
         //Output
         switch ($arrImageSize[2])
         {
-            case 1:
-            case 2:
-            case 3:
+            case 1: // GIF
+            case 2: // JPG
+            case 3: // PNG
                 $output = '<div class="mod_banner_be">' .
                         '<div class="name"><img alt="'.specialchars(ampersand($row['banner_name'])).'" src="'. $banner_image .'" height="'.$intHeight.'" width="'.$intWidth.'" /></div>' .
                         '<div class="right">' .
@@ -399,8 +397,7 @@ class DCA_banner extends \Backend
                         '</div>' .
                         '<div class="url">'.$banner_url_text . (strlen($banner_url)<80 ? $banner_url : substr($banner_url, 0, 36)."[...]".substr($banner_url,-36,36) ). '</div>' .
                         '</div>' .
-                        '<script type="text/javascript">
-	/* <![CDATA[ */
+                        '<script>
 	new Swiff("'.$banner_image.'", {
 	  id: "flash_'.$row['id'].'",
 	  width: '.$intWidth.',
@@ -411,7 +408,6 @@ class DCA_banner extends \Backend
 	  flashvars: ""
 	  }
 	}).replaces($("flash_'.$row['id'].'"));
-	/* ]]> */
 	</script>';
                 break;
             default:
@@ -464,7 +460,7 @@ class DCA_banner extends \Backend
         }
         //Output
         $output = '<div class="mod_banner_be">' .
-                '<div class="name"><br />'.$row['banner_name'].'<br /><span style="font-weight:normal;">'.nl2br($row['banner_comment']).'<br />'.$banner_url_text .(strlen($banner_url)<60 ? $banner_url : substr($banner_url, 0, 31)."[...]".substr($banner_url,-21,21) ).'</span></div>' .
+                '<div class="name"><br />'.$row['banner_name'].'<br /><span style="font-weight:normal;">'.nl2br($row['banner_comment']).'<br /><br />'.$banner_url_text .(strlen($banner_url)<60 ? $banner_url : substr($banner_url, 0, 31)."[...]".substr($banner_url,-21,21) ).'</span></div>' .
                 '<div class="right">' .
                 '<div class="left">'.
                 '<div class="published_head">'.$GLOBALS['TL_LANG']['tl_banner']['banner_published'][0].'</div>'.

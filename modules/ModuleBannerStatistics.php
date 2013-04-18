@@ -91,7 +91,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
                     break;
                 case self::BANNER_TYPE_EXTERN :
                     //generate data
-                    //$arrBannersStat[] = $this->addBannerExtern($Banner);
+                    $arrBannersStat[] = $this->addBannerExtern($Banner);
                     break;
                 case self::BANNER_TYPE_TEXT :
                     //generate data
@@ -277,4 +277,103 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         return $arrBannersStat;
     } //addBannerIntern
     
+    
+    protected function addBannerExtern( &$Banner )
+    {
+        $arrBannersStat = array();
+        $oriSize = false;
+        
+        // return array(bool $intMaxViews, bool $intMaxClicks)
+        $MaxViewsClicks = $this->getMaxViewsClicksStatus($Banner);
+        
+        // set $Banner['banner_published'] as HTML Text
+        $this->setBannerPublished($Banner);
+        $Banner['banner_url']   = html_entity_decode($Banner['banner_url'], ENT_NOQUOTES, 'UTF-8');
+        //$Banner['banner_image'] = $Banner['banner_image_extern'];
+        
+        //BannerImage Class
+        $this->import('\Banner\BannerImage', 'BannerImage');
+        //Banner Art und Größe bestimmen
+        $arrImageSize = $this->BannerImage->getBannerImageSize($Banner['banner_image_extern'], self::BANNER_TYPE_EXTERN);
+        // 1 = GIF, 2 = JPG, 3 = PNG
+        // 4 = SWF, 13 = SWC (zip-like swf file)
+        // 5 = PSD, 6 = BMP, 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order)
+        // 9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF
+        switch ($arrImageSize[2])
+        {
+            case 1:  // GIF
+            case 2:  // JPG
+            case 3:  // PNG
+            case 4:  // Flash swf
+            case 13: // Flash swc
+                //Check ob Banner zu groß für Anzeige, @return array $Width,$Height,$oriSize
+                $arrNewBannerImageSize = $this->BannerImage->getCheckBannerImageSize($arrImageSize, 250, 40);
+                break;
+            default:
+                break;
+        }
+        $intWidth  = $arrNewBannerImageSize[0];
+        $intHeight = $arrNewBannerImageSize[1];
+        $oriSize   = $arrNewBannerImageSize[2];
+        
+        switch ($arrImageSize[2])
+        {
+            case 1: // GIF
+            case 2: // JPG
+            case 3: // PNG
+                $Banner['banner_image'] = $Banner['banner_image_extern']; // Banner URL
+                
+                $arrBannersStat['banner_id'      ]     = $Banner['id'];
+                $arrBannersStat['banner_style'   ]     = '';
+                $arrBannersStat['banner_name'    ]     = specialchars(ampersand($Banner['banner_name']));
+                $arrBannersStat['banner_alt'     ]     = specialchars(ampersand($Banner['banner_name']));
+                $arrBannersStat['banner_title'   ]     = $Banner['banner_url'];
+                $arrBannersStat['banner_url'     ]     = (strlen($Banner['banner_url']) <61 ? $Banner['banner_url'] : substr($Banner['banner_url'], 0, 28)."[...]".substr($Banner['banner_url'],-24,24) );
+                $arrBannersStat['banner_image'   ]     = $Banner['banner_image'];
+                $arrBannersStat['banner_width'   ]     = $intWidth;
+                $arrBannersStat['banner_height'  ]     = $intHeight;
+                $arrBannersStat['banner_prio'    ]     = $Banner['banner_weighting'];
+                $arrBannersStat['banner_views'   ]     = ($MaxViewsClicks[0]) ? $Banner['banner_views']  .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_views'];
+                $arrBannersStat['banner_clicks'  ]     = ($MaxViewsClicks[1]) ? $Banner['banner_clicks'] .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_clicks'];
+                $arrBannersStat['banner_active'  ]     = $Banner['banner_published'];
+                $arrBannersStat['banner_zero'    ]     = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_text'];
+                $arrBannersStat['banner_confirm' ]     = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_confirm'];
+                $arrBannersStat['banner_pic'     ]     = true; // Es ist ein Bild
+                $arrBannersStat['banner_flash'   ]     = false;
+                $arrBannersStat['banner_text'    ]     = false;
+                break;
+            case 4:  // Flash swf
+            case 13: // Flash swc
+                $Banner['banner_image'] = $Banner['banner_image_extern']; // Banner URL
+            
+                $arrBannersStat['banner_id'      ]     = $Banner['id'];
+                $arrBannersStat['banner_style'   ]     = '';
+                $arrBannersStat['banner_name'    ]     = specialchars(ampersand($Banner['banner_name']));
+                $arrBannersStat['banner_url'     ]     = (strlen($Banner['banner_url']) <61 ? $Banner['banner_url'] : substr($Banner['banner_url'], 0, 28)."[...]".substr($Banner['banner_url'],-24,24) );
+                $arrBannersStat['swf_src'        ]     = $Banner['banner_image'];
+                $arrBannersStat['swf_width'      ]     = $intWidth;
+                $arrBannersStat['swf_height'     ]     = $intHeight;
+                $arrBannersStat['banner_prio'    ]     = $Banner['banner_weighting'];
+                $arrBannersStat['banner_views'   ]     = ($MaxViewsClicks[0]) ? $Banner['banner_views']  .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_views'];
+                $arrBannersStat['banner_clicks'  ]     = ($MaxViewsClicks[1]) ? $Banner['banner_clicks'] .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_clicks'];
+                $arrBannersStat['banner_active'  ]     = $Banner['banner_published'];
+                $arrBannersStat['banner_zero'    ]     = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_text'];
+                $arrBannersStat['banner_confirm' ]     = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_confirm'];
+                $arrBannersStat['banner_pic'     ]     = false;
+                $arrBannersStat['banner_flash'   ]     = true;  // Es ist ein SWF
+                $arrBannersStat['banner_text'    ]     = false;
+                break;
+            default:
+                $Banner['banner_image'] = $Banner['banner_image_extern']; // Banner URL
+                
+                $arrBannersStat['banner_pic'     ]     = true; 
+                $arrBannersStat['banner_flash'   ]     = false;
+                $arrBannersStat['banner_text'    ]     = false;
+                $arrBannersStat['banner_style'   ]     = 'color:red;font-weight:bold;';
+                $arrBannersStat['banner_alt'     ]     = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['read_error'];
+                $arrBannersStat['banner_url'     ]     = $Banner['banner_image'];
+                break;
+        } // switch
+        return $arrBannersStat;
+    } // addBannerExtern
 } // class
