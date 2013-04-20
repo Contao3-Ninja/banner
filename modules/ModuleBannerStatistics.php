@@ -50,14 +50,14 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
          
         if ( (int)\Input::get('id') == 0)
         {
-            $this->intCatID = (int)\Input::post('id'); //banner reset, category reset
+            $this->intCatID = (int)\Input::post('id'); //id for redirect on banner reset, category reset
         }
         else
         {
             $this->intCatID = (int)\Input::get('id'); //directly category link
         }
          
-        if (\Input::post('act',true)=='zero') //banner reset, category reset
+        if (\Input::post('act',true)=='zero') //action banner reset, category reset
         {
             $this->setZero();
         }
@@ -145,7 +145,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
             $banner_url_kurz .= ':'.$treffer['port'];
         }
         $MaxViewsClicks = $this->getMaxViewsClicksStatus($Banner);
-        $this->setBannerPublished($Banner);
+        $this->setBannerPublishedActive($Banner);
         
         $arrBannersStat['banner_id'       ]    = $Banner['id'];
         $arrBannersStat['banner_name'     ]    = specialchars(ampersand($Banner['banner_name']));
@@ -155,7 +155,8 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         $arrBannersStat['banner_prio'     ]    = $Banner['banner_weighting'];
         $arrBannersStat['banner_views'    ]    = ($MaxViewsClicks[0]) ? $Banner['banner_views']  .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_views'];
         $arrBannersStat['banner_clicks'   ]    = ($MaxViewsClicks[1]) ? $Banner['banner_clicks'] .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_clicks'];
-        $arrBannersStat['banner_active'   ]    = $Banner['banner_published'];
+        $arrBannersStat['banner_active'   ]    = $Banner['banner_active'];
+        $arrBannersStat['banner_pub_class']    = $Banner['banner_published_class'];
         $arrBannersStat['banner_zero'     ]    = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_text'];
         $arrBannersStat['banner_confirm'  ]    = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_confirm'];
         $arrBannersStat['banner_pic'      ]    = false; // Es ist kein Bild
@@ -180,7 +181,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         $MaxViewsClicks = $this->getMaxViewsClicksStatus($Banner);
 
         // set $Banner['banner_published'] as HTML Text
-        $this->setBannerPublished($Banner);
+        $this->setBannerPublishedActive($Banner);
         $Banner['banner_url'] = html_entity_decode($Banner['banner_url'], ENT_NOQUOTES, 'UTF-8');
         
         //Pfad+Dateiname holen ueber ID
@@ -223,55 +224,57 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
                 {
                     $Banner['banner_image'] = \Image::get($this->urlEncode($objFile->path), $intWidth, $intHeight,'proportional');
                 }
-                $arrBannersStat['banner_id'      ]     = $Banner['id'];
-                $arrBannersStat['banner_style'   ]     = '';
-                $arrBannersStat['banner_name'    ]     = specialchars(ampersand($Banner['banner_name']));
-                $arrBannersStat['banner_alt'     ]     = specialchars(ampersand($Banner['banner_name']));
-                $arrBannersStat['banner_title'   ]     = $Banner['banner_url'];
-                $arrBannersStat['banner_url'     ]     = (strlen($Banner['banner_url']) <61 ? $Banner['banner_url'] : substr($Banner['banner_url'], 0, 28)."[...]".substr($Banner['banner_url'],-24,24) );
-                $arrBannersStat['banner_image'   ]     = $Banner['banner_image'];
-                $arrBannersStat['banner_width'   ]     = $intWidth;
-                $arrBannersStat['banner_height'  ]     = $intHeight;
-                $arrBannersStat['banner_prio'    ]     = $Banner['banner_weighting'];
-                $arrBannersStat['banner_views'   ]     = ($MaxViewsClicks[0]) ? $Banner['banner_views']  .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_views'];
-                $arrBannersStat['banner_clicks'  ]     = ($MaxViewsClicks[1]) ? $Banner['banner_clicks'] .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_clicks'];
-                $arrBannersStat['banner_active'  ]     = $Banner['banner_published'];
-                $arrBannersStat['banner_zero'    ]     = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_text'];
-                $arrBannersStat['banner_confirm' ]     = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_confirm'];
-                $arrBannersStat['banner_pic'     ]     = true; // Es ist ein Bild
-                $arrBannersStat['banner_flash'   ]     = false;
-                $arrBannersStat['banner_text'    ]     = false;
+                $arrBannersStat['banner_id'       ]   = $Banner['id'];
+                $arrBannersStat['banner_style'    ]   = '';
+                $arrBannersStat['banner_name'     ]   = specialchars(ampersand($Banner['banner_name']));
+                $arrBannersStat['banner_alt'      ]   = specialchars(ampersand($Banner['banner_name']));
+                $arrBannersStat['banner_title'    ]   = $Banner['banner_url'];
+                $arrBannersStat['banner_url'      ]   = (strlen($Banner['banner_url']) <61 ? $Banner['banner_url'] : substr($Banner['banner_url'], 0, 28)."[...]".substr($Banner['banner_url'],-24,24) );
+                $arrBannersStat['banner_image'    ]   = $Banner['banner_image'];
+                $arrBannersStat['banner_width'    ]   = $intWidth;
+                $arrBannersStat['banner_height'   ]   = $intHeight;
+                $arrBannersStat['banner_prio'     ]   = $Banner['banner_weighting'];
+                $arrBannersStat['banner_views'    ]   = ($MaxViewsClicks[0]) ? $Banner['banner_views']  .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_views'];
+                $arrBannersStat['banner_clicks'   ]   = ($MaxViewsClicks[1]) ? $Banner['banner_clicks'] .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_clicks'];
+                $arrBannersStat['banner_active'   ]   = $Banner['banner_active'];
+                $arrBannersStat['banner_pub_class']   = $Banner['banner_published_class'];
+                $arrBannersStat['banner_zero'     ]   = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_text'];
+                $arrBannersStat['banner_confirm'  ]   = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_confirm'];
+                $arrBannersStat['banner_pic'      ]   = true; // Es ist ein Bild
+                $arrBannersStat['banner_flash'    ]   = false;
+                $arrBannersStat['banner_text'     ]   = false;
                 break;
             case 4:  // Flash swf
             case 13: // Flash swc
                 $Banner['banner_image'] = $this->urlEncode($objFile->path);
                 
-                $arrBannersStat['banner_id'      ]     = $Banner['id'];
-                $arrBannersStat['banner_style'   ]     = '';
-                $arrBannersStat['banner_name'    ]     = specialchars(ampersand($Banner['banner_name']));
-                $arrBannersStat['banner_url'     ]     = (strlen($Banner['banner_url']) <61 ? $Banner['banner_url'] : substr($Banner['banner_url'], 0, 28)."[...]".substr($Banner['banner_url'],-24,24) );
-                $arrBannersStat['swf_src'        ]     = $Banner['banner_image'];
-                $arrBannersStat['swf_width'      ]     = $intWidth;
-                $arrBannersStat['swf_height'     ]     = $intHeight;
-                $arrBannersStat['banner_prio'    ]     = $Banner['banner_weighting'];
-                $arrBannersStat['banner_views'   ]     = ($MaxViewsClicks[0]) ? $Banner['banner_views']  .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_views'];
-                $arrBannersStat['banner_clicks'  ]     = ($MaxViewsClicks[1]) ? $Banner['banner_clicks'] .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_clicks'];
-                $arrBannersStat['banner_active'  ]     = $Banner['banner_published'];
-                $arrBannersStat['banner_zero'    ]     = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_text'];
-                $arrBannersStat['banner_confirm' ]     = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_confirm'];
-                $arrBannersStat['banner_pic'     ]     = false;
-                $arrBannersStat['banner_flash'   ]     = true;  // Es ist ein SWF
-                $arrBannersStat['banner_text'    ]     = false;
+                $arrBannersStat['banner_id'       ]   = $Banner['id'];
+                $arrBannersStat['banner_style'    ]   = '';
+                $arrBannersStat['banner_name'     ]   = specialchars(ampersand($Banner['banner_name']));
+                $arrBannersStat['banner_url'      ]   = (strlen($Banner['banner_url']) <61 ? $Banner['banner_url'] : substr($Banner['banner_url'], 0, 28)."[...]".substr($Banner['banner_url'],-24,24) );
+                $arrBannersStat['swf_src'         ]   = $Banner['banner_image'];
+                $arrBannersStat['swf_width'       ]   = $intWidth;
+                $arrBannersStat['swf_height'      ]   = $intHeight;
+                $arrBannersStat['banner_prio'     ]   = $Banner['banner_weighting'];
+                $arrBannersStat['banner_views'    ]   = ($MaxViewsClicks[0]) ? $Banner['banner_views']  .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_views'];
+                $arrBannersStat['banner_clicks'   ]   = ($MaxViewsClicks[1]) ? $Banner['banner_clicks'] .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_clicks'];
+                $arrBannersStat['banner_active'   ]   = $Banner['banner_active'];
+                $arrBannersStat['banner_pub_class']   = $Banner['banner_published_class'];
+                $arrBannersStat['banner_zero'     ]   = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_text'];
+                $arrBannersStat['banner_confirm'  ]   = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_confirm'];
+                $arrBannersStat['banner_pic'      ]   = false;
+                $arrBannersStat['banner_flash'    ]   = true;  // Es ist ein SWF
+                $arrBannersStat['banner_text'     ]   = false;
                 break;
             default:
                 $Banner['banner_image'] = $this->urlEncode($objFile->path);
                 
-                $arrBannersStat['banner_pic'     ]     = true; 
-                $arrBannersStat['banner_flash'   ]     = false;
-                $arrBannersStat['banner_text'    ]     = false;
-                $arrBannersStat['banner_style'   ]     = 'color:red;font-weight:bold;';
-                $arrBannersStat['banner_alt'     ]     = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['read_error'];
-                $arrBannersStat['banner_url'     ]     = $Banner['banner_image'];
+                $arrBannersStat['banner_pic'     ]    = true; 
+                $arrBannersStat['banner_flash'   ]    = false;
+                $arrBannersStat['banner_text'    ]    = false;
+                $arrBannersStat['banner_style'   ]    = 'color:red;font-weight:bold;';
+                $arrBannersStat['banner_alt'     ]    = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['read_error'];
+                $arrBannersStat['banner_url'     ]    = $Banner['banner_image'];
                 break;
         } // switch
         return $arrBannersStat;
@@ -287,7 +290,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         $MaxViewsClicks = $this->getMaxViewsClicksStatus($Banner);
         
         // set $Banner['banner_published'] as HTML Text
-        $this->setBannerPublished($Banner);
+        $this->setBannerPublishedActive($Banner);
         $Banner['banner_url']   = html_entity_decode($Banner['banner_url'], ENT_NOQUOTES, 'UTF-8');
         //$Banner['banner_image'] = $Banner['banner_image_extern'];
         
@@ -335,7 +338,8 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
                 $arrBannersStat['banner_prio'    ]     = $Banner['banner_weighting'];
                 $arrBannersStat['banner_views'   ]     = ($MaxViewsClicks[0]) ? $Banner['banner_views']  .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_views'];
                 $arrBannersStat['banner_clicks'  ]     = ($MaxViewsClicks[1]) ? $Banner['banner_clicks'] .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_clicks'];
-                $arrBannersStat['banner_active'  ]     = $Banner['banner_published'];
+                $arrBannersStat['banner_active'  ]     = $Banner['banner_active'];
+                $arrBannersStat['banner_pub_class']   = $Banner['banner_published_class'];
                 $arrBannersStat['banner_zero'    ]     = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_text'];
                 $arrBannersStat['banner_confirm' ]     = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_confirm'];
                 $arrBannersStat['banner_pic'     ]     = true; // Es ist ein Bild
@@ -356,7 +360,8 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
                 $arrBannersStat['banner_prio'    ]     = $Banner['banner_weighting'];
                 $arrBannersStat['banner_views'   ]     = ($MaxViewsClicks[0]) ? $Banner['banner_views']  .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_views'];
                 $arrBannersStat['banner_clicks'  ]     = ($MaxViewsClicks[1]) ? $Banner['banner_clicks'] .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $Banner['banner_clicks'];
-                $arrBannersStat['banner_active'  ]     = $Banner['banner_published'];
+                $arrBannersStat['banner_active'  ]     = $Banner['banner_active'];
+                $arrBannersStat['banner_pub_class']   = $Banner['banner_published_class'];
                 $arrBannersStat['banner_zero'    ]     = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_text'];
                 $arrBannersStat['banner_confirm' ]     = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_confirm'];
                 $arrBannersStat['banner_pic'     ]     = false;
@@ -376,4 +381,6 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         } // switch
         return $arrBannersStat;
     } // addBannerExtern
+    
+    
 } // class

@@ -316,14 +316,15 @@ class BannerStatisticsHelper extends \BackendModule
      *
      * @param referenz    $Banner
      */
-    protected function setBannerPublished( &$Banner )
+    protected function setBannerPublishedActive( &$Banner )
     {
         if ( ($Banner['banner_published'] == 1) 
            &&  ($Banner['banner_start'] == '' || $Banner['banner_start'] <= time() ) 
            &&  ($Banner['banner_stop']  == '' || $Banner['banner_stop']   > time() )
            )
         {
-            $Banner['banner_published'] = '<span class="banner_stat_yes">'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['pub_yes'].'</span>';
+            $Banner['banner_active'] = '<span class="banner_stat_yes">'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['pub_yes'].'</span>';
+            $Banner['banner_published_class'] = 'published';
             
             if ($Banner['banner_until'] == 1 
              && $Banner['banner_views_until'] != '' 
@@ -331,7 +332,8 @@ class BannerStatisticsHelper extends \BackendModule
                )
             {
                 //max views erreicht
-                $Banner['banner_published'] = '<span class="banner_stat_no">'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['pub_no'].'</span>';
+                $Banner['banner_active'] = '<span class="banner_stat_no">'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['pub_no'].'</span>';
+                $Banner['banner_published_class'] = 'unpublished';
             }
             
             if ($Banner['banner_until'] == 1 
@@ -340,12 +342,14 @@ class BannerStatisticsHelper extends \BackendModule
                )
             {
                 //max clicks erreicht
-                $Banner['banner_published'] = '<span class="banner_stat_no">'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['pub_no'].'</span>';
+                $Banner['banner_active'] = '<span class="banner_stat_no">'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['pub_no'].'</span>';
+                $Banner['banner_published_class'] = 'unpublished';
             }
         }
         else
         {
-            $Banner['banner_published'] = '<span class="banner_stat_no">'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['pub_no'].'</span>';
+            $Banner['banner_active'] = '<span class="banner_stat_no">'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['pub_no'].'</span>';
+            $Banner['banner_published_class'] = 'unpublished';
         }
     }
     
@@ -380,5 +384,46 @@ class BannerStatisticsHelper extends \BackendModule
         
         return array($intMaxViews,$intMaxClicks);
     }
+    
+    /**
+     * Statistic, set on zero
+     */
+    protected function setZero()
+    {
+        //Banner
+        $intBID = (int)\Input::post('zid',true) ;
+        if ($intBID>0)
+        {
+            \Database::getInstance()->prepare("UPDATE
+                                                    tl_banner_stat
+                                               SET
+                                                    tstamp=?
+                                                  , banner_views=0
+                                                  , banner_clicks=0
+                                               WHERE
+                                                    id=?")
+                                    ->execute( time() , $intBID );
+            return ;
+        }
+        //Category
+        $intCatBID = (int)\Input::post('catzid',true) ;
+        if ($intCatBID>0)
+        {
+            \Database::getInstance()->prepare("UPDATE
+                                                    tl_banner_stat
+                                               INNER JOIN
+                                                    tl_banner
+                                               USING ( id )
+                                               SET
+                                                    tl_banner_stat.tstamp=?
+                                                  , banner_views=0
+                                                  , banner_clicks=0
+                                               WHERE
+                                                    pid=?")
+                                    ->execute( time() , $intCatBID );
+        }
+        return ;
+    }
+    
     
 } // class
