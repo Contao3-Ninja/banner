@@ -167,7 +167,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 		                'tstamp' => time(),
 		                'banner_clicks' => 1
 		            );
-				    \Database::getInstance()->prepare("INSERT INTO tl_banner_stat %s")
+				    \Database::getInstance()->prepare("INSERT IGNORE INTO tl_banner_stat %s")
                                             ->set($arrSet)
                                             ->execute();
     			}
@@ -217,7 +217,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
             $banner_redirect = '303';
         }
         /**
-         * TL codiert = und # (ev. auch mehr) um in &#61; / &#35;
+         * Contao codiert = und # (ev. auch mehr) um in &#61; / &#35;
          * Links mit Parametern werden so ungueltig.
          * Daher wieder decodieren.
          */
@@ -225,8 +225,9 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 		//header('HTTP/1.1 301 Moved Permanently');
 		//header('HTTP/1.1 302 Found');
 		//header('HTTP/1.1 303 See Other');
+		//                 307 Temporary Redirect (ab Contao 3.1)
 		//header('Location: ' . str_replace('&amp;', '&', $banner_url));
-		$this->redirect($banner_url, $banner_redirect); // TL hat 301-303
+		$this->redirect($banner_url, $banner_redirect); 
 	}
 
 	/**
@@ -237,31 +238,32 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 	 */
 	protected function getRedirectType($BID)
 	{
-		// aus BID die KatID
-		// über KatID in tl_module.banner_categories die tl_module.banner_redirect
-		// schleife über alle zeilen, falls mehrere
-		$objKat = \Database::getInstance()->prepare("SELECT 
-                                                        pid as KatID 
+		// aus BID die CatID
+		// über CatID in tl_module.banner_categories die tl_module.banner_redirect
+		// Schleife über alle zeilen, falls mehrere
+		$objCat = \Database::getInstance()->prepare("SELECT 
+                                                        pid as CatID 
                                                      FROM 
                                                         `tl_banner` 
                                                      WHERE 
                                                         id=?")
                                           ->execute($BID);
 		
-	    if (0 == $objKat->numRows) 
+	    if (0 == $objCat->numRows) 
 	    {
 	    	return '301'; // error, but the show must go on
 	    }
-	    $objKat->next();
+	    $objCat->next();
 	    $objBRT = \Database::getInstance()->prepare("SELECT 
                                                         `banner_categories`
                                                        ,`banner_redirect` 
                                                      FROM 
                                                         `tl_module` 
                                                      WHERE 
-                                                        type=?")
-                                          ->execute('Banner');
-	    
+                                                        type=?
+                                                     AND 
+                                                        banner_categories=?")
+                                          ->execute('banner', $objCat->CatID);
 		if (0 == $objBRT->numRows) 
 		{
 	    	return '301'; // error, but the show must go on
@@ -269,11 +271,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 	    $arrBRT = array();
 	    while ($objBRT->next()) 
 	    {
-	        //int dient als Schutz vor nicht durchgefuehrten Migrationen
-	    	if ( $objKat->KatID == (int)$objBRT->banner_categories ) 
-	    	{ 
-	    		$arrBRT[] = ($objBRT->banner_redirect == 'temporary') ? '302' : '301';
-	    	}
+    		$arrBRT[] = ($objBRT->banner_redirect == 'temporary') ? '302' : '301';
 	    }
 	    if (count($arrBRT) == 1) 
 	    {
@@ -281,9 +279,10 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 	    } 
 	    else 
 	    {
+	        // mindestens 2 FE Module mit derselben Kategorie, zaehlen
 	    	$anz301=$anz302=0;
 			foreach ($arrBRT as $type) 
-			{	// mindestens 2 mal importiert, zaehlen
+			{	
 				if ($type=='301') 
 				{
 					$anz301++;

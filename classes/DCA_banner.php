@@ -105,7 +105,7 @@ class DCA_banner extends \Backend
             case 1: // GIF
             case 2: // JPG
             case 3: // PNG
-                $arrImageSizeNew = $this->BannerImage->getCheckBannerImageSize($arrImageSize,250,40);
+                $arrImageSizeNew = $this->BannerImage->getCheckBannerImageSize($arrImageSize,250,200);
                 $intWidth  = $arrImageSizeNew[0];
                 $intHeight = $arrImageSizeNew[1];
                 $oriSize   = $arrImageSizeNew[2];
@@ -120,7 +120,7 @@ class DCA_banner extends \Backend
                 break;
             case 4:  // Flash swf
             case 13: // Flash swc
-                $arrImageSizeNew = $this->BannerImage->getCheckBannerImageSize($arrImageSize,250,40);
+                $arrImageSizeNew = $this->BannerImage->getCheckBannerImageSize($arrImageSize,250,200);
                 $intWidth  = $arrImageSizeNew[0];
                 $intHeight = $arrImageSizeNew[1];
                 $oriSize   = $arrImageSizeNew[2];
@@ -283,14 +283,14 @@ class DCA_banner extends \Backend
             case 1: // GIF
             case 2: // JPG
             case 3: // PNG
-                $arrImageSizeNew = $this->BannerImage->getCheckBannerImageSize($arrImageSize,250,40);
+                $arrImageSizeNew = $this->BannerImage->getCheckBannerImageSize($arrImageSize,250,200);
                 $intWidth  = $arrImageSizeNew[0];
                 $intHeight = $arrImageSizeNew[1];
                 $oriSize   = $arrImageSizeNew[2];
                 break;
             case 4:  // Flash swf
             case 13: // Flash swc
-                $arrImageSizeNew = $this->BannerImage->getCheckBannerImageSize($arrImageSize,250,40);
+                $arrImageSizeNew = $this->BannerImage->getCheckBannerImageSize($arrImageSize,250,200);
                 $intWidth  = $arrImageSizeNew[0];
                 $intHeight = $arrImageSizeNew[1];
                 $oriSize   = $arrImageSizeNew[2];

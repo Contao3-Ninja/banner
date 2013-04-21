@@ -98,6 +98,14 @@ class BannerHelper extends \Module
 	 */
 	protected $strFormat = 'xhtml';
 	
+	/**
+	 * Session
+	 *
+	 * @var string
+	 * @access private
+	 */
+	private $_session   = array();
+	
 	
 	/**
 	 * parent call of generate()
@@ -148,9 +156,6 @@ class BannerHelper extends \Module
 		{
 			$this->statusAllBannersBasic = false;
 		}
-		//TODO wenn das false ist, dann default banner falls gewollt
-		//sonst weiter im Programm
-		
 		
 		global $objPage;
 		if ($objPage->outputFormat == 'html5')
@@ -476,9 +481,9 @@ class BannerHelper extends \Module
 	{
 	    if ($BannerID==0) { return; }// kein Banner, nichts zu tun
 
-	    $ClientIP = bin2hex(sha1($this->banner_categories . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
+	    //$ClientIP = bin2hex(sha1($this->banner_categories . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
 	    //log_message('setRandomBlockerId BannerID:'.$BannerID,'Banner.log');
-	    
+	    /*
 	    // Eigene IP oder aeltere Eintraege loeschen
 	    \Database::getInstance()->prepare("DELETE FROM 
                                                 tl_banner_random_blocker 
@@ -496,7 +501,9 @@ class BannerHelper extends \Module
 	    \Database::getInstance()->prepare("INSERT INTO tl_banner_random_blocker %s")
                                 ->set($arrSet)
                                 ->execute();
+        */
 	    $this->statusRandomBlocker = true;
+	    $this->setSession('RandomBlocker', array($BannerID => array( time() )) );
 	    return ;
 	}
 	
@@ -506,7 +513,8 @@ class BannerHelper extends \Module
 	 */
 	protected function getRandomBlockerId()
 	{
-	    $ClientIP = bin2hex(sha1($this->banner_categories . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
+	    //$ClientIP = bin2hex(sha1($this->banner_categories . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
+	    /*
 	    $objBanners = \Database::getInstance()->prepare("SELECT 
                                                             * 
                                                          FROM 
@@ -524,6 +532,16 @@ class BannerHelper extends \Module
 	    {
 	        return $objBanners->bid;
 	    }
+	    */
+	    $this->getSession('RandomBlocker');
+	    if ( count($this->_session) )
+	    {
+	        list($key, $val) = each($this->_session);
+	        reset($this->_session);
+	        //log_message('getRandomBlockerId BannerID:'.$key,'Banner.log');
+	        return $key;
+	    }
+	    return 0;
 	}
 	
 	/**
@@ -641,7 +659,7 @@ class BannerHelper extends \Module
                     $arrImageSizenNew = $this->BannerImage->getBannerImageSizeNew($arrImageSize[0],$arrImageSize[1],$arrNewSizeValues[0],$arrNewSizeValues[1]);
                     
                     //wenn oriSize = true, oder bei GIF/SWF/SWC = original Pfad nehmen
-                    if ($arrImageSizenNew[2] === true 
+                    if ($arrImageSizenNew[2] === true //oriSize
                          || $arrImageSize[2] == 1  // GIF
                          || $arrImageSize[2] == 4  // SWF
                          || $arrImageSize[2] == 13 // SWC
@@ -1212,7 +1230,14 @@ class BannerHelper extends \Module
 	    reset($this->arrAllBannersBasic); //sicher ist sicher
 	     
 	    //RandomBlocker entfernen falls möglich und nötig
-	    if ( count($this->arrAllBannersBasic) >1 ) // einer muss ja übrig bleiben
+	    
+             // einer muss mindestens übrig bleiben
+	    if ( count($this->arrAllBannersBasic) >1                
+	         // bei Alle Banner anzeigen (0) nichts entfernen
+	         && $this->arrCategoryValues['banner_limit'] >0  
+	         // nur wenn mehr Banner übrig als per limit festgelegt
+	         && ( count($this->arrAllBannersBasic) > $this->arrCategoryValues['banner_limit'] )
+  	       )
 	    {
 	        $intRandomBlockerID = $this->getRandomBlockerId();
 	        if (isset($this->arrAllBannersBasic[$intRandomBlockerID]))
@@ -1448,7 +1473,7 @@ class BannerHelper extends \Module
 	                }//switch
 	                $arrResults[] = $arrBanners[0];
 	                
-	                $this->arrBannerData = $arrBanners[0]; //wird von setStatViewUpdate genutzt
+	                $this->arrBannerData = $arrBanners; //wird von setStatViewUpdate genutzt
 	                $this->setStatViewUpdate();
 	                //$this->Template->banners = $arrBanners;
 	                //return true;
@@ -1505,7 +1530,7 @@ class BannerHelper extends \Module
 	                $arrResults[] = $arrBanners[0];
 	                //$this->Template->banners = $arrResults;
 	            
-	                $this->arrBannerData = $arrBanners[0]; //wird von setStatViewUpdate genutzt
+	                $this->arrBannerData = $arrBanners; //wird von setStatViewUpdate genutzt
 	                $this->setStatViewUpdate();
 	                
 	            }//text banner
@@ -1617,18 +1642,18 @@ class BannerHelper extends \Module
                                                          AND 
                                                             type=?")
                                             ->limit(1)
-                                            ->execute( $BannerID, $BannerBlockTime, $ClientIP, 'v' );
+                                            ->executeUncached( $BannerID, $BannerBlockTime, $ClientIP, 'v' );
 	    if (0 == $objBanners->numRows)
 	    {
 	        // noch kein Eintrag bzw. ausserhalb Blockzeit
 	        $arrSet = array
 	        (
-	                'bid'    => $BannerID,
-	                'tstamp' => time(),
-	                'ip'     => $ClientIP,
-	                'type'   => 'v'
+                'bid'    => $BannerID,
+                'tstamp' => time(),
+                'ip'     => $ClientIP,
+                'type'   => 'v'
 	        );
-	        \Database::getInstance()->prepare("INSERT INTO tl_banner_stat_blocker %s")
+	        \Database::getInstance()->prepare("INSERT IGNORE INTO tl_banner_stat_blocker %s")
                                     ->set($arrSet)
                                     ->execute();
 	        // nicht blocken
@@ -1639,48 +1664,27 @@ class BannerHelper extends \Module
 	        return; // blocken, nicht zählen
 	    }
 	    
-	    //Zählung
-	    //TODO Optimierung durch INSERT IGNORE
-	    //alte Daten lesen
-	    $objBanners = \Database::getInstance()->prepare("SELECT 
-                                                            * 
-                                                         FROM 
-                                                            tl_banner_stat 
-                                                         WHERE 
-                                                            id=?")
-                                              ->limit(1)
-                                              ->execute($BannerID);
-	    $objBanners->fetchAssoc();
-	    if (0 == $objBanners->numRows)
+	    //Zählung, Insert
+	    $arrSet = array
+	    (
+            'id' => $BannerID,
+            'tstamp' => time(),
+            'banner_views' => 1
+	    );
+	    $objInsert = \Database::getInstance()->prepare("INSERT IGNORE INTO tl_banner_stat %s")
+                                             ->set($arrSet)
+                                             ->executeUncached();
+	    if ($objInsert->insertId == 0)
 	    {
-	        //insert
-	        $arrSet = array
-	        (
-	                'id'     => $BannerID,
-	                'tstamp' => time(),
-	                'banner_views' => 1
-	        );
-	        \Database::getInstance()->prepare("INSERT INTO tl_banner_stat %s")
-                                    ->set($arrSet)
-                                    ->execute();
-	    }
-	    else
-	    {
-	        //update
-	        $arrSet = array
-	        (
-	                'id'     => $BannerID,
-	                'tstamp' => time(),
-	                'banner_views' => $objBanners->banner_views + 1
-	        );
+	        //Zählung, Update
 	        \Database::getInstance()->prepare("UPDATE 
-                                                    tl_banner_stat 
+                                                    `tl_banner_stat` 
                                                SET 
-                                                    tstamp=?
-                                                   ,banner_views=? 
+                                                    `tstamp`=?
+                                                  , `banner_views` = `banner_views`+1 
                                                WHERE 
-                                                    id=?")
-                                    ->execute($arrSet['tstamp'], $arrSet['banner_views'], $arrSet['id']);
+                                                    `id`=?")
+                                    ->executeUncached(time(), $BannerID);
 	    }
 	    
 	}//BannerStatViewUpdate()
@@ -1737,7 +1741,7 @@ class BannerHelper extends \Module
 	    $CheckUserAgent = str_replace($arrUserAgents, '#', $UserAgent);
 	    if ($UserAgent != $CheckUserAgent) 
 	    {   // es wurde ersetzt also was gefunden
-	        // log_message('CheckUserAgent Filterung; Treffer!','Banner.log');
+	        //log_message('CheckUserAgent Filterung; Treffer!','Banner.log');
 	        return true;
 	    }
 	    return false;
@@ -1748,7 +1752,39 @@ class BannerHelper extends \Module
 	    return ;
 	}
 	
+	/**
+	 * Get session 
+	 *
+	 * @param string   $session_name   e.g.: 'RandomBlocker'
+	 * @return void
+	 * @access protected
+	 */
+	protected function getSession( $session_name )
+	{
+	    $this->_session = (array)\Session::getInstance()->get( $session_name );
+	}
 	
+	/**
+	 * Set session
+	 * 
+	 * @param string   $session_name   e.g.: 'RandomBlocker' 
+	 * @param array    $arrData        array('key' => array(Value1,Value2,...))
+	 * @return void
+	 * @access protected 
+	 */
+	protected function setSession( $session_name, $arrData, $merge = false )
+	{
+	    if ($merge) 
+	    {
+	        \Session::getInstance()->get( $session_name );
+	        \Session::getInstance()->set( $session_name, array_merge($this->_session, $arrData) );
+	    }
+	    else 
+	    {
+	        \Session::getInstance()->set( $session_name, $arrData );
+	    }
+	    
+	}
 	
 } // class
 

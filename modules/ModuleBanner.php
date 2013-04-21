@@ -68,10 +68,9 @@ class ModuleBanner extends \BugBuster\Banner\BannerHelper
 	{
 		if ($this->BannerHelperInit() === false)
 		{
-			echo "Init false! ".$this; //TODO: kill
 			return ;
 		}
-		//echo $this; //TODO: kill
+
 		if ($this->statusBannerFrontendGroupView === false)
 		{
 			// Eingeloggter FE Nutzer darf nichts sehen, falsche Gruppe
@@ -108,7 +107,6 @@ class ModuleBanner extends \BugBuster\Banner\BannerHelper
 		        //default Banner holen
 		        //kein default Banner, ausblenden wenn leer?
 		        $this->getDefaultBanner();
-		        //echo "<h1>Default Banner</h1>".$this; //TODO: kill
 		        return ;
 		    }
 		}
@@ -120,24 +118,20 @@ class ModuleBanner extends \BugBuster\Banner\BannerHelper
 		    //FirstViewBanner?
 		    if ($this->getSetFirstView() === true) 
 		    {
-		        //echo "<h1>FirstView Banner</h1>"; //TODO: kill
 		        $this->getSingleBannerFirst();
-		        //echo $this; //TODO: kill
 		        return ;
 		    }
 		    else 
 		    {
     		    //single banner
 		        $this->getSingleBanner();
-		        //echo "<h1>Single Banner</h1>"; //TODO: kill
 		        return ;
 		    }
 		}
 		else
 		{
 		    //multi banner
-		    echo "<h1>Multi Banner</h1>"; //TODO: kill
-		    //$this->getMultiBanner();
+		    $this->getMultiBanner();
 		    return ;
 		}
 		

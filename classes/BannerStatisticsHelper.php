@@ -245,14 +245,14 @@ class BannerStatisticsHelper extends \BackendModule
                 $arrBannerCats[] = array
                 (
                     'id'    => '0',
-                    'title' => $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['select']
+                    'title' => $GLOBALS['TL_LANG']['tl_banner_stat']['select']
                 );
                 $this->intCatID = 0; // template soll nichts anzeigen
             }
             $arrBannerCats[] = array
             (
                 'id'    => '-1',
-                'title' => $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['allkat']
+                'title' => $GLOBALS['TL_LANG']['tl_banner_stat']['allkat']
             );
             while ($objBannerCat->next())
             {
@@ -303,7 +303,7 @@ class BannerStatisticsHelper extends \BackendModule
         }
         if ($Banner['banner_url'] == '')
         {
-            $Banner['banner_url'] = $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['NoURL'];
+            $Banner['banner_url'] = $GLOBALS['TL_LANG']['tl_banner_stat']['NoURL'];
             if ($Banner['banner_clicks'] == 0)
             {
                 $Banner['banner_clicks'] = '--';
@@ -323,7 +323,7 @@ class BannerStatisticsHelper extends \BackendModule
            &&  ($Banner['banner_stop']  == '' || $Banner['banner_stop']   > time() )
            )
         {
-            $Banner['banner_active'] = '<span class="banner_stat_yes">'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['pub_yes'].'</span>';
+            $Banner['banner_active'] = '<span class="banner_stat_yes">'.$GLOBALS['TL_LANG']['tl_banner_stat']['pub_yes'].'</span>';
             $Banner['banner_published_class'] = 'published';
             
             if ($Banner['banner_until'] == 1 
@@ -332,7 +332,7 @@ class BannerStatisticsHelper extends \BackendModule
                )
             {
                 //max views erreicht
-                $Banner['banner_active'] = '<span class="banner_stat_no">'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['pub_no'].'</span>';
+                $Banner['banner_active'] = '<span class="banner_stat_no">'.$GLOBALS['TL_LANG']['tl_banner_stat']['pub_no'].'</span>';
                 $Banner['banner_published_class'] = 'unpublished';
             }
             
@@ -342,13 +342,13 @@ class BannerStatisticsHelper extends \BackendModule
                )
             {
                 //max clicks erreicht
-                $Banner['banner_active'] = '<span class="banner_stat_no">'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['pub_no'].'</span>';
+                $Banner['banner_active'] = '<span class="banner_stat_no">'.$GLOBALS['TL_LANG']['tl_banner_stat']['pub_no'].'</span>';
                 $Banner['banner_published_class'] = 'unpublished';
             }
         }
         else
         {
-            $Banner['banner_active'] = '<span class="banner_stat_no">'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['pub_no'].'</span>';
+            $Banner['banner_active'] = '<span class="banner_stat_no">'.$GLOBALS['TL_LANG']['tl_banner_stat']['pub_no'].'</span>';
             $Banner['banner_published_class'] = 'unpublished';
         }
     }

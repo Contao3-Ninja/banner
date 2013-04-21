@@ -20,7 +20,7 @@
 /**
  * Load tl_page language definitions
  */
-$this->loadLanguageFile('tl_page');  //TODO: nötig?
+$this->loadLanguageFile('tl_page');  //wegen banner_redirect
 
 /**
  * Add a palette to tl_module

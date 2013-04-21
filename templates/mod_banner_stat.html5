@@ -142,17 +142,26 @@
                     <div class="published_data"><?php echo $bannerstat['banner_active']; ?></div>
                 </div>
                 <div class="left">
-                    <div class="date_head"><?php echo $this->header_prio; ?></div>
-                    <div class="date_data"><?php echo $bannerstat['banner_prio']; ?></div>
+                    <div class="date_head"><?php echo $this->header_views; ?></div>
+                    <div class="date_data_right"><?php echo $bannerstat['banner_views']; ?></div>
                 </div>
                 <div style="clear:both;"></div>
                 <div class="left">
-                    <div class="date_head"><?php echo $this->header_views; ?></div>
-                    <div class="date_data"><?php echo $bannerstat['banner_views']; ?></div>
+                    <div class="date_head"><?php echo $this->header_prio; ?></div>
+                    <div class="date_data"><?php echo $bannerstat['banner_prio']; ?></div>
                 </div>
                 <div class="left">
                     <div class="date_head"><?php echo $this->header_clicks; ?></div>
-                    <div class="date_data"><?php echo $bannerstat['banner_clicks']; ?></div>
+                    <div class="date_data_right"><?php echo $bannerstat['banner_clicks']; ?></div>
+                </div>
+                <div style="clear:both;"></div>
+                <div class="left">
+                    <div class="">&nbsp;</div>
+                    <div class="">&nbsp;</div>
+                </div>
+                <div class="left">
+                    <div class="">&nbsp;</div>
+                    <div class="">&nbsp;</div>
                 </div>
                 <div style="clear:both;"></div>
             </div>
@@ -209,17 +218,26 @@
                     <div class="published_data"><?php echo $bannerstat['banner_active']; ?></div>
                 </div>
                 <div class="left">
-                    <div class="date_head"><?php echo $this->header_prio; ?></div>
-                    <div class="date_data"><?php echo $bannerstat['banner_prio']; ?></div>
+                    <div class="date_head"><?php echo $this->header_views; ?></div>
+                    <div class="date_data_right"><?php echo $bannerstat['banner_views']; ?></div>
                 </div>
                 <div style="clear:both;"></div>
                 <div class="left">
-                    <div class="date_head"><?php echo $this->header_views; ?></div>
-                    <div class="date_data"><?php echo $bannerstat['banner_views']; ?></div>
+                    <div class="date_head"><?php echo $this->header_prio; ?></div>
+                    <div class="date_data"><?php echo $bannerstat['banner_prio']; ?></div>
                 </div>
                 <div class="left">
                     <div class="date_head"><?php echo $this->header_clicks; ?></div>
-                    <div class="date_data"><?php echo $bannerstat['banner_clicks']; ?></div>
+                    <div class="date_data_right"><?php echo $bannerstat['banner_clicks']; ?></div>
+                </div>
+                <div style="clear:both;"></div>
+                <div class="left">
+                    <div class="">&nbsp;</div>
+                    <div class="">&nbsp;</div>
+                </div>
+                <div class="left">
+                    <div class="">&nbsp;</div>
+                    <div class="">&nbsp;</div>
                 </div>
                 <div style="clear:both;"></div>
             </div>
@@ -264,17 +282,26 @@
                     <div class="published_data"><?php echo $bannerstat['banner_active']; ?></div>
                 </div>
                 <div class="left">
-                    <div class="date_head"><?php echo $this->header_prio; ?></div>
-                    <div class="date_data"><?php echo $bannerstat['banner_prio']; ?></div>
+                    <div class="date_head"><?php echo $this->header_views; ?></div>
+                    <div class="date_data_right"><?php echo $bannerstat['banner_views']; ?></div>
                 </div>
                 <div style="clear:both;"></div>
                 <div class="left">
-                    <div class="date_head"><?php echo $this->header_views; ?></div>
-                    <div class="date_data"><?php echo $bannerstat['banner_views']; ?></div>
+                    <div class="date_head"><?php echo $this->header_prio; ?></div>
+                    <div class="date_data"><?php echo $bannerstat['banner_prio']; ?></div>
                 </div>
                 <div class="left">
                     <div class="date_head"><?php echo $this->header_clicks; ?></div>
-                    <div class="date_data"><?php echo $bannerstat['banner_clicks']; ?></div>
+                    <div class="date_data_right"><?php echo $bannerstat['banner_clicks']; ?></div>
+                </div>
+                <div style="clear:both;"></div>
+                <div class="left">
+                    <div class="">&nbsp;</div>
+                    <div class="">&nbsp;</div>
+                </div>
+                <div class="left">
+                    <div class="">&nbsp;</div>
+                    <div class="">&nbsp;</div>
                 </div>
                 <div style="clear:both;"></div>
             </div>
