@@ -480,28 +480,7 @@ class BannerHelper extends \Module
 	protected function setRandomBlockerId($BannerID=0)
 	{
 	    if ($BannerID==0) { return; }// kein Banner, nichts zu tun
-
-	    //$ClientIP = bin2hex(sha1($this->banner_categories . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
-	    //log_message('setRandomBlockerId BannerID:'.$BannerID,'Banner.log');
-	    /*
-	    // Eigene IP oder aeltere Eintraege loeschen
-	    \Database::getInstance()->prepare("DELETE FROM 
-                                                tl_banner_random_blocker 
-                                           WHERE 
-                                                ip=? 
-                                           OR 
-                                                tstamp <?")
-                                ->execute($ClientIP, time() -(24*60*60));
-	    $arrSet = array
-	    (
-	            'bid'    => $BannerID,
-	            'tstamp' => time(),
-	            'ip'     => $ClientIP,
-	    );
-	    \Database::getInstance()->prepare("INSERT INTO tl_banner_random_blocker %s")
-                                ->set($arrSet)
-                                ->execute();
-        */
+	    
 	    $this->statusRandomBlocker = true;
 	    $this->setSession('RandomBlocker', array($BannerID => array( time() )) );
 	    return ;
@@ -513,26 +492,6 @@ class BannerHelper extends \Module
 	 */
 	protected function getRandomBlockerId()
 	{
-	    //$ClientIP = bin2hex(sha1($this->banner_categories . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
-	    /*
-	    $objBanners = \Database::getInstance()->prepare("SELECT 
-                                                            * 
-                                                         FROM 
-                                                            tl_banner_random_blocker 
-                                                         WHERE 
-                                                            ip=?")
-                                              ->limit(1)
-                                              ->execute($ClientIP);
-	    $objBanners->fetchAssoc();
-	    if (0 == $objBanners->numRows)
-	    {
-	        return 0;
-	    }
-	    else
-	    {
-	        return $objBanners->bid;
-	    }
-	    */
 	    $this->getSession('RandomBlocker');
 	    if ( count($this->_session) )
 	    {
