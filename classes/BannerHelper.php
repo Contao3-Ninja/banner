@@ -513,9 +513,12 @@ class BannerHelper extends \Module
 	    //return true; // for Test only
 	    //FirstViewBanner gewünscht?
 	    if ($this->banner_firstview !=1) { return false; }
-	    
-	    $ClientIP = bin2hex(sha1($this->banner_categories . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen	    
-	    $BannerFirstViewBlockTime = time() - 60*10; // 10 Minuten, Einträge >= 10 Minuten werden gelöscht
+
+	    // sha1 20 Zeichen, bin2hex 40 zeichen
+	    $ClientIP = bin2hex(sha1($this->banner_categories . \Environment::get('remoteAddr'),true));
+
+	    // 5 Minuten, Einträge >= 5 Minuten werden gelöscht
+	    $BannerFirstViewBlockTime = time() - 60*5; 
 
 	    $this->import('\Banner\BannerReferrer','BannerReferrer');
 	    $this->BannerReferrer->checkReferrer();
@@ -1570,14 +1573,14 @@ class BannerHelper extends \Module
 	    { // kein Banner, nichts zu tun
 	        return;
 	    }
-	    $BannerBlockTime = time() - 60*10;   // 10 Minuten, 0-10 min wird geblockt
-	    $BannerCleanTime = time() - 60*10*3; // 30 Minuten, Einträge >= 30 Minuten werden gelöscht
+	    $BannerBlockTime = time() - 60*5;  // 5 Minuten, 0-5 min wird geblockt
+	    $BannerCleanTime = time() - 60*10; // 10 Minuten, Einträge >= 10 Minuten werden gelöscht
 	    if ( isset($GLOBALS['TL_CONFIG']['mod_banner_block_time'] ) 
 	     && intval($GLOBALS['TL_CONFIG']['mod_banner_block_time'])>0
 	       )
 	    {
-	        $BannerBlockTime = time() - 60*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
-	        $BannerCleanTime = time() - 60*3*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
+	        $BannerBlockTime = time() - 60*1*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
+	        $BannerCleanTime = time() - 60*2*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
 	    }
 	    
 	    \Database::getInstance()->prepare("DELETE FROM 

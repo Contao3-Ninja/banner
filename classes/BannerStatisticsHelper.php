@@ -141,7 +141,7 @@ class BannerStatisticsHelper extends \BackendModule
                                             tb.id=tbs.id
                                        ORDER BY 
                                             tb.pid
-                                          , tb.banner_name")
+                                          , tb.sorting")
                             ->execute();
         }
         else
