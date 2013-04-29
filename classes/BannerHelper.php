@@ -1328,13 +1328,17 @@ class BannerHelper extends \Module
 	                // Banner Seite als Ziel?
 	                if ($objBanners->banner_jumpTo > 0)
 	                {
+	                    $objBanners->banner_url = ''; //default
 	                    $domain = \Environment::get('base');
 	                    $objParent = $this->getPageDetails($objBanners->banner_jumpTo);
-	                    if ($objParent->domain != '')
+	                    if ($objParent != null) 
 	                    {
-	                        $domain = (\Environment::get('ssl') ? 'https://' : 'http://') . $objParent->domain . TL_PATH . '/';
+    	                    if ($objParent->domain != '')
+    	                    {
+    	                        $domain = (\Environment::get('ssl') ? 'https://' : 'http://') . $objParent->domain . TL_PATH . '/';
+    	                    }
+    	                    $objBanners->banner_url = $domain . $this->generateFrontendUrl($objParent->row(), '', $objParent->language);
 	                    }
-	                    $objBanners->banner_url = $domain . $this->generateFrontendUrl($objParent->row(), '', $objParent->language);
 	                }
 	                
 	                //$arrImageSize[0]  eigene Breite

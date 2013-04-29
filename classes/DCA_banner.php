@@ -150,13 +150,17 @@ class DCA_banner extends \Backend
             }
         }
         $banner_url = html_entity_decode($row['banner_url'], ENT_NOQUOTES, 'UTF-8');
-        if (strlen($banner_url)>0)
+        $banner_url_text = $GLOBALS['TL_LANG']['tl_banner']['banner_url'][0].': ';
+        
+        if ( strlen($banner_url) <1 && $row['banner_jumpTo'] <1 )
         {
-            $banner_url_text = $GLOBALS['TL_LANG']['tl_banner']['banner_url'][0].': ';
+            //weder externe URL noch interne Seite definiert
+            $banner_url = $GLOBALS['TL_LANG']['tl_banner']['tl_be_not_defined'];
         }
-        else
+        if ( strlen($banner_url) <1 && $row['banner_jumpTo'] >0 )
         {
-            $banner_url_text = '';
+            //externe Seite definiert die aber nicht mehr existiert ($banner_url<1)
+            $banner_url = $GLOBALS['TL_LANG']['tl_banner']['tl_be_page_not_found'];
         }
     
         //Output
