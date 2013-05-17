@@ -313,11 +313,23 @@ class ModuleBannerStat extends BackendModule
             			);
             		    break;
                     default:
+                        //Banner laut Statistik, aber Datei nicht gefunden / Lesefehler
+                        //Umschalten auf extern, falls definiert
+                        if ($objBanners->banner_type == 'banner_image_extern')
+                        {
+                            $objBanners->banner_image = $objBanners->banner_image_extern;
+                        }
                         $arrBannersStat[] = array
                         (
                             'banner_pic'    => true, 
                             'banner_flash'  => false,
                             'banner_text'   => false,
+                            'banner_prio'   => $objBanners->banner_weighting,
+                            'banner_views'  => ($intMaxViews)  ? $objBanners->banner_views .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes']  : $objBanners->banner_views,
+                            'banner_clicks' => ($intMaxClicks) ? $objBanners->banner_clicks .'<br />'.$GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['max_yes'] : $objBanners->banner_clicks,
+                            'banner_active' => $objBanners->banner_published,
+                            'banner_zero'   => $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_text'],
+                            'banner_confirm'=> $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['zero_confirm'],
                             'banner_style'  => 'color:red;font-weight:bold;',
                             'banner_alt'    => $GLOBALS['TL_LANG']['MSC']['tl_banner_stat']['read_error'], 
                             'banner_url'    => $objBanners->banner_image .''
