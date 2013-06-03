@@ -76,7 +76,7 @@ class BannerStatExport extends Backend // Backend bringt DB mit
             return ;
 	    }
 	    if ((int)$this->Input->get('tl_katid',true) < -1 || (int)$this->Input->get('tl_katid',true) == 0) {
-	    	echo "<html><body>Missing Parameter(s)!</body></html>";
+	    	echo "<html><body>Wrong Parameter(s)!</body></html>";
             return ;
 	    }
 	    $intBannerKatId = (int)$this->Input->get('tl_katid',true);
