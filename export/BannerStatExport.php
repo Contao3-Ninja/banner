@@ -7,7 +7,7 @@
  * 
  * Banner Statistik Export
  *
- * wird per export button direkt �ber formular aufgerufen als popup
+ * wird per export button direkt über formular aufgerufen als popup
  * 
  * PHP version 5
  * @copyright  Glen Langer 2007..2011
