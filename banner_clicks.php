@@ -1,10 +1,7 @@
 <?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2012 Leo Feyer
- *
- * Formerly known as TYPOlight Open Source CMS.
+ * Contao Open Source CMS, Copyright (C) 2005-2013 Leo Feyer
  *
  * >>>>>> Copy this script to TL_ROOT, when file not exist!
  * >>>>>> (only for manual installation)
@@ -15,11 +12,10 @@
  * Usage example:
  * <a href="banner_clicks.php?bid=7">
  *
- * PHP version 5
- * @copyright  Glen Langer 2007..2012
- * @author     Glen Langer 
- * @package    Banner 
- * @license    GPL 
+ * @copyright	Glen Langer 2007..2013 <http://www.contao.glen-langer.de>
+ * @author      Glen Langer (BugBuster)
+ * @package     Banner
+ * @license     GPL
  * @filesource
  */
 
@@ -46,7 +42,7 @@ if (!file_exists(TL_ROOT . '/system/modules/botdetection/ModuleBotDetection.php'
  * Class BannerClicks
  *
  * Banner ReDirect class
- * @copyright  Glen Langer 2007..2012
+ * @copyright  Glen Langer 2007..2013
  * @author     Glen Langer
  * @package    Banner
  */
