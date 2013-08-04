@@ -47,7 +47,7 @@ class DCA_banner extends \Backend
     {
         parent::__construct();
         $this->import('BackendUser', 'User');
-        $this->import('\Banner\BannerImage', 'BannerImage');
+        $this->import('BugBuster\Banner\BannerImage', 'BannerImage');
     }
     
     /**
