@@ -73,5 +73,9 @@
 .mod_banner_be_st a.button { -moz-user-select: none; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-user-select: none; -webkit-touch-callout: none;}
 .mod_banner_be_st button::-moz-focus-inner { border: 0; padding:0px; }
 
-.chrome .mod_banner_be_st .fs {padding:6px 9px 9px 6px;}
+.chrome .mod_banner_be_st .fs { padding:6px 9px 9px 6px; }
+.chrome .mod_banner_be_st fieldset legend { text-align:left; }
+
+.ie .mod_banner_be_st .fs { padding:0 9px 6px 6px; }
+.ie .mod_banner_be_st legend { padding:0 2px 4px 2px; }
 
