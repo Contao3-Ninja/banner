@@ -16,6 +16,7 @@
 /**
  * Table tl_banner_stat_blocker (old: tl_banner_blocker)
  */
+/*
 $GLOBALS['TL_DCA']['tl_banner_stat_blocker'] = array
 (
 
@@ -57,5 +58,5 @@ $GLOBALS['TL_DCA']['tl_banner_stat_blocker'] = array
         )
 	)
 );
-
+*/
 

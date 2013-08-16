@@ -56,6 +56,14 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 	 */
 	protected $intBID;
 	protected $intDEFBID;
+	
+	/**
+	 * Session
+	 *
+	 * @var string
+	 * @access private
+	 */
+	private $_session   = array();
 
 
 	/**
@@ -66,7 +74,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 		parent::__construct();
 		$this->intBID    = \Input::get('bid');   
 		$this->intDEFBID = \Input::get('defbid');
-		$this->import('Database');
+		//$this->import('Database');
 	}
 
 
@@ -315,7 +323,8 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 	    $BannerID = $this->intBID;
 	    $BannerBlockTime = time() - 60*5;    // 5 Minuten, 0-5 min wird geblockt
 	    $BannerCleanTime = time() - 60*60*1; // 1 Stunde , Einträge >= 1 Stunde werden gelöscht
-	    
+	    //TODO: #37: OK
+	    /*
 	    \Database::getInstance()->prepare("DELETE FROM 
                                                 tl_banner_stat_blocker 
                                            WHERE 
@@ -358,6 +367,20 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 			// Eintrag innerhalb der Blockzeit
 			return true; // blocken
 		}
+		*/
+	    if ( $this->getReClickBlockerId($BannerID) === false )
+	    {
+	        // nichts geblockt, also blocken fürs den nächsten Aufruf
+	        $this->setReClickBlockerId($BannerID);
+	         
+	        // kein ReClickBlocker block gefunden, Zaehlung erlaubt, nicht blocken
+	        return false;
+	    }
+	    else
+	    {
+	        // Eintrag innerhalb der Blockzeit, blocken
+	        return true;
+	    }
 	}
 	
 	/**
@@ -428,6 +451,134 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
         $data = trim($data);
         return ;
     }
+    
+
+/*    _____               _             
+     / ____|             (_)            
+    | (___   ___  ___ ___ _  ___  _ __  
+     \___ \ / _ \/ __/ __| |/ _ \| '_ \ 
+     ____) |  __/\__ \__ \ | (_) | | | |
+    |_____/ \___||___/___/_|\___/|_| |_|s
+ */
+    
+    /**
+     * Set ReClick Blocker, Set Banner ID and timestamp
+     *
+     * @param integer    $banner_id
+     */
+    protected function setReClickBlockerId($banner_id=0)
+    {
+        if ($banner_id==0) { return; }// keine Banner ID, nichts zu tun
+        //das können mehrere sein!, mergen!
+        $this->setSession('ReClickBlocker', array( $banner_id => time() ), true );
+        return ;
+    }
+    
+    
+    /**
+     * Get ReClick Blocker, Get Banner ID if the timestamp ....
+     *
+     * @param boolean    true if blocked | false
+     */
+    protected function getReClickBlockerId($banner_id=0)
+    {
+        $this->getSession('ReClickBlocker');
+        if ( count($this->_session) )
+        {
+            reset($this->_session);
+            while ( list($key, $val) = each($this->_session) )
+            {
+                if ( $key == $banner_id &&
+                        $this->removeReClickBlockerId($key, $val) == true )
+                {
+                    // Key ist noch gültig und es muss daher geblockt werden
+                    //log_message('getReClickBlockerId Banner ID:'.$key,'Banner.log');
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * ReClick Blocker, Remove old Banner ID
+     *
+     * @param  integer    $banner_id
+     * @return boolean    true = Key is valid, it must be blocked | false = key is invalid
+     */
+    protected function removeReClickBlockerId($banner_id, $tstmap)
+    {
+        $BannerBlockTime = time() - 60*5;  // 5 Minuten, 0-5 min wird geblockt
+        if ( isset($GLOBALS['TL_CONFIG']['mod_banner_block_time'] )
+         && intval($GLOBALS['TL_CONFIG']['mod_banner_block_time'])>0
+        )
+        {
+            $BannerBlockTime = time() - 60*1*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
+        }
+    
+        if ( $tstmap >  $BannerBlockTime )
+        {
+            return true;
+        }
+        else
+        {
+            //wenn mehrere dann nur den Teil, nicht die ganze Session
+            unset($this->_session[$banner_id]);
+            //wenn Anzahl Banner in Session nun 0 dann Session loeschen
+            if ( count($this->_session) == 0 )
+            {
+                //komplett löschen
+                \Session::getInstance()->remove('ReClickBlocker');
+            }
+            else //sonst neu setzen
+            {
+                //gekuerzte Session neu setzen
+                $this->setSession('ReClickBlocker', $this->_session , false );
+            }
+        }
+        return false;
+    }
+    
+    
+    
+    /**
+     * Get session
+     *
+     * @param string   $session_name   e.g.: 'ReClickBlocker'
+     * @return void
+     * @access protected
+     */
+    protected function getSession( $session_name )
+    {
+        $this->_session = (array)\Session::getInstance()->get( $session_name );
+    }
+    
+    /**
+     * Set session
+     *
+     * @param string   $session_name   e.g.: 'ReClickBlocker'
+     * @param array    $arrData        array('key' => array(Value1,Value2,...))
+     * @return void
+     * @access protected
+     */
+    protected function setSession( $session_name, $arrData, $merge = false )
+    {
+        if ($merge)
+        {
+            $this->_session = \Session::getInstance()->get( $session_name );
+             
+            // numerische Schlüssel werden neu numeriert, daher
+            // geht nicht: array_merge($this->_session, $arrData)
+            $merge_array = (array)$this->_session + $arrData;
+            \Session::getInstance()->set( $session_name, $merge_array );
+        }
+        else
+        {
+            \Session::getInstance()->set( $session_name, $arrData );
+        }
+         
+    }
+    
 }
 
 /**

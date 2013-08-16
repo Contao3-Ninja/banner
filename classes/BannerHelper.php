@@ -62,6 +62,11 @@ class BannerHelper extends \Module
 	protected $statusRandomBlocker = false;
 	
 	/**
+	 * First View Blocker
+	 */
+	protected $statusFirstViewBlocker = false;
+	
+	/**
 	 * Banner First View Status
 	 */
 	protected $statusBannerFirstView = false;
@@ -488,6 +493,7 @@ class BannerHelper extends \Module
 	
 	/**
 	 * Random Blocker, Get Banner-ID
+	 * 
 	 * @return integer    Banner-ID
 	 */
 	protected function getRandomBlockerId()
@@ -504,6 +510,65 @@ class BannerHelper extends \Module
 	}
 	
 	/**
+	 * First View Blocker, Set Banner Categorie-ID and timestamp
+	 * 
+	 * @param integer    $banner_categorie
+	 */
+	protected function setFirstViewBlockerId($banner_categorie=0)
+	{
+	    if ($banner_categorie==0) { return; }// keine Banner Kategorie, nichts zu tun
+	     
+	    $this->statusFirstViewBlocker = true;
+	    $this->setSession('FirstViewBlocker', array($banner_categorie => array( time() )) );
+	    return ;
+	}
+	
+	/**
+	 * First View Blocker, Get Banner Categorie-ID if the timestamp .... 
+	 *
+	 * @param mixed    $banner_categorie | false
+	 */
+	protected function getFirstViewBlockerId()
+	{
+	    $this->getSession('FirstViewBlocker');
+	    if ( count($this->_session) )
+	    {
+	        list($key, $val) = each($this->_session);
+	        reset($this->_session);
+	        if ( $this->removeOldFirstViewBlockerId($key, $val) == true ) 
+	        {
+	            // Key ist noch gültig und es muss daher geblockt werden
+	            //log_message('getFirstViewBlockerId Banner Kat ID:'.$key,'Banner.log');
+	            return $key;
+	        }
+	    }
+	    return false;
+	}
+	
+	/**
+	 * First View Blocker, Remove old Banner Categorie-ID
+	 *
+	 * @param  integer    $banner_categorie
+	 * @return boolean    true = Key is valid, it must be blocked | false = key is invalid
+	 */
+	protected function removeOldFirstViewBlockerId($key, $tstmap)
+	{
+	    // 5 Minuten Blockierung, älter >= 5 Minuten wird gelöscht
+	    $FirstViewBlockTime = time() - 60*5;
+	    
+	    if ( $tstmap >  $FirstViewBlockTime ) 
+	    {
+	        return true;
+	    }
+	    else 
+	    {
+	        \Session::getInstance()->remove($key);
+	    }
+	    return false;
+	}
+	
+	
+	/**
 	 * Get FirstViewBanner status and set cat id as blocker
 	 * 
 	 * @return boolean    true = if requested and not blocked | false = if requested but blocked
@@ -518,7 +583,7 @@ class BannerHelper extends \Module
 	    $ClientIP = bin2hex(sha1($this->banner_categories . \Environment::get('remoteAddr'),true));
 
 	    // 5 Minuten, Einträge >= 5 Minuten werden gelöscht
-	    $BannerFirstViewBlockTime = time() - 60*5; 
+	    //$BannerFirstViewBlockTime = time() - 60*5; 
 
 	    $this->import('\Banner\BannerReferrer','BannerReferrer');
 	    $this->BannerReferrer->checkReferrer();
@@ -530,7 +595,8 @@ class BannerHelper extends \Module
 	        $this->statusBannerFirstView = false;
 	        return false;
 	    }
-	    //TODO: #37
+	    //TODO: #37 OK
+	    /*
 	    \Database::getInstance()->prepare("DELETE FROM 
                                                 tl_banner_stat_blocker 
                                            WHERE 
@@ -578,6 +644,22 @@ class BannerHelper extends \Module
 	        $this->statusBannerFirstView = false;
 	        return false;
 	    }
+	    */
+	    if ( $this->getFirstViewBlockerId() === false )
+	    {
+	        // nichts geblockt, also blocken fürs den nächsten Aufruf
+	        $this->setFirstViewBlockerId($this->banner_categories);
+	        
+	        // kein firstview block gefunden, Anzeigen erlaubt
+	        $this->statusBannerFirstView = true;
+	        return true;
+	    }
+	    else
+	    {
+	        $this->statusBannerFirstView = false;
+	        return false;
+	    }
+	    
 	}
 	
 	protected function getSingleBannerFirst()
@@ -1586,7 +1668,8 @@ class BannerHelper extends \Module
 	        $BannerBlockTime = time() - 60*1*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
 	        $BannerCleanTime = time() - 60*2*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
 	    }
-	    
+	    //TODO: #37
+	    /*
 	    \Database::getInstance()->prepare("DELETE FROM 
                                                 tl_banner_stat_blocker 
                                            WHERE 
@@ -1629,6 +1712,18 @@ class BannerHelper extends \Module
 	        // Eintrag innerhalb der Blockzeit
 	        return; // blocken, nicht zählen
 	    }
+	    */
+	    
+	    if ( $this->getStatViewUpdateBlockerId($BannerID) === true )
+	    {
+	        // Eintrag innerhalb der Blockzeit
+	        return; // blocken, nicht zählen, raus hier
+	    }
+	    else
+	    {
+	        // nichts geblockt, also blocken fürs den nächsten Aufrufs
+	        $this->setStatViewUpdateBlockerId($BannerID);
+	    }
 	    
 	    //Zählung, Insert
 	    $arrSet = array
@@ -1654,6 +1749,84 @@ class BannerHelper extends \Module
 	    }
 	    
 	}//BannerStatViewUpdate()
+
+	/**
+	 * StatViewUpdate Blocker, Set Banner ID and timestamp
+	 *
+	 * @param integer    $banner_id
+	 */
+	protected function setStatViewUpdateBlockerId($banner_id=0)
+	{
+	    if ($banner_id==0) { return; }// keine Banner ID, nichts zu tun
+    	//das können mehrere sein!, mergen!
+	    $this->setSession('StatViewUpdateBlocker', array( $banner_id => time() ), true );
+	    return ;
+	}
+	
+	/**
+	 * StatViewUpdate Blocker, Get Banner ID if the timestamp ....
+	 *
+	 * @param boolean    true if blocked | false
+	 */
+	protected function getStatViewUpdateBlockerId($banner_id=0)
+	{
+	    $this->getSession('StatViewUpdateBlocker');
+	    if ( count($this->_session) )
+	    {
+	        reset($this->_session);
+	        while ( list($key, $val) = each($this->_session) )
+	        {
+	            if ( $key == $banner_id && 
+	                 $this->removeStatViewUpdateBlockerId($key, $val) == true )
+	            {
+	                // Key ist noch gültig und es muss daher geblockt werden
+	                //log_message('getStatViewUpdateBlockerId Banner ID:'.$key,'Banner.log');
+	                return true;
+	            }
+	        }
+	    }
+	    return false;
+	}
+	
+	/**
+	 * StatViewUpdate Blocker, Remove old Banner ID
+	 *
+	 * @param  integer    $banner_id
+	 * @return boolean    true = Key is valid, it must be blocked | false = key is invalid
+	 */
+	protected function removeStatViewUpdateBlockerId($banner_id, $tstmap)
+	{
+		$BannerBlockTime = time() - 60*5;  // 5 Minuten, 0-5 min wird geblockt
+	    if ( isset($GLOBALS['TL_CONFIG']['mod_banner_block_time'] ) 
+	     && intval($GLOBALS['TL_CONFIG']['mod_banner_block_time'])>0
+	       )
+	    {
+	        $BannerBlockTime = time() - 60*1*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
+	    }
+	     
+	    if ( $tstmap >  $BannerBlockTime )
+	    {
+	        return true;
+	    }
+	    else
+	    {
+	        //wenn mehrere dann nur den Teil, nicht die ganze Session
+	        unset($this->_session[$banner_id]);
+	        //wenn Anzahl Banner in Session nun 0 dann Session loeschen
+	        if ( count($this->_session) == 0 ) 
+	        {
+	            //komplett löschen
+	            \Session::getInstance()->remove('StatViewUpdateBlocker');
+	        }
+	        else //sonst neu setzen
+	        {
+    	        //gekuerzte Session neu setzen
+	            $this->setSession('StatViewUpdateBlocker', $this->_session , false );
+	        }
+	    }
+	    return false;
+	}
+	
 	
 	/**
 	 * Spider Bot Check
@@ -1742,8 +1915,12 @@ class BannerHelper extends \Module
 	{
 	    if ($merge) 
 	    {
-	        \Session::getInstance()->get( $session_name );
-	        \Session::getInstance()->set( $session_name, array_merge($this->_session, $arrData) );
+	        $this->_session = \Session::getInstance()->get( $session_name );
+	        
+	        // numerische Schlüssel werden neu numeriert, daher
+	        // geht nicht: array_merge($this->_session, $arrData)
+	        $merge_array = (array)$this->_session + $arrData;
+	        \Session::getInstance()->set( $session_name, $merge_array );
 	    }
 	    else 
 	    {

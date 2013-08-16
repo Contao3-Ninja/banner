@@ -12,7 +12,7 @@
  * @license    LGPL 
  */
 
-define('BANNER_VERSION', '3.0');
+define('BANNER_VERSION', '3.1');
 define('BANNER_BUILD'  , '0');
 
 /**
