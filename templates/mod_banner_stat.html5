@@ -2,39 +2,9 @@
 <div class="clear"></div>
 <?php defined('REQUEST_TOKEN') or define('REQUEST_TOKEN', 'c0n740'); ?>
 <div class="tl_panel">
-    <!-- Export Zeile //-->
-    <?php   if (1==0) /* if ($this->bannercatid>0  || $this->bannercatid==-1)*/ : ?>
-    <fieldset style="margin-left: 6px; float:left;">
-    <?php else: ?>
-    <fieldset style="margin-left: 6px; float:left; visibility:hidden;">
-    <?php endif; ?>
-    <legend> <?php echo $this->exportfield; ?> </legend>
-        <div style="float:left; padding-left: 4px;">
-            <form method="get" class="popup info" id="banner_export1" 
-                    action="<?php echo $this->banner_base; ?>system/modules/banner/export/BannerStatExport.php?tl_field=csvc&amp;tl_katid=<?php echo $this->bannercatid; ?>">
-            <div class="tl_formbody">
-                <input type="submit" value="CSV ','" alt="Export CSV ," class="tl_submit">
-            </div>
-            </form>
-        </div>
-        <div style="float:left; padding-left: 6px;">
-            <form method="get" class="popup info" id="banner_export2" 
-                    action="<?php echo $this->banner_base; ?>system/modules/banner/export/BannerStatExport.php?tl_field=csvs&amp;tl_katid=<?php echo $this->bannercatid; ?>">
-            <div class="tl_formbody">
-                <input type="submit" value="CSV ';'" alt="Export CSV ;" class="tl_submit">
-            </div>
-            </form>
-        </div>
-	    <div style="float:left; padding-left: 6px;">
-            <form method="get" class="popup info" id="banner_export3" 
-                    action="<?php echo $this->banner_base; ?>system/modules/banner/export/BannerStatExport.php?tl_field=excel&amp;tl_katid=<?php echo $this->bannercatid; ?>">
-            <div class="tl_formbody">
-                <input type="submit" value="Excel" alt="Export Excel" class="tl_submit">
-            </div>
-            </form>
-        </div>
-    </fieldset>
-    <!-- Export Zeile Ende //-->
+    <!-- Export Row Start //-->
+    <!-- follows in a later release. -->
+    <!-- Export Row End   //-->
     <!-- Kategorie Zeile //-->
     <fieldset style="margin-right: 6px; float:right;">
     <legend> <?php echo $this->bannerstatcat; ?> </legend>
