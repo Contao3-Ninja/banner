@@ -662,6 +662,11 @@ class BannerHelper extends \Module
 	    
 	}
 	
+	/**
+	 * Get First View Banner
+	 * 
+	 * @return internal    Value in $this->strTemplate
+	 */
 	protected function getSingleBannerFirst()
 	{
 	    $arrBanners = array();
