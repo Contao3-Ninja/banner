@@ -321,8 +321,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 	{
 	    $ClientIP = bin2hex(sha1(\Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
 	    $BannerID = $this->intBID;
-	    $BannerBlockTime = time() - 60*5;    // 5 Minuten, 0-5 min wird geblockt
-	    $BannerCleanTime = time() - 60*60*1; // 1 Stunde , Einträge >= 1 Stunde werden gelöscht
+
 	    //TODO: #37: OK
 	    /*
 	    \Database::getInstance()->prepare("DELETE FROM 

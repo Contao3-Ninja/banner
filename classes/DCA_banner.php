@@ -160,7 +160,7 @@ class DCA_banner extends \Backend
         if ( strlen($banner_url) <1 && $row['banner_jumpTo'] >0 )
         {
             //externe Seite definiert die aber nicht mehr existiert ($banner_url<1)
-            $banner_url = $GLOBALS['TL_LANG']['tl_banner']['tl_be_page_not_found'];
+            $banner_url = '<span class="tl_gerror">'.$GLOBALS['TL_LANG']['tl_banner']['tl_be_page_not_found'].'</span>';
         }
     
         //Output

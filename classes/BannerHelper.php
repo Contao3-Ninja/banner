@@ -538,7 +538,7 @@ class BannerHelper extends \Module
 	        if ( $this->removeOldFirstViewBlockerId($key, $val) == true ) 
 	        {
 	            // Key ist noch gültig und es muss daher geblockt werden
-	            //log_message('getFirstViewBlockerId Banner Kat ID:'.$key,'Banner.log');
+	            //log_message('getFirstViewBlockerId Banner Kat ID: '.$key,'Banner.log');
 	            return $key;
 	        }
 	    }
@@ -772,12 +772,15 @@ class BannerHelper extends \Module
                 if ($objBanners->banner_jumpTo > 0)
                 {
                     $domain = \Environment::get('base');
-                    $objParent = $this->getPageDetails($objBanners->banner_jumpTo);
-                    if ($objParent->domain != '')
+                    $objParent = \PageModel::findWithDetails($objBanners->banner_jumpTo);
+                    if ($objParent !== null) // is null when page not exist anymore
                     {
-                        $domain = (\Environment::get('ssl') ? 'https://' : 'http://') . $objParent->domain . TL_PATH . '/';
+                        if ($objParent->domain != '')
+                        {
+                            $domain = (\Environment::get('ssl') ? 'https://' : 'http://') . $objParent->domain . TL_PATH . '/';
+                        }
+                        $objBanners->banner_url = $domain . $this->generateFrontendUrl($objParent->row(), '', $objParent->language);
                     }
-                    $objBanners->banner_url = $domain . $this->generateFrontendUrl($objParent->row(), '', $objParent->language);
                 }
                 
                 //$arrImageSize[0]  eigene Breite 
@@ -907,12 +910,15 @@ class BannerHelper extends \Module
                 if ($objBanners->banner_jumpTo > 0) 
                 {
                     $domain = \Environment::get('base');
-                    $objParent = $this->getPageDetails($objBanners->banner_jumpTo);
-                    if ($objParent->domain != '')
+                    $objParent = \PageModel::findWithDetails($objBanners->banner_jumpTo);
+                    if ($objParent !== null) // is null when page not exist anymore
                     {
-                        $domain = (\Environment::get('ssl') ? 'https://' : 'http://') . $objParent->domain . TL_PATH . '/';
+                        if ($objParent->domain != '')
+                        {
+                            $domain = (\Environment::get('ssl') ? 'https://' : 'http://') . $objParent->domain . TL_PATH . '/';
+                        }
+                        $objBanners->banner_url = $domain . $this->generateFrontendUrl($objParent->row(), '', $objParent->language);
                     }
-                    $objBanners->banner_url = $domain . $this->generateFrontendUrl($objParent->row(), '', $objParent->language);
                 }
                 
                 // Kurz URL (nur Domain)
@@ -1086,12 +1092,15 @@ class BannerHelper extends \Module
 	            if ($objBanners->banner_jumpTo > 0)
 	            {
 	                $domain = \Environment::get('base');
-	                $objParent = $this->getPageDetails($objBanners->banner_jumpTo);
-	                if ($objParent->domain != '')
+	                $objParent = \PageModel::findWithDetails($objBanners->banner_jumpTo);
+	                if ($objParent !== null) // is null when page not exist anymore
 	                {
-	                    $domain = (\Environment::get('ssl') ? 'https://' : 'http://') . $objParent->domain . TL_PATH . '/';
+    	                if ($objParent->domain != '')
+    	                {
+    	                    $domain = (\Environment::get('ssl') ? 'https://' : 'http://') . $objParent->domain . TL_PATH . '/';
+    	                }
+    	                $objBanners->banner_url = $domain . $this->generateFrontendUrl($objParent->row(), '', $objParent->language);
 	                }
-	                $objBanners->banner_url = $domain . $this->generateFrontendUrl($objParent->row(), '', $objParent->language);
 	            }
 	    
 	            //$arrImageSize[0]  eigene Breite
@@ -1221,12 +1230,15 @@ class BannerHelper extends \Module
 	            if ($objBanners->banner_jumpTo > 0)
 	            {
 	                $domain = \Environment::get('base');
-	                $objParent = $this->getPageDetails($objBanners->banner_jumpTo);
-	                if ($objParent->domain != '')
+	                $objParent = \PageModel::findWithDetails($objBanners->banner_jumpTo);
+	                if ($objParent !== null) // is null when page not exist anymore
 	                {
-	                    $domain = (\Environment::get('ssl') ? 'https://' : 'http://') . $objParent->domain . TL_PATH . '/';
+    	                if ($objParent->domain != '')
+    	                {
+    	                    $domain = (\Environment::get('ssl') ? 'https://' : 'http://') . $objParent->domain . TL_PATH . '/';
+    	                }
+    	                $objBanners->banner_url = $domain . $this->generateFrontendUrl($objParent->row(), '', $objParent->language);
 	                }
-	                $objBanners->banner_url = $domain . $this->generateFrontendUrl($objParent->row(), '', $objParent->language);
 	            }
 	    
 	            // Kurz URL (nur Domain)
@@ -1417,8 +1429,8 @@ class BannerHelper extends \Module
 	                {
 	                    $objBanners->banner_url = ''; //default
 	                    $domain = \Environment::get('base');
-	                    $objParent = $this->getPageDetails($objBanners->banner_jumpTo);
-	                    if ($objParent != null) 
+	                    $objParent = \PageModel::findWithDetails($objBanners->banner_jumpTo);
+	                    if ($objParent !== null) 
 	                    {
     	                    if ($objParent->domain != '')
     	                    {
@@ -1549,12 +1561,15 @@ class BannerHelper extends \Module
 	                if ($objBanners->banner_jumpTo > 0)
 	                {
 	                    $domain = \Environment::get('base');
-	                    $objParent = $this->getPageDetails($objBanners->banner_jumpTo);
-	                    if ($objParent->domain != '')
+	                    $objParent = \PageModel::findWithDetails($objBanners->banner_jumpTo);
+	                    if ($objParent !== null) // is null when page not exist anymore
 	                    {
-	                        $domain = (\Environment::get('ssl') ? 'https://' : 'http://') . $objParent->domain . TL_PATH . '/';
+    	                    if ($objParent->domain != '')
+    	                    {
+    	                        $domain = (\Environment::get('ssl') ? 'https://' : 'http://') . $objParent->domain . TL_PATH . '/';
+    	                    }
+    	                    $objBanners->banner_url = $domain . $this->generateFrontendUrl($objParent->row(), '', $objParent->language);
 	                    }
-	                    $objBanners->banner_url = $domain . $this->generateFrontendUrl($objParent->row(), '', $objParent->language);
 	                }
 	                 
 	                // Kurz URL (nur Domain)
