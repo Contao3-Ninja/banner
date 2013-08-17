@@ -2,10 +2,6 @@
 <div class="clear"></div>
 <?php defined('REQUEST_TOKEN') or define('REQUEST_TOKEN', 'c0n740'); ?>
 <div class="tl_panel">
-    <!-- Export Row Start //-->
-    	<!-- follows in a later release. -->
-    <!-- Export Row End   //-->
-    
     <!-- Categorie Row //-->
 	<form	method="post" 
 			class="info" 
@@ -58,6 +54,12 @@
     <!-- Categorie Reset End //-->
     <div class="clear"></div>
 </div>
+    <!-- Export Row Start, follows in a later release
+<div class="tl_panel">
+    	
+</div>
+    Export Row End   
+    //-->
 <br> <br>
 <div class="tl_formbody_edit">
 
