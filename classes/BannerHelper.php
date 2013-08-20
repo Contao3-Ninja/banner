@@ -317,7 +317,9 @@ class BannerHelper extends \Module
 		$arrImageSize = array();
 		
 		//BannerDefault gewünscht und vorhanden?
-		if ( $this->arrCategoryValues['banner_default'] == '1' && strlen($this->arrCategoryValues['banner_default_image']) > 2 ) 
+		if ( $this->arrCategoryValues['banner_default'] == '1' 
+            && strlen($this->arrCategoryValues['banner_default_image']) > 0 
+	       ) 
 		{
 			//Template setzen
 			if ( ($this->banner_template != $this->strTemplate) 
@@ -487,7 +489,7 @@ class BannerHelper extends \Module
 	    if ($BannerID==0) { return; }// kein Banner, nichts zu tun
 	    
 	    $this->statusRandomBlocker = true;
-	    $this->setSession('RandomBlocker', array($BannerID => array( time() )) );
+	    $this->setSession('RandomBlocker', array( $BannerID => time() ));
 	    return ;
 	}
 	
@@ -519,7 +521,7 @@ class BannerHelper extends \Module
 	    if ($banner_categorie==0) { return; }// keine Banner Kategorie, nichts zu tun
 	     
 	    $this->statusFirstViewBlocker = true;
-	    $this->setSession('FirstViewBlocker', array($banner_categorie => array( time() )) );
+	    $this->setSession('FirstViewBlocker', array( $banner_categorie => time() ));
 	    return ;
 	}
 	
@@ -533,9 +535,9 @@ class BannerHelper extends \Module
 	    $this->getSession('FirstViewBlocker');
 	    if ( count($this->_session) )
 	    {
-	        list($key, $val) = each($this->_session);
+	        list($key, $tstmap) = each($this->_session);
 	        reset($this->_session);
-	        if ( $this->removeOldFirstViewBlockerId($key, $val) == true ) 
+	        if ( $this->removeOldFirstViewBlockerId($key, $tstmap) == true ) 
 	        {
 	            // Key ist noch gültig und es muss daher geblockt werden
 	            //log_message('getFirstViewBlockerId Banner Kat ID: '.$key,'Banner.log');
@@ -595,56 +597,7 @@ class BannerHelper extends \Module
 	        $this->statusBannerFirstView = false;
 	        return false;
 	    }
-	    //TODO: #37 OK
-	    /*
-	    \Database::getInstance()->prepare("DELETE FROM 
-                                                tl_banner_stat_blocker 
-                                           WHERE 
-                                                bid =? 
-                                           AND 
-                                                tstamp<? 
-                                           AND 
-                                                type=?")
-	                            ->execute($this->banner_categories, $BannerFirstViewBlockTime, 'f');
 	    
-	    $objBanners = \Database::getInstance()
-                                ->prepare("SELECT 
-                                                id 
-                                           FROM 
-                                                tl_banner_stat_blocker 
-                                           WHERE 
-                                                bid =? 
-                                           AND 
-                                                tstamp>? 
-                                           AND 
-                                                ip=? 
-                                           AND 
-                                                type=?")
-                                ->limit(1)
-                        	    ->executeUncached($this->banner_categories, $BannerFirstViewBlockTime, $ClientIP, 'f');
-	    if (0 == $objBanners->numRows)
-	    {
-	        // noch kein Eintrag bzw. ausserhalb Blockzeit
-	        $arrSet = array
-	        (
-	                'bid'    => $this->banner_categories,
-	                'tstamp' => time(),
-	                'ip'     => $ClientIP,
-	                'type'   => 'f'
-	        );
-	        \Database::getInstance()->prepare("INSERT INTO tl_banner_stat_blocker %s")
-                                    ->set($arrSet)
-                                    ->executeUncached();
-	        // kein firstview block gefunden, Anzeigen erlaubt
-	        $this->statusBannerFirstView = true;
-	        return true;
-	    }
-	    else
-	    {
-	        $this->statusBannerFirstView = false;
-	        return false;
-	    }
-	    */
 	    if ( $this->getFirstViewBlockerId() === false )
 	    {
 	        // nichts geblockt, also blocken fürs den nächsten Aufruf
@@ -1688,51 +1641,6 @@ class BannerHelper extends \Module
 	        $BannerBlockTime = time() - 60*1*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
 	        $BannerCleanTime = time() - 60*2*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
 	    }
-	    //TODO: #37
-	    /*
-	    \Database::getInstance()->prepare("DELETE FROM 
-                                                tl_banner_stat_blocker 
-                                           WHERE 
-                                                tstamp<? 
-                                           AND 
-                                                type=?")
-                                ->execute($BannerCleanTime, 'v');
-	    
-	    $objBanners = \Database::getInstance()->prepare("SELECT 
-                                                            id 
-                                                         FROM 
-                                                            tl_banner_stat_blocker 
-                                                         WHERE 
-                                                            bid=? 
-                                                         AND 
-                                                            tstamp>? 
-                                                         AND 
-                                                            ip=? 
-                                                         AND 
-                                                            type=?")
-                                            ->limit(1)
-                                            ->executeUncached( $BannerID, $BannerBlockTime, $ClientIP, 'v' );
-	    if (0 == $objBanners->numRows)
-	    {
-	        // noch kein Eintrag bzw. ausserhalb Blockzeit
-	        $arrSet = array
-	        (
-                'bid'    => $BannerID,
-                'tstamp' => time(),
-                'ip'     => $ClientIP,
-                'type'   => 'v'
-	        );
-	        \Database::getInstance()->prepare("INSERT IGNORE INTO tl_banner_stat_blocker %s")
-                                    ->set($arrSet)
-                                    ->execute();
-	        // nicht blocken
-	    }
-	    else
-	    {
-	        // Eintrag innerhalb der Blockzeit
-	        return; // blocken, nicht zählen
-	    }
-	    */
 	    
 	    if ( $this->getStatViewUpdateBlockerId($BannerID) === true )
 	    {
@@ -1950,35 +1858,4 @@ class BannerHelper extends \Module
 	}
 	
 } // class
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

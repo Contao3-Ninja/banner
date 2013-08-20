@@ -1,26 +1,23 @@
 <?php   
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2012 Leo Feyer
- *
- * Formerly known as TYPOlight Open Source CMS.
+ * Contao Open Source CMS, Copyright (C) 2005-2013 Leo Feyer
  *
  * Modul Banner - /config/runonce.php
  *
  * PHP version 5
- * @copyright  Glen Langer 2007..2012
+ * @copyright  Glen Langer 2007..2013
  * @author     Glen Langer
  * @package    Banner
- * @license    GPL
+ * @license    LGPL
  */
 
 /**
  * Class BannerRunonceJob
  *
- * @copyright  Glen Langer 2007..2012
+ * @copyright  Glen Langer 2007..2013
  * @author     Glen Langer
  * @package    Banner
- * @license    GPL
+ * @license    LGPL
  */
 class BannerRunonceJob extends Controller
 {

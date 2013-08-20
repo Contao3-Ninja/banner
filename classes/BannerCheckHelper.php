@@ -76,8 +76,8 @@ class BannerCheckHelper extends \System
     
             // required extensions
             $arrRequiredExtensions = array(
-            		'Bot Detection' => 'botdetection',
-            		'xls_export'    => 'xls_export'
+            		'Bot Detection' => 'botdetection'/*,
+            		'xls_export'    => 'xls_export'*/
             );
     
             // required files

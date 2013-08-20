@@ -176,7 +176,7 @@ $GLOBALS['TL_DCA']['tl_banner_category'] = array
 			'exclude'                 => true,
 			'inputType'               => 'fileTree',
 			'sql'                     => "varchar(255) NOT NULL default ''",
-			'eval'                    => array('files'=>true, 'filesOnly'=>true, 'fieldType'=>'radio', 'extensions'=>'jpg,jpe,gif,png,swf', 'maxlength'=>255, 'helpwizard'=>false, 'tl_class'=>'clr')
+			'eval'                    => array('mandatory'=>true, 'files'=>true, 'filesOnly'=>true, 'fieldType'=>'radio', 'extensions'=>'jpg,jpe,gif,png,swf', 'maxlength'=>255, 'helpwizard'=>false, 'tl_class'=>'clr')
 		),
 		'banner_default_target'		  => array
 		(
