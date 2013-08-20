@@ -195,7 +195,7 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 			'explanation'	          => 'banner_help',
 			'inputType'               => 'fileTree',
 			'sql'                     => "varchar(255) NOT NULL default ''",
-			'eval'                    => array('files'=>true, 'filesOnly'=>true, 'fieldType'=>'radio', 'extensions'=>'jpg,jpe,gif,png,swf', 'maxlength'=>255, 'helpwizard'=>true)
+			'eval'                    => array('mandatory'=>true, 'files'=>true, 'filesOnly'=>true, 'fieldType'=>'radio', 'extensions'=>'jpg,jpe,gif,png,swf', 'maxlength'=>255, 'helpwizard'=>true)
 		),
 		'banner_image_extern' => array
 		(
@@ -203,7 +203,7 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 			'inputType'               => 'text',
 			'explanation'	          => 'banner_help',
 			'sql'                     => "varchar(255) NOT NULL default ''",
-			'eval'                    => array('mandatory'=>false, 'maxlength'=>255, 'helpwizard'=>true)
+			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'helpwizard'=>true)
 		),
         'banner_imgSize' => array
 		(
