@@ -26,4 +26,3 @@ $GLOBALS['TL_LANG']['tl_module']['banner_categories'] = array('Banner categories
 $GLOBALS['TL_LANG']['tl_module']['banner_template']   = array('Banner template', 'Please choose the Banner-Template. Banner template files start with <em>mod_banner_list_</em>.'); 
 $GLOBALS['TL_LANG']['tl_module']['banner_useragent']  = array('No counting for this HTTP_USER_AGENT partial identifier', 'Here you can specify a partial identifier, it will be no counting. These HTTP_USER_AGENT partial identifier of the browser must be changed.<br />See Wiki.');
  
-?>

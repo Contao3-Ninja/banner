@@ -94,4 +94,3 @@ $GLOBALS['TL_LANG']['tl_banner']['delete'] = array('Banner l&ouml;schen', 'Banne
 $GLOBALS['TL_LANG']['tl_banner']['show']   = array('Banner Details', 'Zeige Details von Banner ID %s');
 $GLOBALS['TL_LANG']['tl_banner']['toggle'] = array('Banner ein- oder ausschalten', 'Banner ID %s ein- oder ausschalten');
 
-?>

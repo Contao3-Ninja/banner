@@ -116,4 +116,3 @@ $GLOBALS['TL_LANG']['XPL']['banner_help'] = array
 	) 
 );
 
-?>

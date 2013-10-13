@@ -24,5 +24,3 @@
 //$GLOBALS['TL_LANG']['MSC'][''] = '';
 $GLOBALS['TL_LANG']['MSC']['tl_banner']['noBanner'] = ''; // e.g. 'No Banner found'
 
-
-?>

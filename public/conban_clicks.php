@@ -26,7 +26,15 @@ namespace BugBuster\BotDetection;
  * Initialize the system
  */
 define('TL_MODE', 'FE');
-require('../../../initialize.php');
+// ER2 / ER3 
+if (file_exists('../../../initialize.php'))
+{
+    require('../../../initialize.php');
+}
+else 
+{
+    require('../../../../../system/initialize.php');
+}
 
 if (!file_exists(TL_ROOT . '/system/modules/botdetection/modules/ModuleBotDetection.php'))
 {

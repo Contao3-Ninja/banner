@@ -64,4 +64,3 @@ $GLOBALS['TL_LANG']['tl_banner_category']['editheader'] = array('Einstellungen d
  */
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_protected_catagory'] = 'Kategorie geschützt';
 
-?>

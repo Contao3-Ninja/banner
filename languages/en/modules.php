@@ -30,4 +30,3 @@ $GLOBALS['TL_LANG']['MOD']['bannerstat'] = array('Banner Statistics', 'Statistic
  */
 $GLOBALS['TL_LANG']['FMD']['banner'] = array('Banner', 'Show a Banner');
 
-?>

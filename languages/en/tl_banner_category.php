@@ -65,4 +65,3 @@ $GLOBALS['TL_LANG']['tl_banner_category']['editheader'] = array('Edit category s
  */
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_protected_catagory'] = 'Protected category';
 
-?>

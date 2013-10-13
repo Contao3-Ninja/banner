@@ -26,4 +26,3 @@ $GLOBALS['TL_LANG']['tl_module']['banner_categories'] = array('Bannerkategorien'
 $GLOBALS['TL_LANG']['tl_module']['banner_template']   = array('Bannervorlage', 'Bitte w&auml;hlen Sie eine Bannervorlage. Sie k&ouml;nnen eigene Vorlagen im Ordner <em>templates</em> speichern oder im Template-Ordner des Themes. Vorlagen m&uuml;ssen mit <em>mod_banner_list_</em> beginnen und die Dateiendung <em>.tpl</em> haben.'); 
 $GLOBALS['TL_LANG']['tl_module']['banner_useragent']  = array('Keine Z&auml;hlung bei HTTP_USER_AGENT Teilkennung', 'Hier kann eine Teilkennung angegeben werden, bei der keine Z&auml;hlung erfolgen soll. Dazu muss die HTTP_USER_AGENT Kennung des Browser ver&auml;ndert werden.<br />Siehe Wiki.');
  
-?>

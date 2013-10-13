@@ -61,5 +61,3 @@ $GLOBALS['TL_LANG']['tl_banner_stat']['prio']['1'] = 'hoch';
 $GLOBALS['TL_LANG']['tl_banner_stat']['prio']['2'] = 'normal';
 $GLOBALS['TL_LANG']['tl_banner_stat']['prio']['3'] = 'gering';
 
-
-?>
