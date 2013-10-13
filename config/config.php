@@ -1,28 +1,16 @@
 <?php 
 /**
-<<<<<<< HEAD
  * Contao Open Source CMS, Copyright (C) 2005-2013 Leo Feyer
  * 
-=======
- * Contao Open Source CMS, Copyright (C) 2005-2012 Leo Feyer
- *
->>>>>>> c3v3.1
  * Modul Banner Config - Backend
  *
  * This is the banner configuration file.
  *
-<<<<<<< HEAD
  * @copyright	Glen Langer 2007..2013 <http://www.contao.glen-langer.de>
  * @author      Glen Langer (BugBuster)
  * @package     Banner 
- * @license     GPL 
+ * @license     LGPL 
  * @filesource
-=======
- * @copyright  Glen Langer 2007..2013
- * @author     Glen Langer
- * @package    Banner 
- * @license    LGPL 
->>>>>>> c3v3.1
  */
 
 define('BANNER_VERSION', '3.1');

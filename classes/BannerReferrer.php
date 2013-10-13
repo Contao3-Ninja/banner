@@ -7,7 +7,7 @@
  * @copyright	Glen Langer 2007..2013 <http://www.contao.glen-langer.de>
  * @author      Glen Langer (BugBuster)
  * @package     Banner
- * @license     GPL
+ * @license     LGPL
  * @filesource
  */
 
@@ -22,7 +22,7 @@ namespace BugBuster\Banner;
  * @copyright  Glen Langer 2007..2013
  * @author     Glen Langer 
  * @package    Banner
- * @license    GPL 
+ * @license    LGPL 
  */
 class BannerReferrer
 {
@@ -147,6 +147,3 @@ class BannerReferrer
 	}
 	
 }
-
-
-?>
