@@ -1,4 +1,4 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php 
 
 /**
  * Contao Open Source CMS
@@ -57,6 +57,7 @@ $GLOBALS['TL_LANG']['tl_banner_category']['copy']   = array('Kategorie duplizier
 $GLOBALS['TL_LANG']['tl_banner_category']['delete'] = array('Kategorie l&ouml;schen', 'Kategorie ID %s l&ouml;schen');
 $GLOBALS['TL_LANG']['tl_banner_category']['show']   = array('Kategoriedetails', 'Details der Kategorie ID %s anzeigen');
 $GLOBALS['TL_LANG']['tl_banner_category']['stat']   = array('Kategoriestatistik', 'Bannerstatistik f&uuml;r die Kategorie ID %s anzeigen');
+$GLOBALS['TL_LANG']['tl_banner_category']['editheader'] = array('Einstellungen der Kategorie bearbeiten', 'Einstellungen der Kategorie ID %s bearbeiten');
 
 /**
  * Icon

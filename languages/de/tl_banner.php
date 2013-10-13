@@ -1,4 +1,4 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php 
 /**
  * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
@@ -76,10 +76,12 @@ $GLOBALS['TL_LANG']['tl_banner']['tl_be_max_views']       = 'max. Ansichten';
 $GLOBALS['TL_LANG']['tl_banner']['tl_be_max_clicks']      = 'max. Klicks';
 $GLOBALS['TL_LANG']['tl_banner']['tl_be_not_defined_max'] = 'unbegrenzt';
 $GLOBALS['TL_LANG']['tl_banner']['tl_be_read_error']      = 'Bannerdatei nicht gefunden oder Lesefehler!';
+$GLOBALS['TL_LANG']['tl_banner']['tl_be_page_not_found']  = 'Seite nicht gefunden.';
+$GLOBALS['TL_LANG']['tl_banner']['tl_be_not_defined']     = 'nicht definiert.';
 $GLOBALS['TL_LANG']['tl_banner']['source_intern']      = 'intern';
 $GLOBALS['TL_LANG']['tl_banner']['source_extern']      = 'extern';
 $GLOBALS['TL_LANG']['tl_banner']['source_fallback']    = 'Bild-Fallback';
-$GLOBALS['TL_LANG']['tl_banner']['source_fallback_no'] = 'Image-Fallback nicht gefunden.';
+$GLOBALS['TL_LANG']['tl_banner']['source_fallback_no'] = 'Bild-Fallback nicht gefunden.';
 
 
 /**
