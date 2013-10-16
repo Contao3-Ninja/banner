@@ -274,7 +274,10 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
             	
             	if ($objBannerNextPage->numRows)
             	{
-            		$objBanners->banner_url = $this->generateFrontendUrl($objBannerNextPage->fetchAssoc());
+                    $objPage = \PageModel::findWithDetails($objBanners->banner_jumpTo); // banner issues 72
+                    $objBanners->banner_url = $this->generateFrontendUrl($objBannerNextPage->fetchAssoc(),
+                                                                            null,
+                                                                            $objPage->rootLanguage);
             	} 
             }
             $banner_redirect = $this->getRedirectType($this->intBID);
