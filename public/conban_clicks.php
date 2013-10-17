@@ -22,6 +22,8 @@
  */
 namespace BugBuster\BotDetection;
 
+use Contao\Controller;
+
 /**
  * Initialize the system
  */
@@ -274,7 +276,16 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
             	
             	if ($objBannerNextPage->numRows)
             	{
-                    $objPage = \PageModel::findWithDetails($objBanners->banner_jumpTo); // banner issues 72
+            	    // banner issues 72
+            	    if (version_compare(VERSION, '3.1', '<'))
+            	    {
+            	        $objPage = \Controller::getPageDetails($objBanners->banner_jumpTo);
+            	    }
+            	    else
+            	    {
+            	        $objPage = \PageModel::findWithDetails($objBanners->banner_jumpTo); 
+            	    }
+                    
                     $objBanners->banner_url = $this->generateFrontendUrl($objBannerNextPage->fetchAssoc(),
                                                                             null,
                                                                             $objPage->rootLanguage);
