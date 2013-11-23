@@ -197,6 +197,7 @@ class BannerHelper extends \Module
 			return false;
 		}
 		$arrGroup = deserialize($objBannerCategory->banner_groups);
+		//Pfad+Dateiname holen ueber UUID (findByPk leitet um auf findByUuid)
 		$objFile = \FilesModel::findByPk($objBannerCategory->banner_default_image);
 		$this->arrCategoryValues = array(
 				'id'                    => $objBannerCategory->id,
@@ -649,7 +650,7 @@ class BannerHelper extends \Module
             switch ($objBanners->banner_type)
             {
                 case self::BANNER_TYPE_INTERN :
-                    //Pfad+Dateiname holen ueber ID
+                    //Pfad+Dateiname holen ueber UUID (findByPk leitet um auf findByUuid)
                     $objFile = \FilesModel::findByPk($objBanners->banner_image);
                     //BannerImage Class
                     $this->import('\Banner\BannerImage', 'BannerImage');
@@ -969,7 +970,7 @@ class BannerHelper extends \Module
 	        switch ($objBanners->banner_type)
 	        {
 	            case self::BANNER_TYPE_INTERN :
-	                //Pfad+Dateiname holen ueber ID
+	                //Pfad+Dateiname holen ueber UUID (findByPk leitet um auf findByUuid)
 	                $objFile = \FilesModel::findByPk($objBanners->banner_image);
 	                //BannerImage Class
 	                $this->import('\Banner\BannerImage', 'BannerImage');
@@ -1305,7 +1306,7 @@ class BannerHelper extends \Module
 	            switch ($objBanners->banner_type)
 	            {
 	                case self::BANNER_TYPE_INTERN :
-	                    //Pfad+Dateiname holen ueber ID
+	                    //Pfad+Dateiname holen ueber UUID (findByPk leitet um auf findByUuid)
 	                    $objFile = \FilesModel::findByPk($objBanners->banner_image);
 	                    //BannerImage Class
 	                    $this->import('\Banner\BannerImage', 'BannerImage');

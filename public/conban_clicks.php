@@ -28,7 +28,7 @@ use Contao\Controller;
  * Initialize the system
  */
 define('TL_MODE', 'FE');
-// ER2 / ER3 
+// ER2 / ER3 (dev over symlink)
 if (file_exists('../../../initialize.php'))
 {
     require('../../../initialize.php');
@@ -276,16 +276,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
             	
             	if ($objBannerNextPage->numRows)
             	{
-            	    // banner issues 72
-            	    if (version_compare(VERSION, '3.1', '<'))
-            	    {
-            	        $objPage = \Controller::getPageDetails($objBanners->banner_jumpTo);
-            	    }
-            	    else
-            	    {
-            	        $objPage = \PageModel::findWithDetails($objBanners->banner_jumpTo); 
-            	    }
-                    
+           	        $objPage = \PageModel::findWithDetails($objBanners->banner_jumpTo); 
                     $objBanners->banner_url = $this->generateFrontendUrl($objBannerNextPage->fetchAssoc(),
                                                                             null,
                                                                             $objPage->rootLanguage);

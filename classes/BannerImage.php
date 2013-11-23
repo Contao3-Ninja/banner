@@ -36,7 +36,7 @@ class BannerImage extends \System //\Frontend
 	 * Current version of the class.
 	 * @var string
 	 */
-	const BANNER_IMAGE_VERSION = '3.0.0';
+	const BANNER_IMAGE_VERSION = '3.2.0';
 	
 	/**
 	 * Banner intern
