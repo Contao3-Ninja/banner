@@ -1,17 +1,13 @@
 <?php 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2012 Leo Feyer
+ * Contao Open Source CMS, Copyright (C) 2005-2013 Leo Feyer
  *
- * @link http://www.contao.org
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
- * 
  * Modul Banner - Backend DCA tl_banner
  * 
  * This is the data container array for table tl_banner.
  *
  * PHP version 5
- * @copyright  Glen Langer 2007..2012
+ * @copyright  Glen Langer 2007..2013
  * @author     Glen Langer
  * @package    Banner
  * @license    LGPL
@@ -194,7 +190,8 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_banner']['banner_image'],
 			'explanation'	          => 'banner_help',
 			'inputType'               => 'fileTree',
-			'sql'                     => "varchar(255) NOT NULL default ''",
+			//'sql'                     => "varchar(255) NOT NULL default ''",
+			'sql'                     => "binary(16) NULL",
 			'eval'                    => array('mandatory'=>true, 'files'=>true, 'filesOnly'=>true, 'fieldType'=>'radio', 'extensions'=>'jpg,jpe,gif,png,swf', 'maxlength'=>255, 'helpwizard'=>true)
 		),
 		'banner_image_extern' => array

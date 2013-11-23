@@ -24,7 +24,7 @@ class BannerRunonceJob extends Controller
 	public function __construct()
 	{
 	    parent::__construct();
-	    //$this->import('Database');
+	    $this->import('Database');
 	}
 	public function run()
 	{
@@ -37,6 +37,30 @@ class BannerRunonceJob extends Controller
 		    $objFile=null;
 		    unset($objFile);
 		}
+		
+		//Check for update to C3.2
+		if ($this->Database->tableExists('tl_banner'))
+		{
+		    $arrFields = $this->Database->listFields('tl_banner');
+		    $blnDone = false;
+		    
+		    //check for one table and field
+		    foreach ($arrFields as $arrField)
+		    {
+		        if ($arrField['name'] == 'banner_image' && $arrField['type'] != 'varchar')
+		        {
+		            $blnDone = true;
+		        }
+		    }
+		    // Run the version 3.2 update in two tables
+		    if ($blnDone == false)
+		    {
+		        Database\Updater::convertSingleField('tl_banner', 'banner_image');
+		        Database\Updater::convertSingleField('tl_banner_category', 'banner_default_image');
+		    }
+		    
+		}
+		
 	}
 }
 
