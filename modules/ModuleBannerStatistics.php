@@ -188,7 +188,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         $this->setBannerURL($Banner);
         $Banner['banner_url'] = html_entity_decode($Banner['banner_url'], ENT_NOQUOTES, 'UTF-8');
         
-        //Pfad+Dateiname holen ueber ID
+        //Pfad+Dateiname holen ueber UUID (findByPk leitet um auf findByUuid)
         $objFile = \FilesModel::findByPk($Banner['banner_image']);
         //BannerImage Class
         $this->import('\Banner\BannerImage', 'BannerImage');

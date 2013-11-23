@@ -84,16 +84,19 @@ class DCA_banner extends \Backend
     {
         if ($row['banner_image'] == '')
         {
-            return '<p class="error">'.$GLOBALS['TL_LANG']['tl_banner']['tl_be_read_error'].'</p>';
+            return '<p class="error">'.$GLOBALS['TL_LANG']['tl_banner']['tl_be_read_error'].' (1)</p>';
         }
-        // Check for version 3 format
-        if (!is_numeric($row['banner_image']))
-        {
-            return '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['version2format'].'</p>';
-        }
-    
         //convert DB file ID into file path ($objFile->path)
-        $objFile = \FilesModel::findByPk($row['banner_image']);
+        $objFile = \FilesModel::findByUuid($row['banner_image']);
+        if ($objFile === null)
+        {
+            // Check for version 3 format
+            if (!\Validator::isUuid($row['banner_image']))
+            {
+                return '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['version2format'].'</p>';
+            }
+            return '<p class="error">'.$GLOBALS['TL_LANG']['tl_banner']['tl_be_read_error'].' (2)</p>';
+        }
     
         //get image size
         $arrImageSize = $this->BannerImage->getBannerImageSize($objFile->path, self::BANNER_TYPE_INTERN);
