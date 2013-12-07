@@ -40,7 +40,7 @@ $GLOBALS['BE_MOD']['system']['bannerstat'] = array
  * FRONT END MODULES
  * -------------------------------------------------------------------------
  */
-$GLOBALS['FE_MOD']['miscellaneous']['banner'] = '\Banner\ModuleBanner';
+$GLOBALS['FE_MOD']['miscellaneous']['banner'] = 'Banner\ModuleBanner';
 
 /**
  * -------------------------------------------------------------------------
