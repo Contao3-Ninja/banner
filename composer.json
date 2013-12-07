@@ -1,7 +1,7 @@
 {
 	"name":"bugbuster/banner",
 	"description":"A banner advertisement module for Contao CMS ",
-	"keywords":["banner","advertisement","counter"],
+	"keywords":["contao","banner","advertisement","counter"],
 	"type":"contao-module",
 	"homepage":"http://www.contao.glen-langer.de",
 	"license":"LGPL-3.0+",
