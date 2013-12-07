@@ -47,7 +47,9 @@ class DCA_banner extends \Backend
     {
         parent::__construct();
         $this->import('BackendUser', 'User');
-        $this->import('BugBuster\Banner\BannerImage', 'BannerImage');
+        //$this->import('BugBuster\Banner\BannerImage', 'BannerImage');
+        $this->BannerImage = new \Banner\BannerImage();
+        
     }
     
     /**
@@ -144,7 +146,7 @@ class DCA_banner extends \Backend
         if ($row['banner_jumpTo'] >0)
         {
             //url generieren
-            $objBannerNextPage = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
+            $objBannerNextPage = \Database::getInstance()->prepare("SELECT id, alias FROM tl_page WHERE id=?")
                                                 ->limit(1)
                                                 ->execute($row['banner_jumpTo']);
             if ($objBannerNextPage->numRows)
@@ -341,7 +343,7 @@ class DCA_banner extends \Backend
         if ($row['banner_jumpTo'] >0)
         {
             //url generieren
-            $objBannerNextPage = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
+            $objBannerNextPage = \Database::getInstance()->prepare("SELECT id, alias FROM tl_page WHERE id=?")
                                                 ->limit(1)
                                                 ->execute($row['banner_jumpTo']);
             if ($objBannerNextPage->numRows)
@@ -507,7 +509,7 @@ class DCA_banner extends \Backend
         if ($row['banner_jumpTo'] >0)
         {
             //url generieren
-            $objBannerNextPage = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
+            $objBannerNextPage = \Database::getInstance()->prepare("SELECT id, alias FROM tl_page WHERE id=?")
                                                 ->limit(1)
                                                 ->execute($row['banner_jumpTo']);
             if ($objBannerNextPage->numRows)
@@ -614,8 +616,8 @@ class DCA_banner extends \Backend
         }
     
         // Update database
-        $this->Database->prepare("UPDATE tl_banner SET banner_published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
-        ->execute($intId);
+        \Database::getInstance()->prepare("UPDATE tl_banner SET banner_published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
+                                ->execute($intId);
     }
 
 
