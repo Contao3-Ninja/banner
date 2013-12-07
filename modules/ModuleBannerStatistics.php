@@ -191,7 +191,9 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         //Pfad+Dateiname holen ueber UUID (findByPk leitet um auf findByUuid)
         $objFile = \FilesModel::findByPk($Banner['banner_image']);
         //BannerImage Class
-        $this->import('\Banner\BannerImage', 'BannerImage');
+        //$this->import('\Banner\BannerImage', 'BannerImage');
+        $this->BannerImage = new \Banner\BannerImage();
+        
         //Banner Art und Größe bestimmen
         $arrImageSize = $this->BannerImage->getBannerImageSize($objFile->path, self::BANNER_TYPE_INTERN);
         // 1 = GIF, 2 = JPG, 3 = PNG
@@ -305,7 +307,9 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         //$Banner['banner_image'] = $Banner['banner_image_extern'];
         
         //BannerImage Class
-        $this->import('\Banner\BannerImage', 'BannerImage');
+        //$this->import('\Banner\BannerImage', 'BannerImage');
+        $this->BannerImage = new \Banner\BannerImage();
+        
         //Banner Art und Größe bestimmen
         $arrImageSize = $this->BannerImage->getBannerImageSize($Banner['banner_image_extern'], self::BANNER_TYPE_EXTERN);
         // 1 = GIF, 2 = JPG, 3 = PNG
