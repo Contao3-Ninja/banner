@@ -47,7 +47,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
     public function __construct()
     {
         parent::__construct();
-        $this->loadLanguageFile('tl_banner_stat');
+        \System::loadLanguageFile('tl_banner_stat'); //$this->loadLanguageFile('tl_banner_stat');
         
         if ( (int)\Input::get('id') == 0)
         {

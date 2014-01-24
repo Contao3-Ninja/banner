@@ -313,6 +313,7 @@ class DCA_banner extends \Backend
     protected function listBannerExternal($row)
     {
         $fallback_content = '';
+
         $arrImageSize = $this->BannerImage->getBannerImageSize($row['banner_image_extern'], self::BANNER_TYPE_EXTERN);
     
         //resize if necessary
@@ -337,8 +338,9 @@ class DCA_banner extends \Backend
             default:
                 break;
         }
+
         $banner_image = $row['banner_image_extern'];
-    
+        //$banner_image = html_entity_decode($row['banner_image_extern'], ENT_NOQUOTES, 'UTF-8');
         //Banner Ziel per Page?
         if ($row['banner_jumpTo'] >0)
         {
