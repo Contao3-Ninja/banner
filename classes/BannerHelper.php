@@ -197,6 +197,7 @@ class BannerHelper extends \Module
 			return false;
 		}
 		$arrGroup = deserialize($objBannerCategory->banner_groups);
+		//Pfad+Dateiname holen ueber UUID (findByPk leitet um auf findByUuid)
 		$objFile = \FilesModel::findByPk($objBannerCategory->banner_default_image);
 		$this->arrCategoryValues = array(
 				'id'                    => $objBannerCategory->id,
@@ -338,8 +339,9 @@ class BannerHelper extends \Module
 			    $banner_default_target = ($this->arrCategoryValues['banner_default_target'] == '1') ? '' : ' target="_blank"';
 			}
 			//BannerImage Class
-			$this->import('\Banner\BannerImage', 'BannerImage');
-			
+			//$this->import('\Banner\BannerImage', 'BannerImage');
+			$this->BannerImage = new \Banner\BannerImage();
+			 
 			//Banner Art bestimmen
 			$arrImageSize = $this->BannerImage->getBannerImageSize($this->arrCategoryValues['banner_default_image'], self::BANNER_TYPE_INTERN);
 			
@@ -587,7 +589,8 @@ class BannerHelper extends \Module
 	    // 5 Minuten, Einträge >= 5 Minuten werden gelöscht
 	    //$BannerFirstViewBlockTime = time() - 60*5; 
 
-	    $this->import('\Banner\BannerReferrer','BannerReferrer');
+	    //$this->import('\Banner\BannerReferrer','BannerReferrer');
+	    $this->BannerReferrer = new \Banner\BannerReferrer();
 	    $this->BannerReferrer->checkReferrer();
 	    $ReferrerDNS = $this->BannerReferrer->getReferrerDNS();
 	    // o own , w wrong
@@ -649,10 +652,11 @@ class BannerHelper extends \Module
             switch ($objBanners->banner_type)
             {
                 case self::BANNER_TYPE_INTERN :
-                    //Pfad+Dateiname holen ueber ID
+                    //Pfad+Dateiname holen ueber UUID (findByPk leitet um auf findByUuid)
                     $objFile = \FilesModel::findByPk($objBanners->banner_image);
                     //BannerImage Class
-                    $this->import('\Banner\BannerImage', 'BannerImage');
+                    //$this->import('\Banner\BannerImage', 'BannerImage');
+                    $this->BannerImage = new \Banner\BannerImage();
                     //Banner Art und Größe bestimmen
                     $arrImageSize = $this->BannerImage->getBannerImageSize($objFile->path, self::BANNER_TYPE_INTERN);
                     //Banner Neue Größe 0:$Width 1:$Height
@@ -682,7 +686,8 @@ class BannerHelper extends \Module
                     break;
                 case self::BANNER_TYPE_EXTERN :
                     //BannerImage Class
-                    $this->import('\Banner\BannerImage', 'BannerImage');
+                    //$this->import('\Banner\BannerImage', 'BannerImage');
+                    $this->BannerImage = new \Banner\BannerImage();
                     //Banner Art und Größe bestimmen
                     $arrImageSize = $this->BannerImage->getBannerImageSize($objBanners->banner_image_extern, self::BANNER_TYPE_EXTERN);
                     //Banner Neue Größe 0:$Width 1:$Height
@@ -969,10 +974,11 @@ class BannerHelper extends \Module
 	        switch ($objBanners->banner_type)
 	        {
 	            case self::BANNER_TYPE_INTERN :
-	                //Pfad+Dateiname holen ueber ID
+	                //Pfad+Dateiname holen ueber UUID (findByPk leitet um auf findByUuid)
 	                $objFile = \FilesModel::findByPk($objBanners->banner_image);
 	                //BannerImage Class
-	                $this->import('\Banner\BannerImage', 'BannerImage');
+	                //$this->import('\Banner\BannerImage', 'BannerImage');
+	                $this->BannerImage = new \Banner\BannerImage();
 	                //Banner Art und Größe bestimmen
 	                $arrImageSize = $this->BannerImage->getBannerImageSize($objFile->path, self::BANNER_TYPE_INTERN);
 	                //Banner Neue Größe 0:$Width 1:$Height
@@ -1002,7 +1008,8 @@ class BannerHelper extends \Module
 	                break;
 	            case self::BANNER_TYPE_EXTERN :
 	                //BannerImage Class
-	                $this->import('\Banner\BannerImage', 'BannerImage');
+	                //$this->import('\Banner\BannerImage', 'BannerImage');
+	                $this->BannerImage = new \Banner\BannerImage();
 	                //Banner Art und Größe bestimmen
 	                $arrImageSize = $this->BannerImage->getBannerImageSize($objBanners->banner_image_extern, self::BANNER_TYPE_EXTERN);
 	                //Banner Neue Größe 0:$Width 1:$Height
@@ -1305,10 +1312,11 @@ class BannerHelper extends \Module
 	            switch ($objBanners->banner_type)
 	            {
 	                case self::BANNER_TYPE_INTERN :
-	                    //Pfad+Dateiname holen ueber ID
+	                    //Pfad+Dateiname holen ueber UUID (findByPk leitet um auf findByUuid)
 	                    $objFile = \FilesModel::findByPk($objBanners->banner_image);
 	                    //BannerImage Class
-	                    $this->import('\Banner\BannerImage', 'BannerImage');
+	                    //$this->import('\Banner\BannerImage', 'BannerImage');
+	                    $this->BannerImage = new \Banner\BannerImage();
 	                    //Banner Art und Größe bestimmen
 	                    $arrImageSize = $this->BannerImage->getBannerImageSize($objFile->path, self::BANNER_TYPE_INTERN);
 	                    //Banner Neue Größe 0:$Width 1:$Height
@@ -1338,7 +1346,8 @@ class BannerHelper extends \Module
 	                    break;
 	                case self::BANNER_TYPE_EXTERN :
 	                    //BannerImage Class
-	                    $this->import('\Banner\BannerImage', 'BannerImage');
+	                    //$this->import('\Banner\BannerImage', 'BannerImage');
+	                    $this->BannerImage = new \Banner\BannerImage();
 	                    //Banner Art und Größe bestimmen
 	                    $arrImageSize = $this->BannerImage->getBannerImageSize($objBanners->banner_image_extern, self::BANNER_TYPE_EXTERN);
 	                    //Banner Neue Größe 0:$Width 1:$Height
@@ -1775,7 +1784,8 @@ class BannerHelper extends \Module
 	        return false;
 	    }
 	    // Import Helperclass ModuleBotDetection
-	    $this->import('\BotDetection\ModuleBotDetection','ModuleBotDetection');
+	    //$this->import('\BotDetection\ModuleBotDetection','ModuleBotDetection');
+	    $this->ModuleBotDetection = new \BotDetection\ModuleBotDetection();
 	    if ($this->ModuleBotDetection->BD_CheckBotAgent() || $this->ModuleBotDetection->BD_CheckBotIP())
 	    {
 	        //log_message('BannerCheckBot True','Banner.log');

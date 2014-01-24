@@ -47,7 +47,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
     public function __construct()
     {
         parent::__construct();
-        $this->loadLanguageFile('tl_banner_stat');
+        \System::loadLanguageFile('tl_banner_stat'); //$this->loadLanguageFile('tl_banner_stat');
         
         if ( (int)\Input::get('id') == 0)
         {
@@ -188,10 +188,12 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         $this->setBannerURL($Banner);
         $Banner['banner_url'] = html_entity_decode($Banner['banner_url'], ENT_NOQUOTES, 'UTF-8');
         
-        //Pfad+Dateiname holen ueber ID
+        //Pfad+Dateiname holen ueber UUID (findByPk leitet um auf findByUuid)
         $objFile = \FilesModel::findByPk($Banner['banner_image']);
         //BannerImage Class
-        $this->import('\Banner\BannerImage', 'BannerImage');
+        //$this->import('\Banner\BannerImage', 'BannerImage');
+        $this->BannerImage = new \Banner\BannerImage();
+        
         //Banner Art und Größe bestimmen
         $arrImageSize = $this->BannerImage->getBannerImageSize($objFile->path, self::BANNER_TYPE_INTERN);
         // 1 = GIF, 2 = JPG, 3 = PNG
@@ -305,7 +307,9 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         //$Banner['banner_image'] = $Banner['banner_image_extern'];
         
         //BannerImage Class
-        $this->import('\Banner\BannerImage', 'BannerImage');
+        //$this->import('\Banner\BannerImage', 'BannerImage');
+        $this->BannerImage = new \Banner\BannerImage();
+        
         //Banner Art und Größe bestimmen
         $arrImageSize = $this->BannerImage->getBannerImageSize($Banner['banner_image_extern'], self::BANNER_TYPE_EXTERN);
         // 1 = GIF, 2 = JPG, 3 = PNG

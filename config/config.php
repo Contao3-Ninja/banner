@@ -13,7 +13,7 @@
  * @filesource
  */
 
-define('BANNER_VERSION', '3.1');
+define('BANNER_VERSION', '3.2');
 define('BANNER_BUILD'  , '0');
 
 /**
@@ -40,7 +40,7 @@ $GLOBALS['BE_MOD']['system']['bannerstat'] = array
  * FRONT END MODULES
  * -------------------------------------------------------------------------
  */
-$GLOBALS['FE_MOD']['miscellaneous']['banner'] = '\Banner\ModuleBanner';
+$GLOBALS['FE_MOD']['miscellaneous']['banner'] = 'Banner\ModuleBanner';
 
 /**
  * -------------------------------------------------------------------------

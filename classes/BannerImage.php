@@ -36,7 +36,7 @@ class BannerImage extends \System //\Frontend
 	 * Current version of the class.
 	 * @var string
 	 */
-	const BANNER_IMAGE_VERSION = '3.0.0';
+	const BANNER_IMAGE_VERSION = '3.2.0';
 	
 	/**
 	 * Banner intern
@@ -129,6 +129,8 @@ class BannerImage extends \System //\Frontend
 		$token = md5(uniqid(rand(), true));
 		$tmpImage = 'system/tmp/mod_banner_fe_'.$token.'.tmp';
 		$objRequest = new \Request();
+		$objRequest->redirect = true; // #75: Unterstützung der redirects für externe Affiliat Banner
+		$objRequest->rlimit = 5;     // #75: Unterstützung der redirects für externe Affiliat Banner
 		$objRequest->send(html_entity_decode($BannerImage, ENT_NOQUOTES, 'UTF-8'));
 		//old: Test auf chunked, nicht noetig solange Contao bei HTTP/1.0 bleibt
 		try

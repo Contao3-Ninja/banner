@@ -48,16 +48,8 @@ class ModuleBanner extends \BugBuster\Banner\BannerHelper
 	        $objTemplate->title = $this->headline;
 	        $objTemplate->id = $this->id;
 	        $objTemplate->link = $this->name;
-	        if (version_compare(VERSION, '2.9', '>'))
-	        {
-	            // Code für Versionen ab 3.0
-	            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-	        }
-	        else
-	        {
-	            // Code für Versionen < 3.0
-	            $objTemplate->wildcard = '### BANNER MODULE ONLY FOR CONTAO 3.0 AND ABOVE ###';
-	        }
+	        $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+	        
 	        return $objTemplate->parse();
 	    }
 	    return parent::generate();
