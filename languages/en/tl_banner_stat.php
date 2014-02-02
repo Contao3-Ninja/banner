@@ -38,10 +38,6 @@ $GLOBALS['TL_LANG']['tl_banner_stat']['max_yes'] = '(Maximum)'; // Text under nu
 $GLOBALS['TL_LANG']['tl_banner_stat']['comment'] = '';
 $GLOBALS['TL_LANG']['tl_banner_stat']['modname'] = 'Banner Module';
 
-$GLOBALS['TL_LANG']['tl_banner_stat']['export'] = 'Export';
-$GLOBALS['TL_LANG']['tl_banner_stat']['export_button_title'] = 'The Button opens a new window.';
-$GLOBALS['TL_LANG']['tl_banner_stat']['export_headline']     = 'Category,ID,Name,URL,Picture,Priority,Show from,Show until,Published,Views,Clicks';
-
 $GLOBALS['TL_LANG']['tl_banner_stat']['zero_text']    = 'The banner statistic counter will be reset to zero.';
 $GLOBALS['TL_LANG']['tl_banner_stat']['zero_confirm'] = 'Do you really want to reset the banner statistic counters (views and clicks)?';
 
