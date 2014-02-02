@@ -18,7 +18,7 @@
 		</div>
 		<div class="tl_search tl_subpanel">
 			<strong><?php echo $this->bannerstatcat; ?>:</strong>
-			<select class="tl_select" name="id" style="width:150px;">
+			<select class="tl_select" name="id" style="width:200px;">
 				<?php foreach ($this->bannercats as $bannercat): ?>
 				    <?php if ($bannercat['id']==$this->bannercatid) : ?>
 				<option selected="selected" value="<?php echo $bannercat['id']; ?>"><?php echo $bannercat['title']; ?></option>
@@ -54,12 +54,11 @@
     <!-- Categorie Reset End //-->
     <div class="clear"></div>
 </div>
-    <!-- Export Row Start, follows in a later release
-<div class="tl_panel">
-    	
-</div>
-    Export Row End   
-    //-->
+<?php if ($this->banner_hook_panels): ?>
+	<?php foreach ($this->banner_hook_panels as $panel): ?>
+		<?php echo $panel; ?>
+    <?php endforeach; ?>
+<?php endif; ?>
 <br> <br>
 <div class="tl_formbody_edit">
 

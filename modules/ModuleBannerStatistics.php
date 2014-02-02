@@ -127,6 +127,8 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         $this->Template->bannercatzerotext    = $GLOBALS['TL_LANG']['tl_banner_stat']['cat_zero_text'];
         $this->Template->bannercatzeroconfirm = $GLOBALS['TL_LANG']['tl_banner_stat']['cat_zero_confirm'];
    
+        $this->Template->banner_hook_panels = $this->addStatisticPanelLineHook();
+        
     } // compile
     
     /**
@@ -400,5 +402,31 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         return $arrBannersStat;
     } // addBannerExtern
     
+    /**
+     * Hook: addStatisticPanelLine
+     * Search for registered BANNER HOOK: addStatisticPanelLine
+     *
+     * @return    string    HTML5 sourcecode | false
+     * <code>
+     * <!-- output minimum -->
+     * <div class="tl_panel">
+     *  <!-- <p>hello world</p> -->
+     * </div>
+     * </code>
+     */
+    protected function addStatisticPanelLineHook()
+    {
+        if (isset($GLOBALS['TL_BANNER_HOOKS']['addStatisticPanelLine']) 
+                && is_array($GLOBALS['TL_BANNER_HOOKS']['addStatisticPanelLine']))
+        {
+            foreach ($GLOBALS['TL_BANNER_HOOKS']['addStatisticPanelLine'] as $callback)
+            {
+                $this->import($callback[0]);
+                $result[] = $this->$callback[0]->$callback[1]($this->intCatID);
+            }
+            return $result;
+        }
+        return false;
+    }
     
 } // class

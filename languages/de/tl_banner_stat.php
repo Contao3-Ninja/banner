@@ -38,10 +38,6 @@ $GLOBALS['TL_LANG']['tl_banner_stat']['max_yes'] = '(Maximum)'; // Text unter Vi
 $GLOBALS['TL_LANG']['tl_banner_stat']['comment'] = '';
 $GLOBALS['TL_LANG']['tl_banner_stat']['modname'] = 'Banner Modul';
 
-$GLOBALS['TL_LANG']['tl_banner_stat']['export'] = 'Export';
-$GLOBALS['TL_LANG']['tl_banner_stat']['export_button_title'] = 'Der Export erfolgt in einem neuen Fenster.';
-$GLOBALS['TL_LANG']['tl_banner_stat']['export_headline']     = 'Kategorie,ID,Name,URL,Bild,Priorit&auml;t,Anzeigen ab,Anzeigen bis,Ver&ouml;ffentlicht,Ansichten,Klicks';
-
 $GLOBALS['TL_LANG']['tl_banner_stat']['zero_text']    = 'Bannerstatistik auf 0 setzen f&uuml;r diesen Banner.';
 $GLOBALS['TL_LANG']['tl_banner_stat']['zero_confirm'] = 'View- und Klickstatistik wirklich auf 0 setzen f&uuml;r diesen Werbebanner?';
 
