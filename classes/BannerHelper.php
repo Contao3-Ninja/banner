@@ -880,7 +880,7 @@ class BannerHelper extends \Module
                 }
                 
                 // Kurz URL (nur Domain)
-                $treffer = parse_url($objBanners->banner_url);
+                $treffer = parse_url(\Idna::decode($objBanners->banner_url)); // #79
                 $banner_url_kurz = $treffer['host'];
                 if (isset($treffer['port'])) 
                 {
@@ -1202,7 +1202,7 @@ class BannerHelper extends \Module
 	            }
 	    
 	            // Kurz URL (nur Domain)
-	            $treffer = parse_url($objBanners->banner_url);
+	            $treffer = parse_url(\Idna::decode($objBanners->banner_url)); // #79
 	            $banner_url_kurz = $treffer['host'];
 	            if (isset($treffer['port']))
 	            {
@@ -1535,7 +1535,7 @@ class BannerHelper extends \Module
 	                }
 	                 
 	                // Kurz URL (nur Domain)
-	                $treffer = parse_url($objBanners->banner_url);
+	                $treffer = parse_url(\Idna::decode($objBanners->banner_url)); // #79
 	                $banner_url_kurz = $treffer['host'];
 	                if (isset($treffer['port']))
 	                {

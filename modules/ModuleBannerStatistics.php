@@ -142,6 +142,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         $arrBannersStat = array();
         // Kurz URL (nur Domain)
         $this->setBannerURL($Banner);
+        $Banner['banner_url'] = \Idna::decode($Banner['banner_url']); // #79
         $treffer = parse_url($Banner['banner_url']);
         $banner_url_kurz = $treffer['host'];
         if (isset($treffer['port']))
@@ -188,7 +189,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         // and $Banner['banner_published_class'] published/unpublished
         $this->setBannerPublishedActive($Banner);
         $this->setBannerURL($Banner);
-        $Banner['banner_url'] = html_entity_decode($Banner['banner_url'], ENT_NOQUOTES, 'UTF-8');
+        $Banner['banner_url'] = \Idna::decode($Banner['banner_url']); // #79
         
         //Pfad+Dateiname holen ueber UUID (findByPk leitet um auf findByUuid)
         $objFile = \FilesModel::findByPk($Banner['banner_image']);
@@ -305,7 +306,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         // and $Banner['banner_published_class'] published/unpublished
         $this->setBannerPublishedActive($Banner);
         $this->setBannerURL($Banner);
-        $Banner['banner_url']   = html_entity_decode($Banner['banner_url'], ENT_NOQUOTES, 'UTF-8');
+        $Banner['banner_url']   = \Idna::decode($Banner['banner_url']);
         //$Banner['banner_image'] = $Banner['banner_image_extern'];
         
         //BannerImage Class

@@ -167,7 +167,7 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 			'inputType'               => 'text',
 			'explanation'	          => 'banner_help',
 			'sql'                     => "varchar(255) NOT NULL default ''",
-			'eval'                    => array('mandatory'=>false, 'maxlength'=>255, 'helpwizard'=>true)
+			'eval'                    => array('mandatory'=>false, 'rgxp'=>'url', 'decodeEntities'=>true, 'maxlength'=>255, 'helpwizard'=>true)
 		),
 		'banner_jumpTo' => array
 		(
@@ -200,7 +200,7 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 			'inputType'               => 'text',
 			'explanation'	          => 'banner_help',
 			'sql'                     => "varchar(255) NOT NULL default ''",
-			'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'helpwizard'=>true)
+			'eval'                    => array('mandatory'=>true, 'rgxp'=>'url', 'decodeEntities'=>true, 'maxlength'=>255, 'helpwizard'=>true)
 		),
         'banner_imgSize' => array
 		(
