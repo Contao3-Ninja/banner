@@ -305,12 +305,9 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
             }
             $banner_redirect = '303';
         }
-        /**
-         * Contao codiert = und # (ev. auch mehr) um in &#61; / &#35;
-         * Links mit Parametern werden so ungueltig.
-         * Daher wieder decodieren.
-         */
-		$banner_url = html_entity_decode($objBanners->banner_url, ENT_NOQUOTES, 'UTF-8');
+
+		$banner_url = ampersand($objBanners->banner_url);
+		//log_message('conbanClicks ampersand '.print_r($banner_url,true),'Banner.log');
 		//header('HTTP/1.1 301 Moved Permanently');
 		//header('HTTP/1.1 302 Found');
 		//header('HTTP/1.1 303 See Other');

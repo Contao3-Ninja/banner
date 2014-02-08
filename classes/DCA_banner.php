@@ -154,7 +154,7 @@ class DCA_banner extends \Backend
                 $row['banner_url'] = $this->generateFrontendUrl($objBannerNextPage->fetchAssoc());
             }
         }
-        $banner_url = html_entity_decode($row['banner_url'], ENT_NOQUOTES, 'UTF-8');
+        $banner_url = ampersand(\Idna::decode($row['banner_url']));
         $banner_url_text = $GLOBALS['TL_LANG']['tl_banner']['banner_url'][0].': ';
         
         if ( strlen($banner_url) <1 && $row['banner_jumpTo'] <1 )
@@ -353,7 +353,7 @@ class DCA_banner extends \Backend
                 $row['banner_url'] = $this->generateFrontendUrl($objBannerNextPage->fetchAssoc());
             }
         }
-        $banner_url = html_entity_decode($row['banner_url'], ENT_NOQUOTES, 'UTF-8');
+        $banner_url = ampersand(\Idna::decode($row['banner_url']));
         if (strlen($banner_url)>0)
         {
             $banner_url_text = $GLOBALS['TL_LANG']['tl_banner']['banner_url'][0].': ';
@@ -520,7 +520,7 @@ class DCA_banner extends \Backend
             }
         }
         
-        $banner_url = html_entity_decode($row['banner_url'], ENT_NOQUOTES, 'UTF-8');
+        $banner_url = ampersand(\Idna::decode($row['banner_url']));
         if (strlen($banner_url)>0)
         {
             $banner_url_text = $GLOBALS['TL_LANG']['tl_banner']['banner_url'][0].': ';
