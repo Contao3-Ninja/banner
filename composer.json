@@ -36,6 +36,12 @@
 			"sources":{
 				"":"system/modules/banner"
 			},
+			"transifex": {
+				"project": "contao-banner",
+				"prefix": "master-",
+				"languages_cto": "languages",
+				"languages_tx": ".tx"
+			},
 			"runonce":[
 				"runonce/runonce.php"
 			]

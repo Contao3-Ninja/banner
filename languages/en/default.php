@@ -1,26 +1,16 @@
-<?php 
+<?php
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2012 Leo Feyer
+ * Translations are managed using Transifex. To create a new translation
+ * or to help to maintain an existing one, please register at transifex.com.
  *
- * Formerly known as TYPOlight Open Source CMS.
- * 
- * Modul Banner Sprachdateien
+ * @link http://help.transifex.com/intro/translating.html
+ * @link https://www.transifex.com/projects/p/contao-banner/language/en/
  *
- * Default language file (en).
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * PHP version 5
- * @copyright  Glen Langer 2007..2012
- * @author     Glen Langer
- * @package    BannerLanguage 
- * @license    GPL 
- * @filesource
+ * last-updated: 2014-06-29T01:29:23+02:00
  */
 
 
-/**
- * Miscellaneous
- */
-//$GLOBALS['TL_LANG']['MSC'][''] = '';
-$GLOBALS['TL_LANG']['MSC']['tl_banner']['noBanner'] = ''; // e.g. 'No Banner found'
+$GLOBALS['TL_LANG']['MSC']['tl_banner']['noBanner'] = 'No banner found and no banner default image';
 
