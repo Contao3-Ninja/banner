@@ -8,9 +8,8 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-02-09T06:50:54+01:00
+ * last-updated: 2014-06-29T00:55:54+02:00
  */
-
 
 $GLOBALS['TL_LANG']['tl_banner']['1']                        = 'بالاترین اولیت';
 $GLOBALS['TL_LANG']['tl_banner']['2']                        = 'اولیت عادی';
@@ -18,12 +17,15 @@ $GLOBALS['TL_LANG']['tl_banner']['3']                        = 'پایین تر�
 $GLOBALS['TL_LANG']['tl_banner']['banner_cat_not_found']     = 'دسته‌ای در ماژول بنر انتخاب نشده است.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_clicks_until']['0'] = 'محدود کردن تعداد کلیک';
 $GLOBALS['TL_LANG']['tl_banner']['banner_comment']['0']      = 'متن بنر';
+$GLOBALS['TL_LANG']['tl_banner']['banner_comment']['1']      = 'نظر برای برچسب عنوان است. برای بنر متنی: خط متن.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_image']['0']        = 'تصویر بنر';
 $GLOBALS['TL_LANG']['tl_banner']['banner_image']['1']        = 'لطفا بنر را انتخاب کنید. (GIF,JPG,PNG,SWF)';
 $GLOBALS['TL_LANG']['tl_banner']['banner_image_extern']['0'] = 'نشانی وب تصویر بنر';
+$GLOBALS['TL_LANG']['tl_banner']['banner_image_extern']['1'] = 'نشانی وب تصویر بنر خارجی: http://...';
 $GLOBALS['TL_LANG']['tl_banner']['banner_imgSize']['0']      = 'عرض و ارتفاع بنر';
 $GLOBALS['TL_LANG']['tl_banner']['banner_jumpTo']['0']       = 'صفحه مقصد بنر';
 $GLOBALS['TL_LANG']['tl_banner']['banner_name']['0']         = 'نام بنر';
+$GLOBALS['TL_LANG']['tl_banner']['banner_name']['1']         = 'نام بنر را وارد نماید. برای بنر متنی: عنوان.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_published']['0']    = 'منتشر شده';
 $GLOBALS['TL_LANG']['tl_banner']['banner_start']['0']        = 'نمایش از';
 $GLOBALS['TL_LANG']['tl_banner']['banner_stop']['0']         = 'نمایش تا';
@@ -31,6 +33,7 @@ $GLOBALS['TL_LANG']['tl_banner']['banner_target']['0']       = 'پیوند دا�
 $GLOBALS['TL_LANG']['tl_banner']['banner_type']['0']         = 'مرجع بنر';
 $GLOBALS['TL_LANG']['tl_banner']['banner_until']['0']        = 'محدود کردن تعداد بازدید و کلیک';
 $GLOBALS['TL_LANG']['tl_banner']['banner_url']['0']          = 'نشانی وب مقصد بنر';
+$GLOBALS['TL_LANG']['tl_banner']['banner_url']['1']          = 'نشانی وب مقصد بنر را وارد نمایید:‌http://...';
 $GLOBALS['TL_LANG']['tl_banner']['banner_views_until']['0']  = 'محدود کردن تعداد بازدید';
 $GLOBALS['TL_LANG']['tl_banner']['banner_weighting']['0']    = 'توزین بنر';
 $GLOBALS['TL_LANG']['tl_banner']['banner_weighting']['1']    = 'اولیت را انتخاب کنید';

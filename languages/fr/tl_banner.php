@@ -8,9 +8,8 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-02-08T23:02:16+01:00
+ * last-updated: 2014-06-29T00:55:54+02:00
  */
-
 
 $GLOBALS['TL_LANG']['tl_banner']['1']                        = 'Haute priorité';
 $GLOBALS['TL_LANG']['tl_banner']['2']                        = 'Priorité standard';
@@ -20,6 +19,8 @@ $GLOBALS['TL_LANG']['tl_banner']['banner_clicks_until']['0'] = 'Limite du nombre
 $GLOBALS['TL_LANG']['tl_banner']['banner_clicks_until']['1'] = 'En saisissant un nombre, cette bannière n\'apparaîtra plus une fois qu\'elle aura été cliquée le nombre de fois que vous saisissez.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_comment']['0']      = 'Commentaire Bannière';
 $GLOBALS['TL_LANG']['tl_banner']['banner_comment']['1']      = 'Commentaire pour la balise titre. Pour une bannière texte: ligne de texte.';
+$GLOBALS['TL_LANG']['tl_banner']['banner_domain']['0']       = 'Filtrage par nom de domaine';
+$GLOBALS['TL_LANG']['tl_banner']['banner_domain']['1']       = 'Si vous entrez un nom de domaine, la bannière sera utilisée uniquement sur ce domaine. Si le champs est vide, la bannière sera utilisée pour tous les domaines.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_image']['0']        = 'Bannière Image';
 $GLOBALS['TL_LANG']['tl_banner']['banner_image']['1']        = 'Veuillez choisir la bannière.(GIF,JPG,PNG,SWF)';
 $GLOBALS['TL_LANG']['tl_banner']['banner_image_extern']['0'] = 'URL de la bannière image';
@@ -56,6 +57,7 @@ $GLOBALS['TL_LANG']['tl_banner']['delete']['1']              = 'Effacer bannièr
 $GLOBALS['TL_LANG']['tl_banner']['destination_legend']       = 'Cibles de la bannière';
 $GLOBALS['TL_LANG']['tl_banner']['edit']['0']                = 'Editer Bannière';
 $GLOBALS['TL_LANG']['tl_banner']['edit']['1']                = 'Editer bannière ID %s';
+$GLOBALS['TL_LANG']['tl_banner']['filter_legend']            = 'Filtrage';
 $GLOBALS['TL_LANG']['tl_banner']['image_legend']             = 'Image de la bannière';
 $GLOBALS['TL_LANG']['tl_banner']['new']['0']                 = 'Nouvelle bannière';
 $GLOBALS['TL_LANG']['tl_banner']['new']['1']                 = 'Ajouter une nouvelle bannière';
@@ -68,9 +70,11 @@ $GLOBALS['TL_LANG']['tl_banner']['title_legend']             = 'Nom et priorité
 $GLOBALS['TL_LANG']['tl_banner']['tl_be_max_clicks']         = 'Clics max.';
 $GLOBALS['TL_LANG']['tl_banner']['tl_be_max_views']          = 'Vues max.';
 $GLOBALS['TL_LANG']['tl_banner']['tl_be_no']                 = 'non';
+$GLOBALS['TL_LANG']['tl_banner']['tl_be_not_defined']        = 'Non défini';
 $GLOBALS['TL_LANG']['tl_banner']['tl_be_not_defined_max']    = 'Illimité';
 $GLOBALS['TL_LANG']['tl_banner']['tl_be_not_defined_start']  = 'Immédiatement';
 $GLOBALS['TL_LANG']['tl_banner']['tl_be_not_defined_stop']   = 'Toujours';
+$GLOBALS['TL_LANG']['tl_banner']['tl_be_page_not_found']     = 'Page introuvable';
 $GLOBALS['TL_LANG']['tl_banner']['tl_be_read_error']         = 'Fichier bannière non trouvé, ou erreur de lecture';
 $GLOBALS['TL_LANG']['tl_banner']['tl_be_start']              = 'Afficher à partir du';
 $GLOBALS['TL_LANG']['tl_banner']['tl_be_stop']               = 'Afficher jusqu\'au';

@@ -8,9 +8,8 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-06-28T23:12:03+02:00
+ * last-updated: 2014-06-29T00:55:54+02:00
  */
-
 
 $GLOBALS['TL_LANG']['tl_banner_stat']['NoURL']            = 'Keine URL';
 $GLOBALS['TL_LANG']['tl_banner_stat']['Prio']             = 'Priorität';
@@ -19,7 +18,7 @@ $GLOBALS['TL_LANG']['tl_banner_stat']['active']           = 'Aktiv';
 $GLOBALS['TL_LANG']['tl_banner_stat']['allkat']           = 'Alle Kategorien';
 $GLOBALS['TL_LANG']['tl_banner_stat']['cat_zero']         = 'Statistik';
 $GLOBALS['TL_LANG']['tl_banner_stat']['cat_zero_button']  = 'Reset aller Banner';
-$GLOBALS['TL_LANG']['tl_banner_stat']['cat_zero_confirm'] = 'View- und Klickstatistik wirklich auf 0 setzen für <strong>alle</strong> Banner dieser Kategorie?';
+$GLOBALS['TL_LANG']['tl_banner_stat']['cat_zero_confirm'] = 'View- und Klickstatistik wirklich auf 0 setzen für alle Banner dieser Kategorie?';
 $GLOBALS['TL_LANG']['tl_banner_stat']['cat_zero_text']    = 'Bannerstatistik auf 0 setzen für ALLE Banner dieser Kategorie.';
 $GLOBALS['TL_LANG']['tl_banner_stat']['clicks']           = 'Klicks';
 $GLOBALS['TL_LANG']['tl_banner_stat']['id']               = 'ID';
