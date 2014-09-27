@@ -659,6 +659,13 @@ class BannerHelper extends \Module
                     $this->BannerImage = new \Banner\BannerImage();
                     //Banner Art und Größe bestimmen
                     $arrImageSize = $this->BannerImage->getBannerImageSize($objFile->path, self::BANNER_TYPE_INTERN);
+                    //Falls Datei gelöscht wurde, Abbruch
+                    if (false === $arrImageSize) 
+                    {
+                    	$arrImageSize[2] = 0;
+                    	$this->log('Banner Image with ID "'.$objBanners->id.'" not found', 'BannerHelper getSingleBannerFirst', TL_ERROR);
+                    	break;
+                    }                    
                     //Banner Neue Größe 0:$Width 1:$Height
                     $arrNewSizeValues = deserialize($objBanners->banner_imgSize);
                     //Banner Neue Größe ermitteln, return array $Width,$Height,$oriSize
@@ -690,6 +697,13 @@ class BannerHelper extends \Module
                     $this->BannerImage = new \Banner\BannerImage();
                     //Banner Art und Größe bestimmen
                     $arrImageSize = $this->BannerImage->getBannerImageSize($objBanners->banner_image_extern, self::BANNER_TYPE_EXTERN);
+                    //Falls Datei gelöscht wurde, Abbruch
+                    if (false === $arrImageSize)
+                    {
+                        $arrImageSize[2] = 0;
+                        $this->log('Banner Image with ID "'.$objBanners->id.'" not found', 'BannerHelper getSingleBannerFirst', TL_ERROR);
+                        break;
+                    }
                     //Banner Neue Größe 0:$Width 1:$Height
                     $arrNewSizeValues = deserialize($objBanners->banner_imgSize);
                     //Banner Neue Größe ermitteln, return array $Width,$Height,$oriSize
@@ -981,6 +995,13 @@ class BannerHelper extends \Module
 	                $this->BannerImage = new \Banner\BannerImage();
 	                //Banner Art und Größe bestimmen
 	                $arrImageSize = $this->BannerImage->getBannerImageSize($objFile->path, self::BANNER_TYPE_INTERN);
+	                //Falls Datei gelöscht wurde, Abbruch
+	                if (false === $arrImageSize)
+	                {
+	                    $arrImageSize[2] = 0;
+	                    $this->log('Banner Image with ID "'.$objBanners->id.'" not found', 'BannerHelper getSingleBanner', TL_ERROR);
+	                    break;
+	                }
 	                //Banner Neue Größe 0:$Width 1:$Height
 	                $arrNewSizeValues = deserialize($objBanners->banner_imgSize);
 	                //Banner Neue Größe ermitteln, return array $Width,$Height,$oriSize
@@ -1012,6 +1033,13 @@ class BannerHelper extends \Module
 	                $this->BannerImage = new \Banner\BannerImage();
 	                //Banner Art und Größe bestimmen
 	                $arrImageSize = $this->BannerImage->getBannerImageSize($objBanners->banner_image_extern, self::BANNER_TYPE_EXTERN);
+	                //Falls Datei gelöscht wurde, Abbruch
+	                if (false === $arrImageSize)
+	                {
+	                    $arrImageSize[2] = 0;
+	                    $this->log('Banner Image with ID "'.$objBanners->id.'" not found', 'BannerHelper getSingleBanner', TL_ERROR);
+	                    break;
+	                }
 	                //Banner Neue Größe 0:$Width 1:$Height
 	                $arrNewSizeValues = deserialize($objBanners->banner_imgSize);
 	                //Banner Neue Größe ermitteln, return array $Width,$Height,$oriSize
@@ -1319,6 +1347,13 @@ class BannerHelper extends \Module
 	                    $this->BannerImage = new \Banner\BannerImage();
 	                    //Banner Art und Größe bestimmen
 	                    $arrImageSize = $this->BannerImage->getBannerImageSize($objFile->path, self::BANNER_TYPE_INTERN);
+	                    //Falls Datei gelöscht wurde, Abbruch
+	                    if (false === $arrImageSize)
+	                    {
+	                        $arrImageSize[2] = 0;
+	                        $this->log('Banner Image with ID "'.$objBanners->id.'" not found', 'BannerHelper getMultiBanner', TL_ERROR);
+	                        break;
+	                    }
 	                    //Banner Neue Größe 0:$Width 1:$Height
 	                    $arrNewSizeValues = deserialize($objBanners->banner_imgSize);
 	                    //Banner Neue Größe ermitteln, return array $Width,$Height,$oriSize
@@ -1350,6 +1385,13 @@ class BannerHelper extends \Module
 	                    $this->BannerImage = new \Banner\BannerImage();
 	                    //Banner Art und Größe bestimmen
 	                    $arrImageSize = $this->BannerImage->getBannerImageSize($objBanners->banner_image_extern, self::BANNER_TYPE_EXTERN);
+	                    //Falls Datei gelöscht wurde, Abbruch
+	                    if (false === $arrImageSize)
+	                    {
+	                        $arrImageSize[2] = 0;
+	                        $this->log('Banner Image with ID "'.$objBanners->id.'" not found', 'BannerHelper getMultiBanner', TL_ERROR);
+	                        break;
+	                    }
 	                    //Banner Neue Größe 0:$Width 1:$Height
 	                    $arrNewSizeValues = deserialize($objBanners->banner_imgSize);
 	                    //Banner Neue Größe ermitteln, return array $Width,$Height,$oriSize
