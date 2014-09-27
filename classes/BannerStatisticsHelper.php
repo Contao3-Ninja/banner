@@ -83,6 +83,7 @@ class BannerStatisticsHelper extends \BackendModule
     /**
      * Get min category id
      * 
+     * @deprecated
      * @return number    CatID    0|min(pid)
      */
     protected function getCatID()
@@ -101,6 +102,18 @@ class BannerStatisticsHelper extends \BackendModule
         {
             return $objBannerCatID->ID;
         }
+    }
+    
+    /**
+     * Get first category id by arrCategories
+     *
+     * @param   array   $arrBannerCategories
+     * @return  number  CatID    
+     */
+    protected function getCatIdByCategories($arrBannerCategories)
+    {
+        $arrFirstCat = array_shift($arrBannerCategories);
+        return $arrFirstCat['id'];
     }
     
     /**
@@ -208,6 +221,7 @@ class BannerStatisticsHelper extends \BackendModule
     /**
      * Get banner categories
      * 
+     * @deprecated
      * @param     integer    $banner_number
      * @return    array      $arrBannerCats
      */
@@ -274,6 +288,48 @@ class BannerStatisticsHelper extends \BackendModule
         return $arrBannerCats;
         
     } // getBannerCategories
+    
+    /**
+     * Get banner categories by usergroups
+     * 
+     * @param array $Usergroups
+     * @return array 
+     */
+    protected function getBannerCategoriesByUsergroups()
+    {
+        $arrBannerCats = array();
+
+        $objBannerCat = \Database::getInstance()
+                            ->prepare("SELECT
+                                            `id`
+                                          , `title`
+                                          , `banner_stat_groups`
+                                       FROM
+                                            tl_banner_category
+                                        WHERE 1
+                                        ORDER BY 
+                                            title
+                                        ")
+                            ->execute();
+        while ($objBannerCat->next())
+        {
+            if ( true === $this->isUserInBannerStatGroups($objBannerCat->banner_stat_groups) ) 
+            {
+                $arrBannerCats[] = array
+                (
+                    'id'    => $objBannerCat->id,
+                    'title' => $objBannerCat->title
+                );
+            }
+        }
+        
+        if (0 == count($arrBannerCats)) 
+        {
+        	$arrBannerCats[] = array('id' => '0', 'title' => '---------');
+        }
+        return $arrBannerCats;
+    }
+    
     
     /**
      * Set banner_url
@@ -425,5 +481,35 @@ class BannerStatisticsHelper extends \BackendModule
         return ;
     }
     
+    /**
+     * Check if User member of group in banner statistik groups 
+     * 
+     * @param   string  DB Field "banner_stat_groups", serialized array
+     * @return  bool    true / false
+     */
+    protected function isUserInBannerStatGroups($banner_stat_groups)
+    {
+        if (0 == strlen($banner_stat_groups)) 
+        {
+            //log_message('banner_stat_groups ist leer', 'banner.log');
+        	return true; // nicht gefiltert, also darf jeder
+        }
+        if ( true === $this->User->isAdmin )
+        {
+            //log_message('Ich bin Admin', 'banner.log');
+            return true; // Admin darf immer
+        }
+        
+        //mit isMemberOf ermitteln, ob user Member einer der Cat Groups ist
+        foreach (deserialize($banner_stat_groups) as $id => $groupid)
+        {
+            if ( true === $this->User->isMemberOf($groupid) ) 
+            {
+                //log_message('Ich bin in der richtigen Gruppe', 'banner.log');
+            	return true; // User is Member of banner_stat_group 
+            }
+        }
+        return false;
+    }
     
 } // class
