@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Contao Open Source CMS, Copyright (C) 2005-2013 Leo Feyer
+ * Contao Open Source CMS, Copyright (C) 2005-2014 Leo Feyer
  *
  * Modul Banner - FE Helper Class BannerHelper
  *
- * @copyright  Glen Langer 2007..2013 <http://www.contao.glen-langer.de>
+ * @copyright  Glen Langer 2007..2014 <http://www.contao.glen-langer.de>
  * @author     Glen Langer (BugBuster)
  * @package    Banner
  * @license    LGPL
@@ -21,12 +21,12 @@ namespace BugBuster\Banner;
 /**
  * Class BannerHelper
  *
- * @copyright  Glen Langer 2007..2013 <http://www.contao.glen-langer.de>
+ * @copyright  Glen Langer 2007..2014 <http://www.contao.glen-langer.de>
  * @author     Glen Langer (BugBuster)
  * @package    Banner
  * @license    LGPL
  */
-class BannerHelper extends \Module
+class BannerHelper extends \Frontend 
 {
 	/**
 	 * Banner intern
@@ -111,19 +111,6 @@ class BannerHelper extends \Module
 	 */
 	private $_session   = array();
 	
-	
-	/**
-	 * parent call of generate()
-	 */
-	public function generate()
-	{
-		return parent::generate();
-	}
-	
-	protected function compile()
-	{
-		
-	}
 	/*
 	 * constructor of Module generates
 	 * $this->arrData = $objModule->row(); use getter / setter for this
@@ -150,7 +137,7 @@ class BannerHelper extends \Module
 		 */
 		
 		//set $arrCategoryValues over tl_banner_category
-		if ($this->getSetCategoryValues()===false) { return false; }
+		if ($this->getSetCategoryValues() === false) { return false; }
 		
 		//check for protected user groups
 		//set $statusBannerFrontendGroupView
