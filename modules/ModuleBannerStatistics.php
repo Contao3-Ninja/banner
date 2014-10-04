@@ -69,17 +69,37 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
      */
     protected function compile()
     {
-        $arrBanners     = array();
-        $arrBannersStat = array();
-        
+        $arrBanners      = array();
+        $arrBannersStat  = array();
+        $intCatIdAllowed = false;
+
+        //alle Kategorien holen die der User sehen darf
+        $arrBannerCategories = $this->getBannerCategoriesByUsergroups();
+        // no categories : array('id' => '0', 'title' => '---------');
+        // empty array   : array('id' => '0', 'title' => '---------');
+        // array[0..n]   : array(0, array('id' => '1', ....), 1, ....)
+       
         if ($this->intCatID == 0) //direkter Aufruf ohne ID
         {
-            $this->intCatID = $this->getCatID();
+            $this->intCatID = $this->getCatIdByCategories($arrBannerCategories);
+        }
+        else 
+        {
+            // ID des Aufrufes erlaubt?
+            foreach ($arrBannerCategories as $value)
+            {
+                if ($this->intCatID == $value['id'])
+                {
+                    $intCatIdAllowed = true;
+                }
+            }
+            if ( false === $intCatIdAllowed ) 
+            {
+            	$this->intCatID = $this->getCatIdByCategories($arrBannerCategories);
+            }
+            
         }
         $arrBanners = $this->getBannersByCatID($this->intCatID);
-        
-        //alle Kategorien holen
-        $arrBannerCategories = $this->getBannerCategories( count($arrBanners) );
         
         foreach ($arrBanners as $Banner) 
         {
@@ -429,5 +449,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         }
         return false;
     }
+    
+
     
 } // class

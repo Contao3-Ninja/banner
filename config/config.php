@@ -1,20 +1,20 @@
 <?php 
 /**
- * Contao Open Source CMS, Copyright (C) 2005-2013 Leo Feyer
+ * Contao Open Source CMS, Copyright (C) 2005-2014 Leo Feyer
  * 
  * Modul Banner Config - Backend
  *
  * This is the banner configuration file.
  *
- * @copyright	Glen Langer 2007..2013 <http://www.contao.glen-langer.de>
+ * @copyright	Glen Langer 2007..2014 <http://www.contao.glen-langer.de>
  * @author      Glen Langer (BugBuster)
  * @package     Banner 
  * @license     LGPL 
  * @filesource
  */
 
-define('BANNER_VERSION', '3.3');
-define('BANNER_BUILD'  , '1');
+define('BANNER_VERSION', '3.4');
+define('BANNER_BUILD'  , '0');
 
 /**
  * -------------------------------------------------------------------------
@@ -48,4 +48,5 @@ $GLOBALS['FE_MOD']['miscellaneous']['banner'] = 'Banner\ModuleBanner';
  * -------------------------------------------------------------------------
  */
 $GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('Banner\BannerCheckHelper', 'checkExtensions');
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('Banner\ModuleBannerTag', 'ReplaceInsertTagsBanner');
 

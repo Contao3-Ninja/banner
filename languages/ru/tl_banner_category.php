@@ -8,11 +8,10 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-05-06T12:33:02+02:00
+ * last-updated: 2014-06-29T00:55:54+02:00
  */
 
-
-$GLOBALS['TL_LANG']['tl_banner_category']['banner_default']['0']        = 'Стандартное изображение баннера';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_default']['0']        = 'Изображение баннера по умолчанию';
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_default']['1']        = 'Этот баннер будет показан, если не будут найдены активные баннеры.<br />Выбор этой опции имеет приоритет над опцией "Скрыть модуль если пусто".';
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_default_image']['0']  = 'Изображение баннера по умолчанию';
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_default_image']['1']  = 'Выберите баннер. (GIF, JPG, PNG, SWF)';

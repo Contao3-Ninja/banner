@@ -56,4 +56,10 @@ $GLOBALS['TL_LANG']['tl_banner_category']['title']['1']                 = 'Pleas
 $GLOBALS['TL_LANG']['tl_banner_category']['title_legend']               = 'Category and Banner Template';
 $GLOBALS['TL_LANG']['tl_banner_category']['tstamp']['0']                = 'Revision date';
 $GLOBALS['TL_LANG']['tl_banner_category']['tstamp']['1']                = 'Date and time of latest revision';
-
+$GLOBALS['TL_LANG']['tl_banner_category']['protected_stat_legend']      = 'Access protection for the statistic';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_protected']['0'] = 'Protect the statistic';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_protected']['1'] = 'Show the banner statistic for this category to certain user groups only.';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_groups']['0']    = 'Allowed user groups';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_groups']['1']    = 'Here you can choose which groups will be allowed to see the banner statistic of this category.';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_admins']['0']    = 'Administrators';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_admins']['1']    = 'Administrators have unlimited access to all banner statistics.';

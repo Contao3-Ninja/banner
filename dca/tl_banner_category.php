@@ -115,15 +115,16 @@ $GLOBALS['TL_DCA']['tl_banner_category'] = array
 	// Palettes
 	'palettes' => array
 	(
-	    '__selector__'                => array('banner_default', 'banner_protected', 'banner_numbers'), 
-		'default'                     => '{title_legend},title;{default_legend:hide},banner_default;{number_legend:hide},banner_numbers;{protected_legend:hide},banner_protected'
+	    '__selector__'                => array('banner_default', 'banner_protected', 'banner_numbers', 'banner_stat_protected'), 
+		'default'                     => '{title_legend},title;{default_legend:hide},banner_default;{number_legend:hide},banner_numbers;{protected_legend:hide},banner_protected;{protected_stat_legend:hide},banner_stat_protected'
 	),
 	// Subpalettes
 	'subpalettes' => array
 	(
 		'banner_default'              => 'banner_default_name,banner_default_url,banner_default_image,banner_default_target',
 		'banner_protected'            => 'banner_groups',
-		'banner_numbers'              => 'banner_limit,banner_random'
+		'banner_numbers'              => 'banner_limit,banner_random',
+		'banner_stat_protected'       => 'banner_stat_groups,banner_stat_admins',      
 	),
 
 	// Fields
@@ -226,7 +227,34 @@ $GLOBALS['TL_DCA']['tl_banner_category'] = array
 			'foreignKey'              => 'tl_member_group.name',
 			'sql'                     => "varchar(255) NOT NULL default ''",
 			'eval'                    => array('multiple'=>true)
-		)
+		),
+		'banner_stat_protected'       => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_protected'],
+			'exclude'                 => true,
+			'filter'                  => true,
+			'inputType'               => 'checkbox',
+			'sql'                     => "char(1) NOT NULL default ''",
+			'eval'                    => array('submitOnChange'=>true)
+		),
+		'banner_stat_groups'          => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_groups'],
+			'exclude'                 => true,
+			'inputType'               => 'checkbox',
+			'foreignKey'              => 'tl_user_group.name',
+			'sql'                     => "varchar(255) NOT NULL default ''",
+			'eval'                    => array('multiple'=>true)
+		),
+		'banner_stat_admins' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_admins'],
+	        'inputType'               => 'checkbox',
+			'eval'                    => array('disabled'=>true),
+			'load_callback' => array
+			(
+			    array('BugBuster\Banner\DCA_banner_category', 'getAdminCheckbox')
+			)
+		),
 	)
 );
-

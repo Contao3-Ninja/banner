@@ -30,6 +30,7 @@ ClassLoader::addClasses(array
 	'BugBuster\BannerStatistics\ModuleBannerStatistics' => 'system/modules/banner/modules/ModuleBannerStatistics.php',
 
 	// Classes
+    'BugBuster\Banner\ModuleBannerTag'                  => 'system/modules/banner/classes/ModuleBannerTag.php',
 	'BugBuster\Banner\BannerHelper'                     => 'system/modules/banner/classes/BannerHelper.php',
 	'BugBuster\Banner\DCA_banner'                       => 'system/modules/banner/classes/DCA_banner.php',
 	'BugBuster\BannerStatistics\BannerStatisticsHelper' => 'system/modules/banner/classes/BannerStatisticsHelper.php',
@@ -51,4 +52,5 @@ TemplateLoader::addFiles(array
 	'mod_banner_list_all' => 'system/modules/banner/templates',
 	'mod_banner_list_min' => 'system/modules/banner/templates',
 	'mod_banner_stat'     => 'system/modules/banner/templates',
+	'mod_banner_tag'      => 'system/modules/banner/templates',
 ));

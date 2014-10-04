@@ -1,11 +1,11 @@
 <?php 
 
 /**
- * Contao Open Source CMS, Copyright (C) 2005-2013 Leo Feyer
+ * Contao Open Source CMS, Copyright (C) 2005-2014 Leo Feyer
  *
  * Contao Module "Banner" - DCA Helper Class DCA_banner_category
  *
- * @copyright  Glen Langer 2012..2013 <http://www.contao.glen-langer.de>
+ * @copyright  Glen Langer 2012..2014 <http://www.contao.glen-langer.de>
  * @author     Glen Langer (BugBuster)
  * @package    Banner
  * @license    LGPL
@@ -43,5 +43,10 @@ class DCA_banner_category extends \Backend
             $label_2 = '';
         }
         return $label_1 . ' ' . $label_2 . $version_warning;
+    }
+    
+    public function getAdminCheckbox($varValue)
+    {
+        return '1';
     }
 }
