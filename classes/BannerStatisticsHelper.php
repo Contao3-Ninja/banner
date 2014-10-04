@@ -327,6 +327,7 @@ class BannerStatisticsHelper extends \BackendModule
         {
         	$arrBannerCats[] = array('id' => '0', 'title' => '---------');
         }
+        
         return $arrBannerCats;
     }
     
@@ -505,7 +506,7 @@ class BannerStatisticsHelper extends \BackendModule
         {
             if ( true === $this->User->isMemberOf($groupid) ) 
             {
-                //log_message('Ich bin in der richtigen Gruppe', 'banner.log');
+                //log_message('Ich bin in der richtigen Gruppe '.$groupid, 'banner.log');
             	return true; // User is Member of banner_stat_group 
             }
         }
