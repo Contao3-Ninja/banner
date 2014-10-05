@@ -69,7 +69,8 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	            return false; // nicht für uns
 	        }
 	    }
-
+	    //DEBUG
+	    //log_message('--------------------------------'.$arrTag[1],'Banner.log');
 	    if (isset($arrTag[1]))
 	    {
 	        $retModuleData = $this->getModuleData($arrTag[1]);
@@ -102,6 +103,8 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	 */
 	protected function getModuleData($moduleId)
 	{
+	    //DEBUG
+	    //log_message('getModuleData Banner Modul ID:'.$moduleId,'Banner.log');
 	    $objBannerModule = \Database::getInstance()->prepare("SELECT 
                                                                     banner_hideempty,
                                                         	        banner_firstview,
@@ -137,6 +140,8 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	
 	protected function generateBanner()
 	{
+	    //DEBUG
+	    //log_message('generateBanner banner_categories:'.$this->banner_categories,'Banner.log');
 		if ($this->BannerHelperInit() === false)
 		{
 			$this->log('Problem in BannerHelperInit', 'ModuleBannerTag generateBanner', TL_ERROR);

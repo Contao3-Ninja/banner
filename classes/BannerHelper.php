@@ -163,6 +163,8 @@ class BannerHelper extends \Frontend
 	 */
 	protected function getSetCategoryValues()
 	{
+	    //DEBUG
+	    //log_message('getSetCategoryValues banner_categories:'.$this->banner_categories,'Banner.log');
 		//$this->banner_categories is now an ID, but the name is backward compatible 
 		if ( !isset($this->banner_categories) || !is_numeric($this->banner_categories) ) 
 		{
@@ -199,6 +201,8 @@ class BannerHelper extends \Frontend
 				'banner_protected'		=> $objBannerCategory->banner_protected,
 				'banner_group'			=> $arrGroup[0]
 				);
+		//DEBUG
+	    //log_message('getSetCategoryValues arrCategoryValues:'.print_r($this->arrCategoryValues,true),'Banner.log');
 		return true;
 	}
 	
@@ -233,6 +237,7 @@ class BannerHelper extends \Frontend
 	 */
 	protected function getSetAllBannerForCategory()
 	{
+	    $this->arrAllBannersBasic = array(); 
 		//wenn mit der definierte Kategorie ID keine Daten gefunden wurden
 		//macht Suche nach Banner kein Sinn
 		if ($this->arrCategoryValues === false) 
@@ -292,6 +297,8 @@ class BannerHelper extends \Frontend
 		{
 			$this->arrAllBannersBasic[$objBanners->id] = $objBanners->banner_weighting;
 		}
+		//DEBUG
+		//log_message('getSetAllBannerForCategory arrAllBannersBasic:'.print_r($this->arrAllBannersBasic,true),'Banner.log');
 		return (bool)$this->arrAllBannersBasic; //false bei leerem array, sonst true
 	}
 	
