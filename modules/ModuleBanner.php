@@ -58,7 +58,9 @@ class ModuleBanner extends \Module
 	
 	protected function compile()
 	{
-	    $this->Template->banner_module_id = $this->id;
+	    global $objPage;
+	    $this->Template->banner_module_id    = $this->id;
+	    $this->Template->banner_outputFormat = $objPage->outputFormat;
 	}
 
 }

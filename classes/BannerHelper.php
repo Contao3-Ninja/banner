@@ -149,11 +149,13 @@ class BannerHelper extends \Frontend
 			$this->statusAllBannersBasic = false;
 		}
 		
-		global $objPage;
-		if ($objPage->outputFormat == 'html5')
+		//ModuleBannerTag->outputFormat
+		if ($this->outputFormat == 'html5')
 		{
 		    $this->strFormat = 'html5';
 		}
+		//DEBUG 
+		//log_message('BannerHelperInit this->outputFormat:'.$this->outputFormat,'Banner.log');
 	}
 	
 	/**
@@ -338,7 +340,10 @@ class BannerHelper extends \Frontend
 			 
 			//Banner Art bestimmen
 			$arrImageSize = $this->BannerImage->getBannerImageSize($this->arrCategoryValues['banner_default_image'], self::BANNER_TYPE_INTERN);
-			
+			// 1 = GIF, 2 = JPG, 3 = PNG
+			// 4 = SWF, 13 = SWC (zip-like swf file)
+			// 5 = PSD, 6 = BMP, 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order)
+			// 9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF			
 			switch ($arrImageSize[2]) 
 			{
 			    case 1:
