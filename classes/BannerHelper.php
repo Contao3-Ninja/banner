@@ -648,6 +648,7 @@ class BannerHelper extends \Frontend
         if($intRows > 0)
         {
             $objBanners->next();
+            self::$arrBannerSeen[] = $objBanners->id;
             switch ($objBanners->banner_type)
             {
                 case self::BANNER_TYPE_INTERN :
@@ -984,6 +985,7 @@ class BannerHelper extends \Frontend
 	    if($intRows > 0)
 	    {
 	        $objBanners->next();
+	        self::$arrBannerSeen[] = $objBanners->id;
 	        switch ($objBanners->banner_type)
 	        {
 	            case self::BANNER_TYPE_INTERN :
@@ -1329,7 +1331,7 @@ class BannerHelper extends \Frontend
 	        {
 	            $arrBanners = array();
 	            $objBanners->next();
-	            
+	            self::$arrBannerSeen[] = $objBanners->id;
 	            if (!$this->statusRandomBlocker) 
 	            {
 	                //Random Blocker setzen für den ersten Banner
