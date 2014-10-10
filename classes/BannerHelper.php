@@ -125,6 +125,16 @@ class BannerHelper extends \Frontend
 	 */
 	protected function BannerHelperInit()
 	{
+	    //Fix the planet
+	    $this->statusRandomBlocker           = false;
+	    $this->statusFirstViewBlocker        = false;
+	    $this->statusBannerFirstView         = false;
+	    $this->statusBannerFrontendGroupView = true;
+	    $this->statusAllBannersBasic         = true;
+	    $this->arrCategoryValues             = array();
+	    $this->arrAllBannersBasic            = array();
+	    
+	    
 		/* over getter use:
 		 * banner_hideempty
 		 * banner_firstview		- old: $this->selectBannerFirstView
