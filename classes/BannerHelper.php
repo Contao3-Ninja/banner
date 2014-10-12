@@ -500,7 +500,7 @@ class BannerHelper extends \Frontend
 	    if ($BannerID==0) { return; }// kein Banner, nichts zu tun
 	    
 	    $this->statusRandomBlocker = true;
-	    $this->setSession('RandomBlocker', array( $BannerID => time() ));
+	    $this->setSession('RandomBlocker'.$this->module_id , array( $BannerID => time() ));
 	    return ;
 	}
 	
@@ -511,7 +511,7 @@ class BannerHelper extends \Frontend
 	 */
 	protected function getRandomBlockerId()
 	{
-	    $this->getSession('RandomBlocker');
+	    $this->getSession('RandomBlocker'.$this->module_id);
 	    if ( count($this->_session) )
 	    {
 	        list($key, $val) = each($this->_session);
@@ -532,7 +532,7 @@ class BannerHelper extends \Frontend
 	    if ($banner_categorie==0) { return; }// keine Banner Kategorie, nichts zu tun
 	     
 	    $this->statusFirstViewBlocker = true;
-	    $this->setSession('FirstViewBlocker', array( $banner_categorie => time() ));
+	    $this->setSession('FirstViewBlocker'.$this->module_id, array( $banner_categorie => time() ));
 	    return ;
 	}
 	
@@ -543,7 +543,7 @@ class BannerHelper extends \Frontend
 	 */
 	protected function getFirstViewBlockerId()
 	{
-	    $this->getSession('FirstViewBlocker');
+	    $this->getSession('FirstViewBlocker'.$this->module_id);
 	    if ( count($this->_session) )
 	    {
 	        list($key, $tstmap) = each($this->_session);
@@ -1749,7 +1749,7 @@ class BannerHelper extends \Frontend
 	{
 	    if ($banner_id==0) { return; }// keine Banner ID, nichts zu tun
     	//das können mehrere sein!, mergen!
-	    $this->setSession('StatViewUpdateBlocker', array( $banner_id => time() ), true );
+	    $this->setSession('StatViewUpdateBlocker'.$this->module_id, array( $banner_id => time() ), true );
 	    return ;
 	}
 	
@@ -1760,7 +1760,7 @@ class BannerHelper extends \Frontend
 	 */
 	protected function getStatViewUpdateBlockerId($banner_id=0)
 	{
-	    $this->getSession('StatViewUpdateBlocker');
+	    $this->getSession('StatViewUpdateBlocker'.$this->module_id);
 	    if ( count($this->_session) )
 	    {
 	        reset($this->_session);
@@ -1806,12 +1806,12 @@ class BannerHelper extends \Frontend
 	        if ( count($this->_session) == 0 ) 
 	        {
 	            //komplett löschen
-	            \Session::getInstance()->remove('StatViewUpdateBlocker');
+	            \Session::getInstance()->remove('StatViewUpdateBlocker'.$this->module_id);
 	        }
 	        else //sonst neu setzen
 	        {
     	        //gekuerzte Session neu setzen
-	            $this->setSession('StatViewUpdateBlocker', $this->_session , false );
+	            $this->setSession('StatViewUpdateBlocker'.$this->module_id, $this->_session , false );
 	        }
 	    }
 	    return false;

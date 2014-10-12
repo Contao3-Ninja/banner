@@ -53,6 +53,7 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	protected $article_cssID     = ''; // id="artikelcssid"
 	protected $article_style     = ''; // margin-top:55px; margin-bottom:66px;
 	protected $outputFormat      = 'xhtml'; //Fallback
+	protected $module_id          = 0;
 	
 	
 	/**
@@ -105,6 +106,7 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	 */
 	protected function getModuleData($moduleId)
 	{
+	    $this->module_id = $moduleId; //for RandomBlocker Session
 	    //DEBUG
 	    //log_message('getModuleData Banner Modul ID:'.$moduleId,'Banner.log');
 	    $objBannerModule = \Database::getInstance()->prepare("SELECT 
