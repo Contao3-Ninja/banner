@@ -53,6 +53,7 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	protected $article_cssID     = ''; // id="artikelcssid"
 	protected $article_style     = ''; // margin-top:55px; margin-bottom:66px;
 	protected $outputFormat      = 'xhtml'; //Fallback
+	protected $templatepfad      = 'templates';
 	protected $module_id          = 0;
 	
 	
@@ -94,7 +95,8 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	    if (isset($arrTag[4])) { $this->article_cssID = $arrTag[4]; }
 	    if (isset($arrTag[5])) { $this->article_style = $arrTag[5]; }
 	    if (isset($arrTag[6])) { $this->outputFormat  = $arrTag[6]; }
-	    
+	    if (isset($arrTag[7])) { $this->templatepfad  = $arrTag[7]; }
+
 	    return $this->generateBanner();
 	}
 	

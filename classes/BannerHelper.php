@@ -110,13 +110,6 @@ class BannerHelper extends \Frontend
 	 * @access private
 	 */
 	private $_session   = array();
-	
-	/*
-	 * constructor of Module generates
-	 * $this->arrData = $objModule->row(); use getter / setter for this
-	 * $this->space = deserialize($objModule->space);
-	 * $this->cssID = deserialize($objModule->cssID, true); 
-	 */
 	 
 	/**
 	 * INIT
@@ -133,18 +126,6 @@ class BannerHelper extends \Frontend
 	    $this->statusAllBannersBasic         = true;
 	    $this->arrCategoryValues             = array();
 	    $this->arrAllBannersBasic            = array();
-	    
-	    
-		/* over getter use:
-		 * banner_hideempty
-		 * banner_firstview		- old: $this->selectBannerFirstView
-		 * banner_categories    - is now an ID, but the name is backward compatible 
-		 * banner_template
-		 * banner_redirect
-		 * banner_useragent		- old: $this->useragent_filter
-		 * banner_random
-		 * banner_limit         - 0 all, other:max
-		 */
 		
 		//set $arrCategoryValues over tl_banner_category
 		if ($this->getSetCategoryValues() === false) { return false; }
@@ -166,6 +147,14 @@ class BannerHelper extends \Frontend
 		}
 		//DEBUG 
 		//log_message('BannerHelperInit this->outputFormat:'.$this->outputFormat,'Banner.log');
+		global $objPage; 
+		if ($objPage == NULL) 
+		{
+			$objPage = new \stdClass();
+			$objPage->templateGroup = $this->templatepfad;
+			$objPage->outputFormat = $this->outputFormat; 
+		}
+		
 	}
 	
 	/**

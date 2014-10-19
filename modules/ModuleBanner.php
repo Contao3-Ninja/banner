@@ -61,6 +61,7 @@ class ModuleBanner extends \Module
 	    global $objPage;
 	    $this->Template->banner_module_id    = $this->id;
 	    $this->Template->banner_outputFormat = $objPage->outputFormat;
+	    $this->Template->banner_templatepfad = $objPage->templateGroup;
 	}
 
 }
