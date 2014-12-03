@@ -8,9 +8,8 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-06-29T01:35:11+02:00
+ * last-updated: 2014-09-19T01:14:27+02:00
  */
 
-
-$GLOBALS['TL_LANG']['MSC']['tl_banner']['noBanner'] = 'بنری یافت نشد و بدون تصویر پیش‌فرض بنر';
+$GLOBALS['TL_LANG']['MSC']['tl_banner']['noBanner'] = 'بنری یافت نشد و تصویر پیش‌فرض بنر وجود ندارد';
 

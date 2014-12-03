@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-06-29T00:55:54+02:00
+ * last-updated: 2014-09-19T01:14:27+02:00
  */
 
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_default']['0']        = 'Изображение баннера по умолчанию';
@@ -32,6 +32,12 @@ $GLOBALS['TL_LANG']['tl_banner_category']['banner_protected']['1']      = 'По�
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_protected_catagory']  = 'Защищенная категория';
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_random']['0']         = 'Случайный порядок';
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_random']['1']         = 'Если выбрать эту опцию, баннеры будут показаны в случайном порядке.';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_admins']['0']    = 'Администраторы';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_admins']['1']    = 'Администраторы имеют неограниченный доступ ко всем баннерам статистики.';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_groups']['0']    = 'Разрешенные группы пользователей';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_groups']['1']    = 'Вы можете выбрать, каким группам будет разрешено видеть баннер статистики этой категории.';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_protected']['0'] = 'Защитить статистику';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_protected']['1'] = 'Показать баннер статистики для этой категории определенным группам пользователей.';
 $GLOBALS['TL_LANG']['tl_banner_category']['copy']['0']                  = 'Копировать категорию';
 $GLOBALS['TL_LANG']['tl_banner_category']['copy']['1']                  = 'Копировать категорию ID %s';
 $GLOBALS['TL_LANG']['tl_banner_category']['default_legend']             = 'Детали баннера по умолчанию';
@@ -46,6 +52,7 @@ $GLOBALS['TL_LANG']['tl_banner_category']['new']['0']                   = 'Но�
 $GLOBALS['TL_LANG']['tl_banner_category']['new']['1']                   = 'Создание новой категории';
 $GLOBALS['TL_LANG']['tl_banner_category']['number_legend']              = 'Количество баннеров';
 $GLOBALS['TL_LANG']['tl_banner_category']['protected_legend']           = 'Защита доступа';
+$GLOBALS['TL_LANG']['tl_banner_category']['protected_stat_legend']      = 'Защита доступа к статистике';
 $GLOBALS['TL_LANG']['tl_banner_category']['show']['0']                  = 'Детали категории';
 $GLOBALS['TL_LANG']['tl_banner_category']['show']['1']                  = 'Показать детали категории ID %s';
 $GLOBALS['TL_LANG']['tl_banner_category']['stat']['0']                  = 'Статистика категории';
