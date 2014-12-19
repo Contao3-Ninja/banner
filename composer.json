@@ -25,9 +25,6 @@
 		"contao-community-alliance/composer-plugin": "*",
 		"bugbuster/botdetection":">=3.2.1"
 	},
-	"conflict": {
-		"contao/core": "3.4.0"
-	},
 	"autoload":{
 		"classmap":[""]
 	},
