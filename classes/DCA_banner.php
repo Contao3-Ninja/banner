@@ -63,9 +63,9 @@ class DCA_banner extends \Backend
         $sql = 'SELECT CAST(`banner_published` AS UNSIGNED INTEGER) AS published
                 	,count(id) AS numbers 
                 FROM `tl_banner` 
-                WHERE `pid`=1
+                WHERE `pid`=?
                 GROUP BY 1';
-        $objNumbers = \Database::getInstance()->prepare($sql)->execute();
+        $objNumbers = \Database::getInstance()->prepare($sql)->execute($catId);
         if ($objNumbers->numRows == 0)
         {
             return $add;
