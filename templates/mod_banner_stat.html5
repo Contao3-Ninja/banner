@@ -65,6 +65,9 @@
 	<table summary="Table lists records" class="tl_listing">
 	<tbody>
 	<tr>
+		<td><?php echo $this->number_active; ?></td><td><?php echo $this->number_inactive; ?></td><td></td><td></td>
+	</tr>
+	<tr>
 	    <td style="padding-left: 2px;" class="tl_folder_tlist">
 	        <?php echo $this->header_picture." / ".$this->header_name." / ".$this->header_url; ?>
 	    </td>
