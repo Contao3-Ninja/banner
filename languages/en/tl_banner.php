@@ -15,6 +15,8 @@
 $GLOBALS['TL_LANG']['tl_banner']['1']                        = 'Highest priority';
 $GLOBALS['TL_LANG']['tl_banner']['2']                        = 'Normal priority';
 $GLOBALS['TL_LANG']['tl_banner']['3']                        = 'Lowest priority';
+$GLOBALS['TL_LANG']['tl_banner']['banner_activ']             = 'activ';
+$GLOBALS['TL_LANG']['tl_banner']['banner_inactiv']           = 'inactiv';
 $GLOBALS['TL_LANG']['tl_banner']['banner_cat_not_found']     = 'No category selected in banner modul.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_clicks_until']['0'] = 'Limiting the number of Clicks';
 $GLOBALS['TL_LANG']['tl_banner']['banner_clicks_until']['1'] = 'By entering a number, the current banner is no longer displayed after this number of clicks.';
@@ -32,6 +34,7 @@ $GLOBALS['TL_LANG']['tl_banner']['banner_jumpTo']['0']       = 'Banner target pa
 $GLOBALS['TL_LANG']['tl_banner']['banner_jumpTo']['1']       = 'Please select the target page from the page tree. This selection takes priority over the banner target URL.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_name']['0']         = 'Banner Name';
 $GLOBALS['TL_LANG']['tl_banner']['banner_name']['1']         = 'Please enter the banner name. For text banner: title.';
+$GLOBALS['TL_LANG']['tl_banner']['banner_number_of']         = 'Number of banners';
 $GLOBALS['TL_LANG']['tl_banner']['banner_published']['0']    = 'Published';
 $GLOBALS['TL_LANG']['tl_banner']['banner_published']['1']    = 'Unless you choose this option, this banner is not considered to show.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_start']['0']        = 'Show from';
