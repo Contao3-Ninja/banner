@@ -59,16 +59,36 @@ class DCA_banner extends \Backend
     {
         $catId = $add['id'];
         unset($add['id']); //delete the helper
-        $activ = 5;
-        $inactiv = 2;        
-        $add[$GLOBALS['TL_LANG']['tl_banner']['banner_number_of']] = $activ." " 
-                        . $GLOBALS['TL_LANG']['tl_banner']['banner_activ']
+        
+        $sql = 'SELECT CAST(`banner_published` AS UNSIGNED INTEGER) AS published
+                	,count(id) AS numbers 
+                FROM `tl_banner` 
+                WHERE `pid`=1
+                GROUP BY 1';
+        $objNumbers = \Database::getInstance()->prepare($sql)->execute();
+        if ($objNumbers->numRows == 0)
+        {
+            return $add;
+        }
+        $published     = 0;
+        $not_published = 0;
+        while ($objNumbers->next())
+        {
+            if ($objNumbers->published == 0) 
+            {
+            	$not_published = $objNumbers->numbers;
+            }
+            if ($objNumbers->published == 1)
+            {
+                $published = $objNumbers->numbers;
+            }
+        }
+    
+        $add[$GLOBALS['TL_LANG']['tl_banner']['banner_number_of']] = $published." " 
+                        . $GLOBALS['TL_LANG']['tl_banner']['banner_active']
                         . " / "
-                        . $inactiv." "
-                        . $GLOBALS['TL_LANG']['tl_banner']['banner_inactiv'];
-        
-        
-        
+                        . $not_published." "
+                        . $GLOBALS['TL_LANG']['tl_banner']['banner_inactive'];
         return $add;
     }
     

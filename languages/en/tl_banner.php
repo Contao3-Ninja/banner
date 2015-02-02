@@ -15,8 +15,8 @@
 $GLOBALS['TL_LANG']['tl_banner']['1']                        = 'Highest priority';
 $GLOBALS['TL_LANG']['tl_banner']['2']                        = 'Normal priority';
 $GLOBALS['TL_LANG']['tl_banner']['3']                        = 'Lowest priority';
-$GLOBALS['TL_LANG']['tl_banner']['banner_activ']             = 'activ';
-$GLOBALS['TL_LANG']['tl_banner']['banner_inactiv']           = 'inactiv';
+$GLOBALS['TL_LANG']['tl_banner']['banner_active']            = 'published';
+$GLOBALS['TL_LANG']['tl_banner']['banner_inactive']          = 'not published';
 $GLOBALS['TL_LANG']['tl_banner']['banner_cat_not_found']     = 'No category selected in banner modul.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_clicks_until']['0'] = 'Limiting the number of Clicks';
 $GLOBALS['TL_LANG']['tl_banner']['banner_clicks_until']['1'] = 'By entering a number, the current banner is no longer displayed after this number of clicks.';
