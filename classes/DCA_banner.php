@@ -58,9 +58,15 @@ class DCA_banner extends \Backend
     public function addHeader($add, $dca)
     {
         $catId = $add['id'];
-        unset($add['id']);
+        unset($add['id']); //delete the helper
+        $activ = 5;
+        $inactiv = 2;        
+        $add[$GLOBALS['TL_LANG']['tl_banner']['banner_number_of']] = $activ." " 
+                        . $GLOBALS['TL_LANG']['tl_banner']['banner_activ']
+                        . " / "
+                        . $inactiv." "
+                        . $GLOBALS['TL_LANG']['tl_banner']['banner_inactiv'];
         
-        $add['Anzahl Banner'] = '5 aktiv / 2 inaktiv'; // TODO
         
         
         return $add;
