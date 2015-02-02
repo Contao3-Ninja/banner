@@ -44,7 +44,8 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 			'filter'                  => true,
 			'fields'                  => array('sorting'),
 			'panelLayout'             => 'search,filter,limit',
-			'headerFields'            => array('title', 'banner_protected', 'tstamp'),
+			'headerFields'            => array('title', 'banner_protected', 'tstamp','id'),
+			'header_callback'         => array('BugBuster\Banner\DCA_banner', 'addHeader'),
 			'child_record_callback'   => array('BugBuster\Banner\DCA_banner', 'listBanner')
 		),		
 		'global_operations' => array

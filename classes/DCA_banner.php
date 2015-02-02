@@ -53,6 +53,20 @@ class DCA_banner extends \Backend
     }
     
     /**
+     * Add Header Rows, call from header_callback
+     */
+    public function addHeader($add, $dca)
+    {
+        $catId = $add['id'];
+        unset($add['id']);
+        
+        $add['Anzahl Banner'] = '5 aktiv / 2 inaktiv'; // TODO
+        
+        
+        return $add;
+    }
+    
+    /**
      * List banner record
      *
      * @param object $row
