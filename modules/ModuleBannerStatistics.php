@@ -104,11 +104,6 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         $number_inactive = 0;
         foreach ($arrBanners as $Banner) 
         {
-            
-            //Summe Views / Klicks zählen
-            //Klickrate ausrechnen
-            
-            
             // Aufteilen nach intern, extern, text Banner
             switch ($Banner['banner_type'])
             {
@@ -126,9 +121,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
                     break;
             }
             //Aktiv oder Inaktiv zählen
-            $arrLastBanner = end($arrBannersStat);
-            reset($arrBannersStat);
-            if ($arrLastBanner['banner_published'] == 1) 
+            if ($Banner['banner_published_class'] == 'published') 
             {
                 $number_active++;
             }
@@ -136,11 +129,16 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
             {
                 $number_inactive++;
             }
+            //Summe Views / Klicks zählen
+            $number_clicks += (int)$Banner['banner_clicks']; 
+            $number_views  += (int)$Banner['banner_views'];
         }
         
         $this->Template->bannersstat      = $arrBannersStat;
         $this->Template->number_active    = $number_active;
         $this->Template->number_inactive  = $number_inactive;
+        $this->Template->number_clicks    = $number_clicks;
+        $this->Template->number_views     = $number_views;
         //$this->Template->banner_export_title = $GLOBALS['TL_LANG']['tl_banner_stat']['export_button_title'];
         $this->Template->header_id        = $GLOBALS['TL_LANG']['tl_banner_stat']['id'];
         $this->Template->header_picture   = $GLOBALS['TL_LANG']['tl_banner_stat']['picture'];
