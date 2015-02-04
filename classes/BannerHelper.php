@@ -311,7 +311,10 @@ class BannerHelper extends \Frontend
 	protected function getDefaultBanner()
 	{
 		$arrImageSize = array();
-		
+		//CSS-ID/Klasse(n) je Banner, für den wrapper
+		$banner_cssID   = 'id=""';
+		$banner_class   = 'banner_default';
+				
 		//BannerDefault gewünscht und vorhanden?
 		if ( $this->arrCategoryValues['banner_default'] == '1' 
             && strlen($this->arrCategoryValues['banner_default_image']) > 0 
@@ -351,6 +354,8 @@ class BannerHelper extends \Frontend
 			        $arrBanners[] = array
 							        (
 							        'banner_key'     => 'defbid=',
+							        'banner_wrap_id'    => $banner_cssID,
+							        'banner_wrap_class' => $banner_class,
 							        'banner_id'      => $this->arrCategoryValues['id'],
 							        'banner_name'    => specialchars(ampersand($this->arrCategoryValues['banner_default_name'])),
 							        'banner_url'     => $this->arrCategoryValues['banner_default_url'],
@@ -371,6 +376,8 @@ class BannerHelper extends \Frontend
 			        $arrBanners[] = array
 							        (
 					                'banner_key'     => 'defbid=',
+						            'banner_wrap_id'    => $banner_cssID,
+						            'banner_wrap_class' => $banner_class,
 					                'banner_id'      => $this->arrCategoryValues['id'],
 					                'banner_name'    => specialchars(ampersand($this->arrCategoryValues['banner_default_name'])),
 					                'banner_url'     => $this->arrCategoryValues['banner_default_url'],
@@ -397,6 +404,8 @@ class BannerHelper extends \Frontend
 		$arrBanners[] = array
 		(
 		        'banner_key'  => 'bid=',
+    		    'banner_wrap_id'    => $banner_cssID,
+    		    'banner_wrap_class' => $banner_class,
 		        'banner_id'   => 0,
 		        'banner_name' => specialchars(ampersand($NoBannerFound)),
 		        'banner_url'  => '',
@@ -1376,6 +1385,21 @@ class BannerHelper extends \Frontend
 	            $arrBanners = array();
 	            $objBanners->next();
 	            self::$arrBannerSeen[] = $objBanners->id;
+	            //CSS-ID/Klasse(n) je Banner, für den wrapper
+	            $banner_cssID   = 'id=""';
+	            $banner_class   = '';
+	            $banner_classes = '';
+	            $_cssID = deserialize($objBanners->banner_cssid);
+	            if ( is_array($_cssID) )
+	            {
+	                $banner_cssID   = 'id="banner_'.$_cssID[0].'"';
+	                $banner_classes = explode(" ", $_cssID[1]);
+	                foreach ($banner_classes as $banner_classone)
+	                {
+	                    $banner_class .= 'banner_'.$banner_classone.' ';
+	                }
+	            }
+	             
 	            if (!$this->statusRandomBlocker) 
 	            {
 	                //Random Blocker setzen für den ersten Banner
@@ -1505,6 +1529,8 @@ class BannerHelper extends \Frontend
 	                        $arrBanners[] = array
 	                        (
 	                        'banner_key'     => 'bid=',
+	                        'banner_wrap_id'    => $banner_cssID,
+	                        'banner_wrap_class' => $banner_class,
 	                        'banner_id'      => $objBanners->id,
 	                        'banner_name'    => specialchars(ampersand($objBanners->banner_name)),
 	                        'banner_url'     => $objBanners->banner_url,
@@ -1552,6 +1578,8 @@ class BannerHelper extends \Frontend
 	                        $arrBanners[] = array
 	                        (
 	                                'banner_key'     => 'bid=',
+    	                            'banner_wrap_id'    => $banner_cssID,
+    	                            'banner_wrap_class' => $banner_class,
 	                                'banner_id'      => $objBanners->id,
 	                                'banner_name'    => specialchars(ampersand($objBanners->banner_name)),
 	                                'banner_url'     => $objBanners->banner_url,
@@ -1573,6 +1601,8 @@ class BannerHelper extends \Frontend
 	                        $arrBanners[] = array
 	                        (
 	                        'banner_key'     => 'bid=',
+	                        'banner_wrap_id'    => $banner_cssID,
+	                        'banner_wrap_class' => $banner_class,
 	                        'banner_id'      => 0,
 	                        'banner_name'    => '',
 	                        'banner_url'     => '',
@@ -1632,6 +1662,8 @@ class BannerHelper extends \Frontend
 	                $arrBanners[] = array
 	                (
 	                        'banner_key'     => 'bid=',
+    	                    'banner_wrap_id'    => $banner_cssID,
+    	                    'banner_wrap_class' => $banner_class,
 	                        'banner_id'      => $objBanners->id,
 	                        'banner_name'    => specialchars(ampersand($objBanners->banner_name)),
 	                        'banner_url'     => $objBanners->banner_url,
