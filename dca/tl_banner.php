@@ -100,9 +100,9 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 	(
 	      '__selector__'                => array('banner_type','banner_until'),
 		  'default'                     => 'banner_type',
-		  'banner_image'                => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_jumpTo,banner_target;{image_legend},banner_image,banner_imgSize;{comment_legend},banner_comment;{publish_legend},banner_published,banner_start,banner_stop,banner_until;{filter_legend:hide},banner_domain',
-		  'banner_image_extern'         => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_target;{image_legend},banner_image_extern,banner_imgSize;{comment_legend},banner_comment;{publish_legend},banner_published,banner_start,banner_stop,banner_until;{filter_legend:hide},banner_domain',
-		  'banner_text'                 => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_jumpTo,banner_target;{comment_legend},banner_comment;{publish_legend},banner_published,banner_start,banner_stop,banner_until;{filter_legend:hide},banner_domain'
+		  'banner_image'                => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_jumpTo,banner_target;{image_legend},banner_image,banner_imgSize;{comment_legend},banner_comment;{filter_legend:hide},banner_domain;{expert_legend:hide},banner_cssid;{publish_legend},banner_published,banner_start,banner_stop,banner_until',
+		  'banner_image_extern'         => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_target;{image_legend},banner_image_extern,banner_imgSize;{comment_legend},banner_comment;{filter_legend:hide},banner_domain;{expert_legend:hide},banner_cssid;{publish_legend},banner_published,banner_start,banner_stop,banner_until',
+		  'banner_text'                 => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_jumpTo,banner_target;{comment_legend},banner_comment;{filter_legend:hide},banner_domain;{expert_legend:hide},banner_cssid;{publish_legend},banner_published,banner_start,banner_stop,banner_until'
 	),
     // Subpalettes
 	'subpalettes' => array
@@ -278,7 +278,15 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 	        'explanation'	          => 'banner_help',
 	        'sql'                     => "varchar(255) NOT NULL default ''",
 	        'eval'                    => array('mandatory'=>false, 'maxlength'=>255, 'helpwizard'=>true)
-		)
+		),
+		'banner_cssid' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_banner']['banner_cssid'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('multiple'=>true, 'size'=>2, 'tl_class'=>'w50 clr'),
+			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
 	)
 );
 
