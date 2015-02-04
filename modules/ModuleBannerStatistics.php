@@ -120,7 +120,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
                     $arrBannersStat[] = $this->addBannerText($Banner);
                     break;
             }
-            //Aktiv oder Inaktiv zählen
+            //Gesamt Aktiv / Inaktiv zählen
             if ($Banner['banner_published_class'] == 'published') 
             {
                 $number_active++;
@@ -129,7 +129,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
             {
                 $number_inactive++;
             }
-            //Summe Views / Klicks zählen
+            //Gesamt Views / Klicks zählen
             $number_clicks += (int)$Banner['banner_clicks']; 
             $number_views  += (int)$Banner['banner_views'];
         }
@@ -163,6 +163,9 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         $this->Template->bannercatzerobutton  = $GLOBALS['TL_LANG']['tl_banner_stat']['cat_zero_button'];
         $this->Template->bannercatzerotext    = $GLOBALS['TL_LANG']['tl_banner_stat']['cat_zero_text'];
         $this->Template->bannercatzeroconfirm = $GLOBALS['TL_LANG']['tl_banner_stat']['cat_zero_confirm'];
+        $this->Template->bannerclickthroughrate     = $GLOBALS['TL_LANG']['tl_banner_stat']['click_through_rate'];
+        $this->Template->bannernumberactiveinactive = $GLOBALS['TL_LANG']['tl_banner_stat']['number_active_inactive'];
+        $this->Template->bannernumberviewsclicks    = $GLOBALS['TL_LANG']['tl_banner_stat']['number_views_clicks'];
    
         $this->Template->banner_hook_panels = $this->addStatisticPanelLineHook();
         
