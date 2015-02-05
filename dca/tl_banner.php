@@ -207,9 +207,11 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_banner']['banner_imgSize'],
 			'exclude'                 => true,
-			'inputType'               => 'text',
+			'inputType'               => 'imageSize',
+			'options_callback'        => array('BugBuster\Banner\DCA_banner', 'getBannerImageSizes'),
+			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'sql'                     => "varchar(255) NOT NULL default ''",
-			'eval'                    => array('multiple'=>true, 'size'=>2, 'rgxp'=>'digit', 'nospace'=>true)
+			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true)
 		),
         'banner_comment' => array
         (
@@ -284,7 +286,7 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_banner']['banner_cssid'],
 			'exclude'                 => true,
 			'inputType'               => 'text',
-			'eval'                    => array('multiple'=>true, 'size'=>2, 'tl_class'=>'w50 clr'),
+			'eval'                    => array('multiple'=>true, 'size'=>2),
 			'sql'                     => "varchar(255) NOT NULL default ''"
 		),
 	)

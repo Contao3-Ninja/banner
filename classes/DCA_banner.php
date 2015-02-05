@@ -662,5 +662,22 @@ class DCA_banner extends \Backend
                                 ->execute($intId);
     }
 
+    /**
+     * Return all image sizes as array
+     * @return array
+     */
+    public function getBannerImageSizes()
+    {
+        $sizes = array();
+        $imageSize = $this->Database
+                            ->prepare("SELECT id, name, width, height FROM tl_image_size ORDER BY pid, name")
+                            ->execute(\Input::get('id'));
+        while ($imageSize->next())
+        {
+            $sizes[$imageSize->id] = $imageSize->name;
+            $sizes[$imageSize->id] .= ' (' . $imageSize->width . 'x' . $imageSize->height . ')';
+        }
+        return array_merge(array('image_sizes'=>$sizes), $GLOBALS['TL_CROP']);
+    }
 
 }
