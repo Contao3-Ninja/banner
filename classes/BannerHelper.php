@@ -1076,6 +1076,11 @@ class BannerHelper extends \Frontend
 	                else
 	                {
 	                    $FileSrc = \Image::get($this->urlEncode($objFile->path), $arrImageSizenNew[0], $arrImageSizenNew[1],'proportional');
+	                    
+	                    $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
+	                    $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
+	                    $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
+	                     
 	                    $arrImageSize[0] = $arrImageSizenNew[0];
 	                    $arrImageSize[1] = $arrImageSizenNew[1];
 	                    $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
@@ -1174,7 +1179,8 @@ class BannerHelper extends \Frontend
 	                    'banner_pic'     => true,
 	                    'banner_flash'   => false,
 	                    'banner_text'    => false,
-	                    'banner_empty'   => false
+	                    'banner_empty'   => false,
+                        'picture'        => $picture
 	                    );
 	                    break;
 	                case 4:  // Flash swf
@@ -1451,6 +1457,11 @@ class BannerHelper extends \Frontend
 	                    else
 	                    {
 	                        $FileSrc = \Image::get($this->urlEncode($objFile->path), $arrImageSizenNew[0], $arrImageSizenNew[1],'proportional');
+	                        
+	                        $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
+	                        $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
+	                        $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
+
 	                        $arrImageSize[0] = $arrImageSizenNew[0];
 	                        $arrImageSize[1] = $arrImageSizenNew[1];
 	                        $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
@@ -1550,7 +1561,8 @@ class BannerHelper extends \Frontend
 	                        'banner_pic'     => true,
 	                        'banner_flash'   => false,
 	                        'banner_text'    => false,
-	                        'banner_empty'   => false
+	                        'banner_empty'   => false,
+                            'picture'        => $picture
 	                        );
 	                        break;
 	                    case 4:  // Flash swf
