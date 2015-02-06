@@ -689,7 +689,7 @@ class BannerHelper extends \Frontend
                     	$this->log('Banner Image with ID "'.$objBanners->id.'" not found', 'BannerHelper getSingleBannerFirst', TL_ERROR);
                     	break;
                     }                    
-                    //Banner Neue Größe 0:$Width 1:$Height
+                    //Banner Neue Größe 0:$Width 1:$Height 2:resize mode
                     $arrNewSizeValues = deserialize($objBanners->banner_imgSize);
                     //Banner Neue Größe ermitteln, return array $Width,$Height,$oriSize
                     $arrImageSizenNew = $this->BannerImage->getBannerImageSizeNew($arrImageSize[0],$arrImageSize[1],$arrNewSizeValues[0],$arrNewSizeValues[1]);
@@ -708,7 +708,14 @@ class BannerHelper extends \Frontend
                     }
                     else
                     {
+                        //Resize an image and store the resized version in the assets/images folder
+                        //return The path of the resized image or null
                         $FileSrc = \Image::get($this->urlEncode($objFile->path), $arrImageSizenNew[0], $arrImageSizenNew[1],'proportional');
+                        
+                        $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
+                        $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
+                        $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
+                        
                         $arrImageSize[0] = $arrImageSizenNew[0];
                         $arrImageSize[1] = $arrImageSizenNew[1];
                         $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
@@ -807,7 +814,8 @@ class BannerHelper extends \Frontend
                                 'banner_pic'     => true,
                                 'banner_flash'   => false,
                                 'banner_text'    => false,
-                                'banner_empty'   => false
+                                'banner_empty'   => false,
+                                'picture'        => $picture
                         );
                         break;
                     case 4:  // Flash swf
