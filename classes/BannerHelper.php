@@ -1564,6 +1564,7 @@ class BannerHelper extends \Frontend
 	                        'banner_empty'   => false,
                             'picture'        => $picture
 	                        );
+	                        $picture = null; unset($picture);
 	                        break;
 	                    case 4:  // Flash swf
 	                    case 13: // Flash swc
