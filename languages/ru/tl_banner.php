@@ -8,13 +8,13 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-05-06T12:33:02+02:00
+ * last-updated: 2015-02-02T20:47:45+01:00
  */
-
 
 $GLOBALS['TL_LANG']['tl_banner']['1']                        = 'Высокий приоритет';
 $GLOBALS['TL_LANG']['tl_banner']['2']                        = 'Нормальный приоритет';
 $GLOBALS['TL_LANG']['tl_banner']['3']                        = 'Низкий приоритет';
+$GLOBALS['TL_LANG']['tl_banner']['banner_active']            = 'опубликовано';
 $GLOBALS['TL_LANG']['tl_banner']['banner_cat_not_found']     = 'Нет выбранной категории в модуле баннеров.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_clicks_until']['0'] = 'Ограничить число нажатий';
 $GLOBALS['TL_LANG']['tl_banner']['banner_clicks_until']['1'] = 'Если число введено, текущий баннер не будет показан после этого количества нажатий.';
@@ -28,10 +28,12 @@ $GLOBALS['TL_LANG']['tl_banner']['banner_image_extern']['0'] = 'URL изобра
 $GLOBALS['TL_LANG']['tl_banner']['banner_image_extern']['1'] = 'Внешнее изображение баннера URL: http://...';
 $GLOBALS['TL_LANG']['tl_banner']['banner_imgSize']['0']      = 'Ширина и высота изображения';
 $GLOBALS['TL_LANG']['tl_banner']['banner_imgSize']['1']      = 'Если ввести только ширину или только высоту изображения (в пикселах), то изображение будет изменено пропорционально. Если ввести оба значения, изображение будет обрезано при необходимости. Если оставить оба поля пустыми, изображение будет показано в оригинальном размере.<br />Примечание: Анимированные GIF при задании размеров будут преобразованы в статические.';
+$GLOBALS['TL_LANG']['tl_banner']['banner_inactive']          = 'не опубликовано';
 $GLOBALS['TL_LANG']['tl_banner']['banner_jumpTo']['0']       = 'Целевая страница баннера';
 $GLOBALS['TL_LANG']['tl_banner']['banner_jumpTo']['1']       = 'Выберите целевую страницу. Этот выбор имеет приоритет над ссылкой "URL баннера".';
 $GLOBALS['TL_LANG']['tl_banner']['banner_name']['0']         = 'Название баннера';
 $GLOBALS['TL_LANG']['tl_banner']['banner_name']['1']         = 'Введите название баннера.';
+$GLOBALS['TL_LANG']['tl_banner']['banner_number_of']         = 'Количество баннеров';
 $GLOBALS['TL_LANG']['tl_banner']['banner_published']['0']    = 'Опубликовать';
 $GLOBALS['TL_LANG']['tl_banner']['banner_published']['1']    = 'Если не выбрать эту опцию, баннер не будет показан.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_start']['0']        = 'Показывать с';

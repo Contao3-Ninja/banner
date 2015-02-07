@@ -4,7 +4,7 @@
 <?php if ($banner['banner_pic']) : ?>
 	<figure class="banner_wrap <?php echo $banner['banner_wrap_class']; ?>" id="<?php echo $banner['banner_wrap_id']; ?>">
 	    <div class="banner_image" id="banner_<?php echo $banner['banner_id']; ?>">
-	        <?php if ($banner['banner_url']): ?><a href="system/modules/banner/public/conban_clicks.php?<?php echo $banner['banner_key'].$banner['banner_id']; ?>" <?php echo $banner['banner_target']; ?> title="<?php echo $banner['banner_comment']; ?>" ><?php endif; ?><img src="<?php echo $banner['src']; ?>" <?php echo $banner['size']; ?> title="<?php echo $banner['banner_comment']; ?>" alt="<?php echo $banner['alt']; ?>"><?php if ($banner['banner_url']): ?></a><?php endif; ?>
+	        <?php if ($banner['banner_url']): ?><a href="system/modules/banner/public/conban_clicks.php?<?php echo $banner['banner_key'].$banner['banner_id']; ?>" <?php echo $banner['banner_target']; ?> title="<?php echo $banner['banner_comment']; ?>" ><?php endif; ?><?php $this->insert('picture_default', $banner['picture']) ?><?php if ($banner['banner_url']): ?></a><?php endif; ?>
 	    </div>
 	</figure>
 <?php endif; ?>
