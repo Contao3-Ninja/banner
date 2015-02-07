@@ -1,0 +1,50 @@
+{
+	"name":"bugbuster/banner",
+	"description":"A banner advertisement module for Contao CMS ",
+	"keywords":["contao","banner","advertisement","counter"],
+	"type":"contao-module",
+	"homepage":"http://www.contao.glen-langer.de",
+	"license":"LGPL-3.0+",
+	"authors":[
+		{
+			"name":"Glen Langer",
+			"homepage":"http://www.contao.glen-langer.de",
+			"role":"Developer"
+		}
+	],
+	"support":{
+		"issues":"https://github.com/BugBuster1701/banner/issues",
+		"irc":"irc://irc.freenode.org/contao.dev",
+		"source":"https://github.com/BugBuster1701/banner",
+		"wiki":"http://de.contaowiki.org/Banner",
+		"forum":"https://community.contao.org/de/forumdisplay.php?24-banner"
+	},
+	"require":{
+		"php":">=5.3",
+		"contao/core":">=3.4,<4",
+		"contao-community-alliance/composer-plugin": "*",
+		"bugbuster/botdetection":">=3.2.1"
+	},
+	"autoload":{
+		"classmap":[""]
+	},
+	"replace":{
+		"contao-legacy/banner":"self.version"
+	},
+	"extra":{
+		"contao":{
+			"sources":{
+				"":"system/modules/banner"
+			},
+			"transifex": {
+				"project": "contao-banner",
+				"prefix": "master-",
+				"languages_cto": "languages",
+				"languages_tx": ".tx"
+			},
+			"runonce":[
+				"runonce/runonce.php"
+			]
+		}
+	}
+}

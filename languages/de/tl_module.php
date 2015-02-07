@@ -1,29 +1,25 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Translations are managed using Transifex. To create a new translation
+ * or to help to maintain an existing one, please register at transifex.com.
  *
- * Formerly known as TYPOlight Open Source CMS.
- * 
- * Modul Banner Sprachdateien
- * 
- * Language file for table tl_module.
+ * @link http://help.transifex.com/intro/translating.html
+ * @link https://www.transifex.com/projects/p/contao-banner/language/de/
  *
- * PHP version 5
- * @copyright  Glen Langer 2007..2010
- * @author     Glen Langer
- * @package    BannerLanguage 
- * @license    GPL 
- * @filesource  
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ *
+ * last-updated: 2014-06-28T23:20:10+02:00
  */
 
-/**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_module']['banner_hideempty']  = array('Ausblenden, wenn leer.', 'Blendet das Modul im Frontend aus, wenn keine aktiven Banner gefunden werden.');
-$GLOBALS['TL_LANG']['tl_module']['banner_firstview']  = array('Erster Banner f&uuml;r neue Besucher', 'F&uuml;r jeden neuen Besucher wird zun&auml;chst der erste Banner in der Kategorie angezeigt. Danach erfolgt die Auswahl wieder nach Zufall.');
-$GLOBALS['TL_LANG']['tl_module']['banner_categories'] = array('Bannerkategorien', 'Bitte wählen Sie die Bannerkategorie für das Modul.');
-$GLOBALS['TL_LANG']['tl_module']['banner_template']   = array('Bannervorlage', 'Bitte w&auml;hlen Sie eine Bannervorlage. Sie k&ouml;nnen eigene Vorlagen im Ordner <em>templates</em> speichern oder im Template-Ordner des Themes. Vorlagen m&uuml;ssen mit <em>mod_banner_list_</em> beginnen und die Dateiendung <em>.tpl</em> haben.'); 
-$GLOBALS['TL_LANG']['tl_module']['banner_useragent']  = array('Keine Z&auml;hlung bei HTTP_USER_AGENT Teilkennung', 'Hier kann eine Teilkennung angegeben werden, bei der keine Z&auml;hlung erfolgen soll. Dazu muss die HTTP_USER_AGENT Kennung des Browser ver&auml;ndert werden.<br />Siehe Wiki.');
- 
-?>
+
+$GLOBALS['TL_LANG']['tl_module']['banner_categories']['0'] = 'Bannerkategorien';
+$GLOBALS['TL_LANG']['tl_module']['banner_categories']['1'] = 'Bitte wählen Sie die Bannerkategorie für das Modul.';
+$GLOBALS['TL_LANG']['tl_module']['banner_firstview']['0']  = 'Erster Banner für neue Besucher';
+$GLOBALS['TL_LANG']['tl_module']['banner_firstview']['1']  = 'Für jeden neuen Besucher wird zunächst der erste Banner in der Kategorie angezeigt. Danach erfolgt die Auswahl wieder nach Zufall.';
+$GLOBALS['TL_LANG']['tl_module']['banner_hideempty']['0']  = 'Ausblenden, wenn leer.';
+$GLOBALS['TL_LANG']['tl_module']['banner_hideempty']['1']  = 'Blendet das Modul im Frontend aus, wenn keine aktiven Banner gefunden werden.';
+$GLOBALS['TL_LANG']['tl_module']['banner_template']['0']   = 'Bannervorlage';
+$GLOBALS['TL_LANG']['tl_module']['banner_template']['1']   = 'Bitte wählen Sie eine Bannervorlage. Sie können eigene Vorlagen im Ordner <em>templates</em> speichern oder im Template-Ordner des Themes. Vorlagen müssen mit <em>mod_banner_list_</em> beginnen und die Dateiendung <em>.html5</em> haben.';
+$GLOBALS['TL_LANG']['tl_module']['banner_useragent']['0']  = 'Keine Zählung bei HTTP_USER_AGENT Teilkennung';
+$GLOBALS['TL_LANG']['tl_module']['banner_useragent']['1']  = 'Hier kann eine Teilkennung angegeben werden, bei der keine Zählung erfolgen soll. Dazu muss die HTTP_USER_AGENT Kennung des Browser verändert werden.<br>Siehe Wiki.';
+

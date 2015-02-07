@@ -1,33 +1,21 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Translations are managed using Transifex. To create a new translation
+ * or to help to maintain an existing one, please register at transifex.com.
  *
- * Formerly known as TYPOlight Open Source CMS.
- * 
- * Modul Banner Sprachdateien
- * 
- * Language file for modules (de).
+ * @link http://help.transifex.com/intro/translating.html
+ * @link https://www.transifex.com/projects/p/contao-banner/language/de/
  *
- * PHP version 5
- * @copyright  Glen Langer 2007 ..2010
- * @author     Glen Langer
- * @package    BannerLanguage 
- * @license    GPL 
- * @filesource
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ *
+ * last-updated: 2014-06-28T23:07:40+02:00
  */
 
 
-/**
- * Back end modules
- */
-$GLOBALS['TL_LANG']['MOD']['banner'] = array('Banner', 'Mit diesem Banner Modul k&ouml;nnen Sie Werbebanner definieren.');
-$GLOBALS['TL_LANG']['MOD']['bannerstat'] = array('Bannerstatistik', 'Statistik vom Banner Modul.');
+$GLOBALS['TL_LANG']['FMD']['banner']['0']     = 'Banner';
+$GLOBALS['TL_LANG']['FMD']['banner']['1']     = 'Zeigt einen Werbebanner an';
+$GLOBALS['TL_LANG']['MOD']['banner']['0']     = 'Banner';
+$GLOBALS['TL_LANG']['MOD']['banner']['1']     = 'Mit diesem Banner Modul können Sie Werbebanner definieren.';
+$GLOBALS['TL_LANG']['MOD']['bannerstat']['0'] = 'Bannerstatistik';
+$GLOBALS['TL_LANG']['MOD']['bannerstat']['1'] = 'Statistik vom Banner Modul.';
 
-
-/**
- * Front end modules
- */
-$GLOBALS['TL_LANG']['FMD']['banner'] = array('Banner', 'Zeigt einen Werbebanner an');
-
-?>
