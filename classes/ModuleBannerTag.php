@@ -239,8 +239,17 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	    {
 	        //CSS-ID/Klasse
 	        $_cssID = deserialize($this->cssID);
-	    	$this->Template->cssID = 'id="'.$_cssID[0].'"';
-	    	$this->Template->class = 'mod_banner '.$_cssID[1];
+	        $this->Template->cssID = '';
+	        $this->Template->class = 'mod_banner';
+	        if ($_cssID[0] != '') 
+	        {
+	        	$this->Template->cssID = 'id="'.$_cssID[0].'"';
+	        }
+	        if ($_cssID[1] != '')
+	        {
+	            $this->Template->class .= ' '.$_cssID[1];
+	        }
+	    	
             //Abstand davor und dahinter
 	    	$_style = deserialize($this->space);
 	    	if ("" != $_style[0]) 
