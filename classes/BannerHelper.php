@@ -666,7 +666,7 @@ class BannerHelper extends \Frontend
             {
                 if ($_cssID[0] != '') 
                 {
-                    $banner_cssID   = 'id="banner_'.$_cssID[0].'"';
+                    $banner_cssID   = ' id="banner_'.$_cssID[0].'"';
                 }
                 if ($_cssID[1] != '') 
                 {
@@ -1041,7 +1041,7 @@ class BannerHelper extends \Frontend
             {
                 if ($_cssID[0] != '')
                 {
-                    $banner_cssID   = 'id="banner_'.$_cssID[0].'"';
+                    $banner_cssID   = ' id="banner_'.$_cssID[0].'"';
                 }
                 if ($_cssID[1] != '')
                 {
@@ -1423,7 +1423,7 @@ class BannerHelper extends \Frontend
 	            {
 	                if ($_cssID[0] != '')
 	                {
-	                    $banner_cssID   = 'id="banner_'.$_cssID[0].'"';
+	                    $banner_cssID   = ' id="banner_'.$_cssID[0].'"';
 	                }
 	                if ($_cssID[1] != '')
 	                {
