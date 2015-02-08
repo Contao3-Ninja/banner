@@ -313,7 +313,7 @@ class BannerHelper extends \Frontend
 		$arrImageSize = array();
 		//CSS-ID/Klasse(n) je Banner, für den wrapper
 		$banner_cssID   = '';
-		$banner_class   = 'banner_default';
+		$banner_class   = ' banner_default';
 				
 		//BannerDefault gewünscht und vorhanden?
 		if ( $this->arrCategoryValues['banner_default'] == '1' 
@@ -671,12 +671,10 @@ class BannerHelper extends \Frontend
                 if ($_cssID[1] != '') 
                 {
                     $banner_classes = explode(" ", $_cssID[1]);
-                    $banner_class = ' ';
                     foreach ($banner_classes as $banner_classone) 
                     {
-                        $banner_class .= 'banner_'.$banner_classone.' ';
+                        $banner_class .= ' banner_'.$banner_classone;
                     }
-                    rtrim($banner_class);
                 }
             }
             
@@ -1047,12 +1045,10 @@ class BannerHelper extends \Frontend
                 if ($_cssID[1] != '')
                 {
                     $banner_classes = explode(" ", $_cssID[1]);
-                    $banner_class = ' ';
                     foreach ($banner_classes as $banner_classone)
                     {
-                        $banner_class .= 'banner_'.$banner_classone.' ';
+                        $banner_class .= ' banner_'.$banner_classone;
                     }
-                    rtrim($banner_class);
                 }
             }
         
@@ -1430,12 +1426,10 @@ class BannerHelper extends \Frontend
 	                if ($_cssID[1] != '')
 	                {
 	                    $banner_classes = explode(" ", $_cssID[1]);
-	                    $banner_class = ' ';
 	                    foreach ($banner_classes as $banner_classone)
 	                    {
-	                        $banner_class .= 'banner_'.$banner_classone.' ';
+	                        $banner_class .= ' banner_'.$banner_classone;
 	                    }
-	                    rtrim($banner_class);
 	                }
 	            }
 	             
