@@ -671,11 +671,12 @@ class BannerHelper extends \Frontend
                 if ($_cssID[1] != '') 
                 {
                     $banner_classes = explode(" ", $_cssID[1]);
+                    $banner_class = ' ';
                     foreach ($banner_classes as $banner_classone) 
                     {
                         $banner_class .= 'banner_'.$banner_classone.' ';
                     }
-                    trim($banner_class);
+                    rtrim($banner_class);
                 }
             }
             
@@ -1046,11 +1047,12 @@ class BannerHelper extends \Frontend
                 if ($_cssID[1] != '')
                 {
                     $banner_classes = explode(" ", $_cssID[1]);
+                    $banner_class = ' ';
                     foreach ($banner_classes as $banner_classone)
                     {
                         $banner_class .= 'banner_'.$banner_classone.' ';
                     }
-                    trim($banner_class);
+                    rtrim($banner_class);
                 }
             }
         
@@ -1428,11 +1430,12 @@ class BannerHelper extends \Frontend
 	                if ($_cssID[1] != '')
 	                {
 	                    $banner_classes = explode(" ", $_cssID[1]);
+	                    $banner_class = ' ';
 	                    foreach ($banner_classes as $banner_classone)
 	                    {
 	                        $banner_class .= 'banner_'.$banner_classone.' ';
 	                    }
-	                    trim($banner_class);
+	                    rtrim($banner_class);
 	                }
 	            }
 	             
