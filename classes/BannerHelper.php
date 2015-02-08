@@ -312,7 +312,7 @@ class BannerHelper extends \Frontend
 	{
 		$arrImageSize = array();
 		//CSS-ID/Klasse(n) je Banner, für den wrapper
-		$banner_cssID   = 'id=""';
+		$banner_cssID   = '';
 		$banner_class   = 'banner_default';
 				
 		//BannerDefault gewünscht und vorhanden?
@@ -658,17 +658,23 @@ class BannerHelper extends \Frontend
             $objBanners->next();
             self::$arrBannerSeen[] = $objBanners->id;
             //CSS-ID/Klasse(n) je Banner, für den wrapper
-            $banner_cssID   = 'id=""';
+            $banner_cssID   = '';
             $banner_class   = '';
             $banner_classes = '';
             $_cssID = deserialize($objBanners->banner_cssid);
             if ( is_array($_cssID) ) 
             {
-                $banner_cssID   = 'id="banner_'.$_cssID[0].'"';
-                $banner_classes = explode(" ", $_cssID[1]);
-                foreach ($banner_classes as $banner_classone) 
+                if ($_cssID[0] != '') 
                 {
-                    $banner_class .= 'banner_'.$banner_classone.' ';
+                    $banner_cssID   = 'id="banner_'.$_cssID[0].'"';
+                }
+                if ($_cssID[1] != '') 
+                {
+                    $banner_classes = explode(" ", $_cssID[1]);
+                    foreach ($banner_classes as $banner_classone) 
+                    {
+                        $banner_class .= 'banner_'.$banner_classone.' ';
+                    }
                 }
             }
             
@@ -1026,19 +1032,26 @@ class BannerHelper extends \Frontend
 	        $objBanners->next();
 	        self::$arrBannerSeen[] = $objBanners->id;
 	        //CSS-ID/Klasse(n) je Banner, für den wrapper
-	        $banner_cssID   = 'id=""';
+	        $banner_cssID   = '';
 	        $banner_class   = '';
 	        $banner_classes = '';
 	        $_cssID = deserialize($objBanners->banner_cssid);
-	        if ( is_array($_cssID) )
-	        {
-	            $banner_cssID   = 'id="banner_'.$_cssID[0].'"';
-	            $banner_classes = explode(" ", $_cssID[1]);
-	            foreach ($banner_classes as $banner_classone)
-	            {
-	                $banner_class .= 'banner_'.$banner_classone.' ';
-	            }
-	        }
+	    	if ( is_array($_cssID) )
+            {
+                if ($_cssID[0] != '')
+                {
+                    $banner_cssID   = 'id="banner_'.$_cssID[0].'"';
+                }
+                if ($_cssID[1] != '')
+                {
+                    $banner_classes = explode(" ", $_cssID[1]);
+                    foreach ($banner_classes as $banner_classone)
+                    {
+                        $banner_class .= 'banner_'.$banner_classone.' ';
+                    }
+                }
+            }
+        
 	        switch ($objBanners->banner_type)
 	        {
 	            case self::BANNER_TYPE_INTERN :
@@ -1400,17 +1413,23 @@ class BannerHelper extends \Frontend
 	            $objBanners->next();
 	            self::$arrBannerSeen[] = $objBanners->id;
 	            //CSS-ID/Klasse(n) je Banner, für den wrapper
-	            $banner_cssID   = 'id=""';
+	            $banner_cssID   = '';
 	            $banner_class   = '';
 	            $banner_classes = '';
 	            $_cssID = deserialize($objBanners->banner_cssid);
 	            if ( is_array($_cssID) )
 	            {
-	                $banner_cssID   = 'id="banner_'.$_cssID[0].'"';
-	                $banner_classes = explode(" ", $_cssID[1]);
-	                foreach ($banner_classes as $banner_classone)
+	                if ($_cssID[0] != '')
 	                {
-	                    $banner_class .= 'banner_'.$banner_classone.' ';
+	                    $banner_cssID   = 'id="banner_'.$_cssID[0].'"';
+	                }
+	                if ($_cssID[1] != '')
+	                {
+	                    $banner_classes = explode(" ", $_cssID[1]);
+	                    foreach ($banner_classes as $banner_classone)
+	                    {
+	                        $banner_class .= 'banner_'.$banner_classone.' ';
+	                    }
 	                }
 	            }
 	             
