@@ -675,6 +675,7 @@ class BannerHelper extends \Frontend
                     {
                         $banner_class .= 'banner_'.$banner_classone.' ';
                     }
+                    trim($banner_class);
                 }
             }
             
@@ -1049,6 +1050,7 @@ class BannerHelper extends \Frontend
                     {
                         $banner_class .= 'banner_'.$banner_classone.' ';
                     }
+                    trim($banner_class);
                 }
             }
         
@@ -1430,6 +1432,7 @@ class BannerHelper extends \Frontend
 	                    {
 	                        $banner_class .= 'banner_'.$banner_classone.' ';
 	                    }
+	                    trim($banner_class);
 	                }
 	            }
 	             
