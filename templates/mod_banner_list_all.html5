@@ -1,5 +1,5 @@
 <!-- indexer::stop -->
-<section class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<aside class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 <?php if (($this->headline) && (!$this->headline_stop)): ?>
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
@@ -57,5 +57,5 @@
 	</div>
 <?php endif; ?>
 <?php endforeach; ?>
-</section>
+</aside>
 <!-- indexer::continue -->
