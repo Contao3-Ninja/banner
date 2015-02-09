@@ -4,7 +4,7 @@
  * 
  * Modul Banner - FE Class BannerReferrer
  *
- * @copyright	Glen Langer 2007..2013 <http://www.contao.glen-langer.de>
+ * @copyright	Glen Langer 2007..2015 <http://contao.ninja>
  * @author      Glen Langer (BugBuster)
  * @package     Banner
  * @license     LGPL
@@ -19,7 +19,7 @@ namespace BugBuster\Banner;
 /**
  * Class BannerReferrer
  *
- * @copyright  Glen Langer 2007..2013
+ * @copyright  Glen Langer 2007..2015
  * @author     Glen Langer 
  * @package    Banner
  * @license    LGPL 

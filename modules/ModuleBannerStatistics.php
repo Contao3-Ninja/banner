@@ -6,7 +6,7 @@
 * Module ModuleBannerStatistics - Backend
 * Backend statistics
 *
-* @copyright  Glen Langer 2013 <http://www.contao.glen-langer.de>
+* @copyright  Glen Langer 2015 <http://contao.ninja>
 * @author     Glen Langer (BugBuster)
 * @package    BannerStatistics
 * @license    LGPL
@@ -22,7 +22,7 @@ namespace BugBuster\BannerStatistics;
 /**
  * Class ModuleBannerStatistics
  *
- * @copyright  Glen Langer 2013 <http://www.contao.glen-langer.de>
+ * @copyright  Glen Langer 2015 <http://contao.ninja>
  * @author     Glen Langer (BugBuster)
  * @package    BannerStatistics
  */

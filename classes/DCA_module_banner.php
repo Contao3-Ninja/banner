@@ -5,7 +5,7 @@
  *
  * Contao Module "Banner" - DCA Helper Class DCA_module_banner
  *
- * @copyright  Glen Langer 2012..2013 <http://www.contao.glen-langer.de>
+ * @copyright  Glen Langer 2012..2015 <http://contao.ninja>
  * @author     Glen Langer (BugBuster)
  * @package    Banner
  * @license    LGPL
@@ -21,7 +21,7 @@ namespace BugBuster\Banner;
 /**
  * DCA Helper Class DCA_module_banner
  *
- * @copyright  Glen Langer 2012..2013 <http://www.contao.glen-langer.de>
+ * @copyright  Glen Langer 2012..2015 <http://contao.ninja>
  * @author     Glen Langer (BugBuster)
  * @package    Banner
  *

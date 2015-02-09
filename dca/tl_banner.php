@@ -7,7 +7,7 @@
  * This is the data container array for table tl_banner.
  *
  * PHP version 5
- * @copyright  Glen Langer 2007..2013
+ * @copyright  Glen Langer 2007..2015
  * @author     Glen Langer
  * @package    Banner
  * @license    LGPL

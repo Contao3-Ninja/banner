@@ -5,7 +5,7 @@
  * Modul Banner - /config/runonce.php
  *
  * PHP version 5
- * @copyright  Glen Langer 2007..2013
+ * @copyright  Glen Langer 2007..2015
  * @author     Glen Langer
  * @package    Banner
  * @license    LGPL
@@ -14,7 +14,7 @@
 /**
  * Class BannerRunonceJob
  *
- * @copyright  Glen Langer 2007..2013
+ * @copyright  Glen Langer 2007..2015
  * @author     Glen Langer
  * @package    Banner
  * @license    LGPL

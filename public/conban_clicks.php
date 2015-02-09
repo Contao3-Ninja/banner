@@ -10,7 +10,7 @@
  * Usage example:
  * <a href="system/modules/banner/public/conban_clicks.php?bid=7">
  *
- * @copyright	Glen Langer 2007..2013 <http://www.contao.glen-langer.de>
+ * @copyright	Glen Langer 2007..2015 <http://contao.ninja>
  * @author      Glen Langer (BugBuster)
  * @package     Banner
  * @license     LGPL
@@ -122,7 +122,7 @@ p {
  * Class BannerClicks
  *
  * Banner ReDirect class
- * @copyright  Glen Langer 2007..2013
+ * @copyright  Glen Langer 2007..2015
  * @author     Glen Langer
  * @package    Banner
  */

@@ -10,7 +10,7 @@
  * Modul Banner - Check Helper 
  * 
  * PHP version 5
- * @copyright  Glen Langer 2007..2012
+ * @copyright  Glen Langer 2007..2015
  * @author     Glen Langer
  * @package    Banner
  * @license    LGPL
@@ -24,7 +24,7 @@ namespace BugBuster\Banner;
 /**
  * Class BannerCheckHelper
  *
- * @copyright  Glen Langer 2012
+ * @copyright  Glen Langer 2015
  * @author     Glen Langer
  * @package    Banner
  */

@@ -6,7 +6,7 @@
  *
  * This is the banner configuration file.
  *
- * @copyright	Glen Langer 2007..2014 <http://www.contao.glen-langer.de>
+ * @copyright	Glen Langer 2007..2015 <http://contao.ninja>
  * @author      Glen Langer (BugBuster)
  * @package     Banner 
  * @license     LGPL 
