@@ -264,9 +264,13 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	    //Modul als Artikelelement
 	    if ('ce_' == $this->typePrefix) 
 	    {
-	    	$this->Template->cssID = $this->article_cssID;
-	    	$this->Template->class = $this->article_class;
-	    	$this->Template->style = $this->article_style;
+	        $this->Template->cssID = '';
+            if ($this->article_cssID) 
+            {
+                $this->Template->cssID = $this->article_cssID;
+            }
+            $this->Template->class = $this->article_class;
+            $this->Template->style = $this->article_style;
 	    }
 	    //headline
 	    $_headline = deserialize($this->headline);
