@@ -28,15 +28,19 @@ use Contao\Controller;
  * Initialize the system
  */
 define('TL_MODE', 'FE');
-// ER2 / ER3 (dev over symlink)
-if (file_exists('../../../initialize.php'))
+$dir = __DIR__;
+ 
+while ($dir != '.' && $dir != '/' && !is_file($dir . '/system/initialize.php'))
 {
-    require('../../../initialize.php');
+    $dir = dirname($dir);
 }
-else 
+ 
+if (!is_file($dir . '/system/initialize.php'))
 {
-    require('../../../../../system/initialize.php');
+    echo 'Could not find initialize.php!';
+    exit(1);
 }
+require($dir . '/system/initialize.php');
 
 if (!file_exists(TL_ROOT . '/system/modules/botdetection/modules/ModuleBotDetection.php'))
 {

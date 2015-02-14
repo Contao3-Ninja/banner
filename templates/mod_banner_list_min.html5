@@ -21,8 +21,7 @@
 	        <?php if ($banner['banner_url']): ?></a><?php endif; ?>
 	    </div>
 	</figure>
-    <script type="text/javascript">
-	  /* <![CDATA[ */ 
+    <script>
 	  if(Browser.Plugins.Flash.version > 6) {
 			new Swiff("<?php echo $banner['swf_src']; ?>", {
 			  id: "swf_<?php echo $banner['swf_id']; ?>",
@@ -35,7 +34,6 @@
 			  }
 			}).replaces($("swf_<?php echo $banner['swf_id']; ?>"));
 		}
-		/* ]]> */
 		</script> 
 <?php endif; ?>
 <?php if ($banner['banner_text']) : ?>
