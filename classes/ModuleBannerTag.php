@@ -5,7 +5,7 @@
  *
  * Modul Banner Tag - Frontend 
  *
- * @copyright  Glen Langer 2007..2014 <http://www.contao.glen-langer.de>
+ * @copyright  Glen Langer 2007..2015 <http://contao.ninja>
  * @author     Glen Langer (BugBuster)
  * @package    Banner
  * @license    LGPL
@@ -21,7 +21,7 @@ namespace BugBuster\Banner;
 /**
  * Class ModuleBannerTag
  *
- * @copyright  Glen Langer 2007..2014 <http://www.contao.glen-langer.de>
+ * @copyright  Glen Langer 2007..2015 <http://contao.ninja>
  * @author     Glen Langer (BugBuster)
  * @package    Banner
  * @license    LGPL
@@ -239,8 +239,17 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	    {
 	        //CSS-ID/Klasse
 	        $_cssID = deserialize($this->cssID);
-	    	$this->Template->cssID = 'id="'.$_cssID[0].'"';
-	    	$this->Template->class = 'mod_banner '.$_cssID[1];
+	        $this->Template->cssID = '';
+	        $this->Template->class = 'mod_banner';
+	        if ($_cssID[0] != '') 
+	        {
+	        	$this->Template->cssID = ' id="'.$_cssID[0].'"';
+	        }
+	        if ($_cssID[1] != '')
+	        {
+	            $this->Template->class .= ' '.$_cssID[1];
+	        }
+	    	
             //Abstand davor und dahinter
 	    	$_style = deserialize($this->space);
 	    	if ("" != $_style[0]) 
@@ -255,9 +264,13 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	    //Modul als Artikelelement
 	    if ('ce_' == $this->typePrefix) 
 	    {
-	    	$this->Template->cssID = $this->article_cssID;
-	    	$this->Template->class = $this->article_class;
-	    	$this->Template->style = $this->article_style;
+	        $this->Template->cssID = '';
+            if ($this->article_cssID) 
+            {
+                $this->Template->cssID = $this->article_cssID;
+            }
+            $this->Template->class = $this->article_class;
+            $this->Template->style = $this->article_style;
 	    }
 	    //headline
 	    $_headline = deserialize($this->headline);

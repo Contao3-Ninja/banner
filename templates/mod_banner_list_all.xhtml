@@ -1,23 +1,27 @@
 <!-- indexer::stop -->
-<div class="<?php echo $this->class; ?>"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 <?php if (($this->headline) && (!$this->headline_stop)): ?>
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 <?php foreach ($this->banners as $banner): ?>
 <?php if ($banner['banner_pic']) : ?>
-    <div class="banner_image" id="banner_<?php echo $banner['banner_id']; ?>">
-        <?php if ($banner['banner_url']): ?><a href="system/modules/banner/public/conban_clicks.php?<?php echo $banner['banner_key'].$banner['banner_id']; ?>" <?php echo $banner['banner_target']; ?> title="<?php echo $banner['banner_comment']; ?>" ><?php endif; ?><img src="<?php echo $banner['src']; ?>" <?php echo $banner['size']; ?> title="<?php echo $banner['banner_comment']; ?>" alt="<?php echo $banner['alt']; ?>" /><?php if ($banner['banner_url']): ?></a><?php endif; ?>
+	<div class="banner_wrap<?php echo $banner['banner_wrap_class']; ?>"<?php echo $banner['banner_wrap_id']; ?>>
+		<div class="banner_image" id="banner_<?php echo $banner['banner_id']; ?>">
+			<?php if ($banner['banner_url']): ?><a href="system/modules/banner/public/conban_clicks.php?<?php echo $banner['banner_key'].$banner['banner_id']; ?>" <?php echo $banner['banner_target']; ?> title="<?php echo $banner['banner_comment']; ?>" ><?php endif; ?><?php $this->insert('picture_default', $banner['picture']) ?><?php if ($banner['banner_url']): ?></a><?php endif; ?>
+		</div>
+		<div class="banner_name"><?php echo $banner['banner_name']; ?></div>
     </div>
-    <div class="banner_name"><?php echo $banner['banner_name']; ?></div>
 <?php endif; ?>
 <?php if ($banner['banner_flash']) : ?>
-    <div class="banner_flash block" style="height:<?php echo $banner['swf_height']; ?>px; width:<?php echo $banner['swf_width']; ?>px;">
-        <?php if ($banner['banner_url']): ?><a href="system/modules/banner/public/conban_clicks.php?<?php echo $banner['banner_key'].$banner['banner_id']; ?>" <?php echo $banner['banner_target']; ?> title="<?php echo $banner['banner_comment']; ?>" ><?php endif; ?>
-        <span id="swf_<?php echo $banner['swf_id']; ?>">
-            <?php echo $banner['fallback_content']; ?>
-        </span>
-        <img src="system/modules/banner/assets/leer.gif" alt="" style="position:relative; margin-top:<?php echo "-".$banner['swf_height']; ?>px; left:0; z-index: 10; width:<?php echo $banner['swf_width']; ?>px; height:<?php echo $banner['swf_height']; ?>px;" />
-        <?php if ($banner['banner_url']): ?></a><?php endif; ?>
+	<div class="banner_wrap<?php echo $banner['banner_wrap_class']; ?>"<?php echo $banner['banner_wrap_id']; ?>>
+	    <div class="banner_flash block" style="height:<?php echo $banner['swf_height']; ?>px; width:<?php echo $banner['swf_width']; ?>px;">
+	        <?php if ($banner['banner_url']): ?><a href="system/modules/banner/public/conban_clicks.php?<?php echo $banner['banner_key'].$banner['banner_id']; ?>" <?php echo $banner['banner_target']; ?> title="<?php echo $banner['banner_comment']; ?>" ><?php endif; ?>
+	        <span id="swf_<?php echo $banner['swf_id']; ?>">
+	            <?php echo $banner['fallback_content']; ?>
+	        </span>
+	        <img src="system/modules/banner/assets/leer.gif" alt="" style="position:relative; margin-top:<?php echo "-".$banner['swf_height']; ?>px; left:0; z-index: 10; width:<?php echo $banner['swf_width']; ?>px; height:<?php echo $banner['swf_height']; ?>px;" />
+	        <?php if ($banner['banner_url']): ?></a><?php endif; ?>
+	    </div>
     </div>
     <script type="text/javascript">
 	/* <![CDATA[ */ 
@@ -37,10 +41,12 @@
 	</script> 
 <?php endif; ?>
 <?php if ($banner['banner_text']) : ?>
-    <div class="banner_text" id="banner_<?php echo $banner['banner_id']; ?>">
-    	<div class="banner_text_name"><?php if ($banner['banner_url']): ?><a href="system/modules/banner/public/conban_clicks.php?<?php echo $banner['banner_key'].$banner['banner_id']; ?>" <?php echo $banner['banner_target']; ?> title="<?php echo $banner['banner_name']; ?>" ><?php endif; ?><?php echo $banner['banner_name']; ?><?php if ($banner['banner_url']): ?></a><?php endif; ?></div>
-    	<div class="banner_text_comment"><?php echo $banner['banner_comment']; ?></div>
-        <?php if ($banner['banner_url']): ?><div class="banner_text_url"><a href="system/modules/banner/public/conban_clicks.php?<?php echo $banner['banner_key'].$banner['banner_id']; ?>" <?php echo $banner['banner_target']; ?> title="<?php echo $banner['banner_name']; ?>" ><?php echo $banner['banner_url_kurz']; ?></a></div><?php endif; ?>
+	<div class="banner_wrap<?php echo $banner['banner_wrap_class']; ?>"<?php echo $banner['banner_wrap_id']; ?>>
+	    <div class="banner_text" id="banner_<?php echo $banner['banner_id']; ?>">
+	    	<div class="banner_text_name"><?php if ($banner['banner_url']): ?><a href="system/modules/banner/public/conban_clicks.php?<?php echo $banner['banner_key'].$banner['banner_id']; ?>" <?php echo $banner['banner_target']; ?> title="<?php echo $banner['banner_name']; ?>" ><?php endif; ?><?php echo $banner['banner_name']; ?><?php if ($banner['banner_url']): ?></a><?php endif; ?></div>
+	    	<div class="banner_text_comment"><?php echo $banner['banner_comment']; ?></div>
+	        <?php if ($banner['banner_url']): ?><div class="banner_text_url"><a href="system/modules/banner/public/conban_clicks.php?<?php echo $banner['banner_key'].$banner['banner_id']; ?>" <?php echo $banner['banner_target']; ?> title="<?php echo $banner['banner_name']; ?>" ><?php echo $banner['banner_url_kurz']; ?></a></div><?php endif; ?>
+	    </div>
     </div>
 <?php endif; ?>
 <?php if ($banner['banner_empty']) : ?>

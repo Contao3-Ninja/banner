@@ -6,7 +6,7 @@
  *
  * This file modifies the data container array of table tl_module.
  *
- * @copyright  Glen Langer 2007..2013
+ * @copyright  Glen Langer 2007..2015
  * @author     Glen Langer
  * @package    Banner
  * @license    LGPL

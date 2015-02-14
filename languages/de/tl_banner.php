@@ -8,18 +8,20 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-06-28T23:16:59+02:00
+ * last-updated: 2015-02-02T21:48:57+01:00
  */
-
 
 $GLOBALS['TL_LANG']['tl_banner']['1']                        = 'Höchste Priorität';
 $GLOBALS['TL_LANG']['tl_banner']['2']                        = 'Normale Priorität';
 $GLOBALS['TL_LANG']['tl_banner']['3']                        = 'Niedrigste Priorität';
+$GLOBALS['TL_LANG']['tl_banner']['banner_active']            = 'veröffentlicht';
 $GLOBALS['TL_LANG']['tl_banner']['banner_cat_not_found']     = 'Keine Kategorie im Banner Modul ausgewählt.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_clicks_until']['0'] = 'Begrenzung der Klicks';
 $GLOBALS['TL_LANG']['tl_banner']['banner_clicks_until']['1'] = 'Wenn Sie hier eine Zahl eingeben, wird dieser Banner nach dieser Anzahl von Klicks nicht mehr angezeigt.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_comment']['0']      = 'Bannerkommentar';
 $GLOBALS['TL_LANG']['tl_banner']['banner_comment']['1']      = 'Erste Zeile erscheint als title Tag. Bei Textbanner: Textzeile';
+$GLOBALS['TL_LANG']['tl_banner']['banner_cssid']['0']        = 'CSS-ID/Klasse';
+$GLOBALS['TL_LANG']['tl_banner']['banner_cssid']['1']        = 'Hier können Sie eine ID und beliebig viele Klassen eingeben. Ein Präfix "banner_" wird automatisch hinzugefügt.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_domain']['0']       = 'Domain Filter';
 $GLOBALS['TL_LANG']['tl_banner']['banner_domain']['1']       = 'Wenn Sie hier eine Domain eingeben, wird dieser Banner nur für diese Domain genutzt. Ohne Angabe wird dieser Banner für alle Domains genutzt.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_image']['0']        = 'Bannerdatei';
@@ -27,11 +29,13 @@ $GLOBALS['TL_LANG']['tl_banner']['banner_image']['1']        = 'Bitte eine Banne
 $GLOBALS['TL_LANG']['tl_banner']['banner_image_extern']['0'] = 'Bannerbild-URL';
 $GLOBALS['TL_LANG']['tl_banner']['banner_image_extern']['1'] = 'Externe Bannerbild-URL: http://... ';
 $GLOBALS['TL_LANG']['tl_banner']['banner_imgSize']['0']      = 'Bannerbreite und Bannerhöhe';
-$GLOBALS['TL_LANG']['tl_banner']['banner_imgSize']['1']      = 'Geben Sie die Bannerbreite und/oder die Bannerhöhe in Pixel ein, um die Bannergröße anzupassen. Wenn Sie keine Angaben machen, wird das Banner in seiner Originalgröße angezeigt.<br>ACHTUNG: Animierte GIFs werden bei Größen-Angaben durch die GD-Neuberechnung leider zum Standbild.';
+$GLOBALS['TL_LANG']['tl_banner']['banner_imgSize']['1']      = 'Hier können Sie die Abmessungen des Banners (in Pixel) und den Skalierungsmodus (nur für interne Bannergrafik) festlegen. ACHTUNG: Animierte GIFs werden bei Größen-Angaben durch die GD-Neuberechnung leider zum Standbild.';
+$GLOBALS['TL_LANG']['tl_banner']['banner_inactive']          = 'nicht veröffentlicht';
 $GLOBALS['TL_LANG']['tl_banner']['banner_jumpTo']['0']       = 'Bannerziel-Seite';
 $GLOBALS['TL_LANG']['tl_banner']['banner_jumpTo']['1']       = 'Bitte wählen Sie die Zielseite aus. Diese Auswahl hat Vorrang vor der direkten Bannerziel-URL.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_name']['0']         = 'Bannername';
 $GLOBALS['TL_LANG']['tl_banner']['banner_name']['1']         = 'Bannername. Bei Textbanner: Überschrift';
+$GLOBALS['TL_LANG']['tl_banner']['banner_number_of']         = 'Anzahl der Banner';
 $GLOBALS['TL_LANG']['tl_banner']['banner_published']['0']    = 'Veröffentlicht';
 $GLOBALS['TL_LANG']['tl_banner']['banner_published']['1']    = 'Solange Sie diese Option nicht wählen, wird dieser Banner nicht für die Anzeige berücksichtigt.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_start']['0']        = 'Anzeigen ab';
@@ -58,6 +62,7 @@ $GLOBALS['TL_LANG']['tl_banner']['delete']['1']              = 'Banner ID %s lö
 $GLOBALS['TL_LANG']['tl_banner']['destination_legend']       = 'Bannerziele';
 $GLOBALS['TL_LANG']['tl_banner']['edit']['0']                = 'Banner editieren';
 $GLOBALS['TL_LANG']['tl_banner']['edit']['1']                = 'Banner ID %s editieren';
+$GLOBALS['TL_LANG']['tl_banner']['expert_legend']            = 'Experten-Einstellungen';
 $GLOBALS['TL_LANG']['tl_banner']['filter_legend']            = 'Filterung';
 $GLOBALS['TL_LANG']['tl_banner']['image_legend']             = 'Bannerdatei';
 $GLOBALS['TL_LANG']['tl_banner']['new']['0']                 = 'Banner neu';

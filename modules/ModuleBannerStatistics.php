@@ -6,7 +6,7 @@
 * Module ModuleBannerStatistics - Backend
 * Backend statistics
 *
-* @copyright  Glen Langer 2013 <http://www.contao.glen-langer.de>
+* @copyright  Glen Langer 2015 <http://contao.ninja>
 * @author     Glen Langer (BugBuster)
 * @package    BannerStatistics
 * @license    LGPL
@@ -22,7 +22,7 @@ namespace BugBuster\BannerStatistics;
 /**
  * Class ModuleBannerStatistics
  *
- * @copyright  Glen Langer 2013 <http://www.contao.glen-langer.de>
+ * @copyright  Glen Langer 2015 <http://contao.ninja>
  * @author     Glen Langer (BugBuster)
  * @package    BannerStatistics
  */
@@ -100,7 +100,8 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
             
         }
         $arrBanners = $this->getBannersByCatID($this->intCatID);
-        
+        $number_active   = 0;
+        $number_inactive = 0;
         foreach ($arrBanners as $Banner) 
         {
             // Aufteilen nach intern, extern, text Banner
@@ -119,9 +120,25 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
                     $arrBannersStat[] = $this->addBannerText($Banner);
                     break;
             }
+            //Gesamt Aktiv / Inaktiv zählen
+            if ($Banner['banner_published_class'] == 'published') 
+            {
+                $number_active++;
+            }
+            else 
+            {
+                $number_inactive++;
+            }
+            //Gesamt Views / Klicks zählen
+            $number_clicks += (int)$Banner['banner_clicks']; 
+            $number_views  += (int)$Banner['banner_views'];
         }
         
         $this->Template->bannersstat      = $arrBannersStat;
+        $this->Template->number_active    = $number_active;
+        $this->Template->number_inactive  = $number_inactive;
+        $this->Template->number_clicks    = $number_clicks;
+        $this->Template->number_views     = $number_views;
         //$this->Template->banner_export_title = $GLOBALS['TL_LANG']['tl_banner_stat']['export_button_title'];
         $this->Template->header_id        = $GLOBALS['TL_LANG']['tl_banner_stat']['id'];
         $this->Template->header_picture   = $GLOBALS['TL_LANG']['tl_banner_stat']['picture'];
@@ -146,6 +163,9 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         $this->Template->bannercatzerobutton  = $GLOBALS['TL_LANG']['tl_banner_stat']['cat_zero_button'];
         $this->Template->bannercatzerotext    = $GLOBALS['TL_LANG']['tl_banner_stat']['cat_zero_text'];
         $this->Template->bannercatzeroconfirm = $GLOBALS['TL_LANG']['tl_banner_stat']['cat_zero_confirm'];
+        $this->Template->bannerclickthroughrate     = $GLOBALS['TL_LANG']['tl_banner_stat']['click_through_rate'];
+        $this->Template->bannernumberactiveinactive = $GLOBALS['TL_LANG']['tl_banner_stat']['number_active_inactive'];
+        $this->Template->bannernumberviewsclicks    = $GLOBALS['TL_LANG']['tl_banner_stat']['number_views_clicks'];
    
         $this->Template->banner_hook_panels = $this->addStatisticPanelLineHook();
         

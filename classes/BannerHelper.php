@@ -5,7 +5,7 @@
  *
  * Modul Banner - FE Helper Class BannerHelper
  *
- * @copyright  Glen Langer 2007..2014 <http://www.contao.glen-langer.de>
+ * @copyright  Glen Langer 2007..2015 <http://contao.ninja>
  * @author     Glen Langer (BugBuster)
  * @package    Banner
  * @license    LGPL
@@ -21,7 +21,7 @@ namespace BugBuster\Banner;
 /**
  * Class BannerHelper
  *
- * @copyright  Glen Langer 2007..2014 <http://www.contao.glen-langer.de>
+ * @copyright  Glen Langer 2007..2015 <http://contao.ninja>
  * @author     Glen Langer (BugBuster)
  * @package    Banner
  * @license    LGPL
@@ -311,7 +311,10 @@ class BannerHelper extends \Frontend
 	protected function getDefaultBanner()
 	{
 		$arrImageSize = array();
-		
+		//CSS-ID/Klasse(n) je Banner, für den wrapper
+		$banner_cssID   = '';
+		$banner_class   = ' banner_default';
+				
 		//BannerDefault gewünscht und vorhanden?
 		if ( $this->arrCategoryValues['banner_default'] == '1' 
             && strlen($this->arrCategoryValues['banner_default_image']) > 0 
@@ -342,7 +345,19 @@ class BannerHelper extends \Frontend
 			// 1 = GIF, 2 = JPG, 3 = PNG
 			// 4 = SWF, 13 = SWC (zip-like swf file)
 			// 5 = PSD, 6 = BMP, 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order)
-			// 9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF			
+			// 9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF
+
+			//fake the Picture::create
+			$picture['img']   = array
+			(
+			    'src'    => $this->urlEncode($this->arrCategoryValues['banner_default_image']),
+			    'width'  => $arrImageSize[0],
+			    'height' => $arrImageSize[1],
+			    'srcset' => $this->urlEncode($this->arrCategoryValues['banner_default_image'])
+			);
+			$picture['alt']   = specialchars(ampersand($this->arrCategoryValues['banner_default_name']));
+			$picture['title'] = '';
+			
 			switch ($arrImageSize[2]) 
 			{
 			    case 1:
@@ -351,6 +366,8 @@ class BannerHelper extends \Frontend
 			        $arrBanners[] = array
 							        (
 							        'banner_key'     => 'defbid=',
+							        'banner_wrap_id'    => $banner_cssID,
+							        'banner_wrap_class' => $banner_class,
 							        'banner_id'      => $this->arrCategoryValues['id'],
 							        'banner_name'    => specialchars(ampersand($this->arrCategoryValues['banner_default_name'])),
 							        'banner_url'     => $this->arrCategoryValues['banner_default_url'],
@@ -362,7 +379,8 @@ class BannerHelper extends \Frontend
 							        'banner_pic'     => true,
 							        'banner_flash'   => false,
 							        'banner_text'    => false,
-							        'banner_empty'   => false	// issues 733
+							        'banner_empty'   => false,	// issues 733
+							        'picture'        => $picture
 							        );
 			        break;
 			    case 4:  // Flash swf
@@ -371,6 +389,8 @@ class BannerHelper extends \Frontend
 			        $arrBanners[] = array
 							        (
 					                'banner_key'     => 'defbid=',
+						            'banner_wrap_id'    => $banner_cssID,
+						            'banner_wrap_class' => $banner_class,
 					                'banner_id'      => $this->arrCategoryValues['id'],
 					                'banner_name'    => specialchars(ampersand($this->arrCategoryValues['banner_default_name'])),
 					                'banner_url'     => $this->arrCategoryValues['banner_default_url'],
@@ -397,6 +417,8 @@ class BannerHelper extends \Frontend
 		$arrBanners[] = array
 		(
 		        'banner_key'  => 'bid=',
+    		    'banner_wrap_id'    => $banner_cssID,
+    		    'banner_wrap_class' => $banner_class,
 		        'banner_id'   => 0,
 		        'banner_name' => specialchars(ampersand($NoBannerFound)),
 		        'banner_url'  => '',
@@ -648,6 +670,27 @@ class BannerHelper extends \Frontend
         {
             $objBanners->next();
             self::$arrBannerSeen[] = $objBanners->id;
+            //CSS-ID/Klasse(n) je Banner, für den wrapper
+            $banner_cssID   = '';
+            $banner_class   = '';
+            $banner_classes = '';
+            $_cssID = deserialize($objBanners->banner_cssid);
+            if ( is_array($_cssID) ) 
+            {
+                if ($_cssID[0] != '') 
+                {
+                    $banner_cssID   = ' id="banner_'.$_cssID[0].'"';
+                }
+                if ($_cssID[1] != '') 
+                {
+                    $banner_classes = explode(" ", $_cssID[1]);
+                    foreach ($banner_classes as $banner_classone) 
+                    {
+                        $banner_class .= ' banner_'.$banner_classone;
+                    }
+                }
+            }
+            
             switch ($objBanners->banner_type)
             {
                 case self::BANNER_TYPE_INTERN :
@@ -665,7 +708,7 @@ class BannerHelper extends \Frontend
                     	$this->log('Banner Image with ID "'.$objBanners->id.'" not found', 'BannerHelper getSingleBannerFirst', TL_ERROR);
                     	break;
                     }                    
-                    //Banner Neue Größe 0:$Width 1:$Height
+                    //Banner Neue Größe 0:$Width 1:$Height 2:resize mode
                     $arrNewSizeValues = deserialize($objBanners->banner_imgSize);
                     //Banner Neue Größe ermitteln, return array $Width,$Height,$oriSize
                     $arrImageSizenNew = $this->BannerImage->getBannerImageSizeNew($arrImageSize[0],$arrImageSize[1],$arrNewSizeValues[0],$arrNewSizeValues[1]);
@@ -684,7 +727,14 @@ class BannerHelper extends \Frontend
                     }
                     else
                     {
+                        //Resize an image and store the resized version in the assets/images folder
+                        //return The path of the resized image or null
                         $FileSrc = \Image::get($this->urlEncode($objFile->path), $arrImageSizenNew[0], $arrImageSizenNew[1],'proportional');
+                        
+                        $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
+                        $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
+                        $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
+                        
                         $arrImageSize[0] = $arrImageSizenNew[0];
                         $arrImageSize[1] = $arrImageSizenNew[1];
                         $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
@@ -770,6 +820,8 @@ class BannerHelper extends \Frontend
                         $arrBanners[] = array
                         (
                                 'banner_key'     => 'bid=',
+                                'banner_wrap_id'    => $banner_cssID,
+                                'banner_wrap_class' => $banner_class,
                                 'banner_id'      => $objBanners->id,
                                 'banner_name'    => specialchars(ampersand($objBanners->banner_name)),
                                 'banner_url'     => $objBanners->banner_url,
@@ -781,7 +833,8 @@ class BannerHelper extends \Frontend
                                 'banner_pic'     => true,
                                 'banner_flash'   => false,
                                 'banner_text'    => false,
-                                'banner_empty'   => false
+                                'banner_empty'   => false,
+                                'picture'        => $picture
                         );
                         break;
                     case 4:  // Flash swf
@@ -817,6 +870,8 @@ class BannerHelper extends \Frontend
                         $arrBanners[] = array
                         (
                             'banner_key'     => 'bid=',
+                            'banner_wrap_id'    => $banner_cssID,
+                            'banner_wrap_class' => $banner_class,
                             'banner_id'      => $objBanners->id,
                             'banner_name'    => specialchars(ampersand($objBanners->banner_name)),
                             'banner_url'     => $objBanners->banner_url,
@@ -838,6 +893,8 @@ class BannerHelper extends \Frontend
                         $arrBanners[] = array
                         (
                             'banner_key'     => 'bid=',
+                            'banner_wrap_id'    => $banner_cssID,
+                            'banner_wrap_class' => $banner_class,
                             'banner_id'      => 0,
                             'banner_name'    => '',
                             'banner_url'     => '',
@@ -903,6 +960,8 @@ class BannerHelper extends \Frontend
                 $arrBanners[] = array
                 (
                         'banner_key'     => 'bid=',
+                        'banner_wrap_id'    => $banner_cssID,
+                        'banner_wrap_class' => $banner_class,
                         'banner_id'      => $objBanners->id,
                         'banner_name'    => specialchars(ampersand($objBanners->banner_name)),
                         'banner_url'     => $objBanners->banner_url,
@@ -985,6 +1044,27 @@ class BannerHelper extends \Frontend
 	    {
 	        $objBanners->next();
 	        self::$arrBannerSeen[] = $objBanners->id;
+	        //CSS-ID/Klasse(n) je Banner, für den wrapper
+	        $banner_cssID   = '';
+	        $banner_class   = '';
+	        $banner_classes = '';
+	        $_cssID = deserialize($objBanners->banner_cssid);
+	    	if ( is_array($_cssID) )
+            {
+                if ($_cssID[0] != '')
+                {
+                    $banner_cssID   = ' id="banner_'.$_cssID[0].'"';
+                }
+                if ($_cssID[1] != '')
+                {
+                    $banner_classes = explode(" ", $_cssID[1]);
+                    foreach ($banner_classes as $banner_classone)
+                    {
+                        $banner_class .= ' banner_'.$banner_classone;
+                    }
+                }
+            }
+        
 	        switch ($objBanners->banner_type)
 	        {
 	            case self::BANNER_TYPE_INTERN :
@@ -1022,6 +1102,11 @@ class BannerHelper extends \Frontend
 	                else
 	                {
 	                    $FileSrc = \Image::get($this->urlEncode($objFile->path), $arrImageSizenNew[0], $arrImageSizenNew[1],'proportional');
+	                    
+	                    $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
+	                    $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
+	                    $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
+	                     
 	                    $arrImageSize[0] = $arrImageSizenNew[0];
 	                    $arrImageSize[1] = $arrImageSizenNew[1];
 	                    $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
@@ -1107,6 +1192,8 @@ class BannerHelper extends \Frontend
 	                    $arrBanners[] = array
 	                    (
 	                    'banner_key'     => 'bid=',
+	                    'banner_wrap_id'    => $banner_cssID,
+	                    'banner_wrap_class' => $banner_class,
 	                    'banner_id'      => $objBanners->id,
 	                    'banner_name'    => specialchars(ampersand($objBanners->banner_name)),
 	                    'banner_url'     => $objBanners->banner_url,
@@ -1118,7 +1205,8 @@ class BannerHelper extends \Frontend
 	                    'banner_pic'     => true,
 	                    'banner_flash'   => false,
 	                    'banner_text'    => false,
-	                    'banner_empty'   => false
+	                    'banner_empty'   => false,
+                        'picture'        => $picture
 	                    );
 	                    break;
 	                case 4:  // Flash swf
@@ -1154,6 +1242,8 @@ class BannerHelper extends \Frontend
 	                    $arrBanners[] = array
 	                    (
 	                            'banner_key'     => 'bid=',
+	                            'banner_wrap_id'    => $banner_cssID,
+	                            'banner_wrap_class' => $banner_class,
 	                            'banner_id'      => $objBanners->id,
 	                            'banner_name'    => specialchars(ampersand($objBanners->banner_name)),
 	                            'banner_url'     => $objBanners->banner_url,
@@ -1175,6 +1265,8 @@ class BannerHelper extends \Frontend
 	                    $arrBanners[] = array
 	                    (
 	                    'banner_key'     => 'bid=',
+                        'banner_wrap_id'    => $banner_cssID,
+                        'banner_wrap_class' => $banner_class,
 	                    'banner_id'      => 0,
 	                    'banner_name'    => '',
 	                    'banner_url'     => '',
@@ -1240,6 +1332,8 @@ class BannerHelper extends \Frontend
 	            $arrBanners[] = array
 	            (
 	                    'banner_key'     => 'bid=',
+	                    'banner_wrap_id'    => $banner_cssID,
+	                    'banner_wrap_class' => $banner_class,
 	                    'banner_id'      => $objBanners->id,
 	                    'banner_name'    => specialchars(ampersand($objBanners->banner_name)),
 	                    'banner_url'     => $objBanners->banner_url,
@@ -1331,6 +1425,27 @@ class BannerHelper extends \Frontend
 	            $arrBanners = array();
 	            $objBanners->next();
 	            self::$arrBannerSeen[] = $objBanners->id;
+	            //CSS-ID/Klasse(n) je Banner, für den wrapper
+	            $banner_cssID   = '';
+	            $banner_class   = '';
+	            $banner_classes = '';
+	            $_cssID = deserialize($objBanners->banner_cssid);
+	            if ( is_array($_cssID) )
+	            {
+	                if ($_cssID[0] != '')
+	                {
+	                    $banner_cssID   = ' id="banner_'.$_cssID[0].'"';
+	                }
+	                if ($_cssID[1] != '')
+	                {
+	                    $banner_classes = explode(" ", $_cssID[1]);
+	                    foreach ($banner_classes as $banner_classone)
+	                    {
+	                        $banner_class .= ' banner_'.$banner_classone;
+	                    }
+	                }
+	            }
+	             
 	            if (!$this->statusRandomBlocker) 
 	            {
 	                //Random Blocker setzen für den ersten Banner
@@ -1374,6 +1489,11 @@ class BannerHelper extends \Frontend
 	                    else
 	                    {
 	                        $FileSrc = \Image::get($this->urlEncode($objFile->path), $arrImageSizenNew[0], $arrImageSizenNew[1],'proportional');
+	                        
+	                        $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
+	                        $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
+	                        $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
+
 	                        $arrImageSize[0] = $arrImageSizenNew[0];
 	                        $arrImageSize[1] = $arrImageSizenNew[1];
 	                        $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
@@ -1398,6 +1518,17 @@ class BannerHelper extends \Frontend
 	                    $arrImageSizenNew = $this->BannerImage->getBannerImageSizeNew($arrImageSize[0],$arrImageSize[1],$arrNewSizeValues[0],$arrNewSizeValues[1]);
 	                    //Umwandlung bei Parametern
 	                    $FileSrc = html_entity_decode($objBanners->banner_image_extern, ENT_NOQUOTES, 'UTF-8');
+	                    //fake the Picture::create
+	                    $picture['img']   = array
+	                    (
+	                    	'src'    => specialchars(ampersand($FileSrc)),
+	                        'width'  => $arrImageSizenNew[0],
+	                        'height' => $arrImageSizenNew[1],
+	                        'srcset' => specialchars(ampersand($FileSrc))
+	                    );
+	                    $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
+	                    $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
+	                    
 	                    //$src = $objBanners->banner_image_extern;
 	                    $arrImageSize[0] = $arrImageSizenNew[0];
 	                    $arrImageSize[1] = $arrImageSizenNew[1];
@@ -1460,6 +1591,8 @@ class BannerHelper extends \Frontend
 	                        $arrBanners[] = array
 	                        (
 	                        'banner_key'     => 'bid=',
+	                        'banner_wrap_id'    => $banner_cssID,
+	                        'banner_wrap_class' => $banner_class,
 	                        'banner_id'      => $objBanners->id,
 	                        'banner_name'    => specialchars(ampersand($objBanners->banner_name)),
 	                        'banner_url'     => $objBanners->banner_url,
@@ -1471,8 +1604,10 @@ class BannerHelper extends \Frontend
 	                        'banner_pic'     => true,
 	                        'banner_flash'   => false,
 	                        'banner_text'    => false,
-	                        'banner_empty'   => false
+	                        'banner_empty'   => false,
+                            'picture'        => $picture
 	                        );
+	                        $picture = null; unset($picture);
 	                        break;
 	                    case 4:  // Flash swf
 	                    case 13: // Flash swc
@@ -1507,6 +1642,8 @@ class BannerHelper extends \Frontend
 	                        $arrBanners[] = array
 	                        (
 	                                'banner_key'     => 'bid=',
+    	                            'banner_wrap_id'    => $banner_cssID,
+    	                            'banner_wrap_class' => $banner_class,
 	                                'banner_id'      => $objBanners->id,
 	                                'banner_name'    => specialchars(ampersand($objBanners->banner_name)),
 	                                'banner_url'     => $objBanners->banner_url,
@@ -1528,6 +1665,8 @@ class BannerHelper extends \Frontend
 	                        $arrBanners[] = array
 	                        (
 	                        'banner_key'     => 'bid=',
+	                        'banner_wrap_id'    => $banner_cssID,
+	                        'banner_wrap_class' => $banner_class,
 	                        'banner_id'      => 0,
 	                        'banner_name'    => '',
 	                        'banner_url'     => '',
@@ -1587,6 +1726,8 @@ class BannerHelper extends \Frontend
 	                $arrBanners[] = array
 	                (
 	                        'banner_key'     => 'bid=',
+    	                    'banner_wrap_id'    => $banner_cssID,
+    	                    'banner_wrap_class' => $banner_class,
 	                        'banner_id'      => $objBanners->id,
 	                        'banner_name'    => specialchars(ampersand($objBanners->banner_name)),
 	                        'banner_url'     => $objBanners->banner_url,

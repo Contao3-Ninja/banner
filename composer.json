@@ -3,12 +3,12 @@
 	"description":"A banner advertisement module for Contao CMS ",
 	"keywords":["contao","banner","advertisement","counter"],
 	"type":"contao-module",
-	"homepage":"http://www.contao.glen-langer.de",
+	"homepage":"http://contao.ninja",
 	"license":"LGPL-3.0+",
 	"authors":[
 		{
 			"name":"Glen Langer",
-			"homepage":"http://www.contao.glen-langer.de",
+			"homepage":"http://contao.ninja",
 			"role":"Developer"
 		}
 	],
@@ -21,7 +21,7 @@
 	},
 	"require":{
 		"php":">=5.3",
-		"contao/core":">=3.2,<4",
+		"contao/core":">=3.4,<4",
 		"contao-community-alliance/composer-plugin": "*",
 		"bugbuster/botdetection":">=3.2.1"
 	},

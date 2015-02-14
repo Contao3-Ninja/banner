@@ -12,7 +12,7 @@
  * This is the data container array for table tl_banner_category.
  *
  * PHP version 5
- * @copyright  Glen Langer 2007..2012
+ * @copyright  Glen Langer 2007..2015
  * @author     Glen Langer 
  * @package    Banner
  * @license    LGPL

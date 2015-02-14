@@ -18,7 +18,7 @@
 		</div>
 		<div class="tl_search tl_subpanel">
 			<strong><?php echo $this->bannerstatcat; ?>:</strong>
-			<select class="tl_select" name="id" style="width:200px;">
+			<select class="tl_select" name="id">
 				<?php foreach ($this->bannercats as $bannercat): ?>
 				    <?php if ($bannercat['id']==$this->bannercatid) : ?>
 				<option selected="selected" value="<?php echo $bannercat['id']; ?>"><?php echo $bannercat['title']; ?></option>
@@ -61,7 +61,36 @@
 <?php endif; ?>
 <br> <br>
 <div class="tl_formbody_edit">
-
+	<div class="tl_header">
+		<table class="tl_header_table">
+		  <tbody>
+		  <tr>
+		    <td><span class="tl_label"><?php echo $this->bannernumberactiveinactive; ?>:</span></td>
+		    <td><?php echo $this->number_active . " / ". $this->number_inactive; ?></td>
+		    <td> </td>
+		    <td> </td>
+		    <td> </td>
+		  </tr>
+		  <tr>
+		    <td><span class="tl_label"><?php echo $GLOBALS['TL_LANG']['tl_banner_stat']['number_views_clicks']; ?>:</span></td>
+		    <td><?php echo $this->number_views ." / ". $this->number_clicks; ?></td>
+		    <td style="width:10px; padding-left: 2px; text-align: center;"></td>
+		  <?php if (0 < $this->number_clicks) : ?>
+		    <td><span class="tl_label"><?php echo $this->bannerclickthroughrate; ?>:</span></td>
+		    <td><?php
+				if (0 == $this->number_views) { echo "0%"; }
+				else { echo round($this->number_clicks * 100 / $this->number_views,2)."%"; } 
+				?>
+		    </td>
+		  <?php else: ?>
+		  	<td> </td>
+		    <td> </td>
+		  <?php endif; ?>
+		  </tr>
+		  </tbody>
+		</table>
+	</div>
+	<br> 
 	<table summary="Table lists records" class="tl_listing">
 	<tbody>
 	<tr>
@@ -128,15 +157,31 @@
 	                    <div class="date_data_right"><?php echo $bannerstat['banner_clicks']; ?></div>
 	                </div>
 	                <div style="clear:both;"></div>
+	            <?php if (0 < $bannerstat['banner_clicks']) : ?>
 	                <div class="left">
 	                    <div class="">&nbsp;</div>
 	                    <div class="">&nbsp;</div>
 	                </div>
 	                <div class="left">
-	                    <div class="">&nbsp;</div>
-	                    <div class="">&nbsp;</div>
+	                    <div class="date_head"><?php echo $this->bannerclickthroughrate; ?></div>
+	                    <div class="date_data_right"><?php
+	            			if (0 == $bannerstat['banner_views']) { echo "0%"; }
+							else { echo round($bannerstat['banner_clicks'] * 100 / $bannerstat['banner_views'],2)."%"; }
+							?>
+						</div>
 	                </div>
 	                <div style="clear:both;"></div>
+	            <?php else: ?>
+	                <div class="left">
+	                    <div class="">&nbsp;</div>
+	                    <div class="">&nbsp;</div>
+	                </div>
+	                <div class="left">
+	                    <div class="">&nbsp;</div>
+	                    <div class="">&nbsp;</div>
+	                </div>
+	            	<div style="clear:both;"></div>
+	            <?php endif; ?>
 	            </div>
 	        </div>
 	    </td>

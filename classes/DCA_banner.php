@@ -5,7 +5,7 @@
  *
  * Contao Module "Banner" - DCA Helper Class DCA_banner_category
  *
- * @copyright  Glen Langer 2012..2013 <http://www.contao.glen-langer.de>
+ * @copyright  Glen Langer 2012..2015 <http://contao.ninja>
  * @author     Glen Langer (BugBuster)
  * @package    Banner
  * @license    LGPL
@@ -50,6 +50,46 @@ class DCA_banner extends \Backend
         //$this->import('BugBuster\Banner\BannerImage', 'BannerImage');
         $this->BannerImage = new \Banner\BannerImage();
         
+    }
+    
+    /**
+     * Add Header Rows, call from header_callback
+     */
+    public function addHeader($add, $dca)
+    {
+        $catId = $add['id'];
+        unset($add['id']); //delete the helper
+        
+        $sql = 'SELECT CAST(`banner_published` AS UNSIGNED INTEGER) AS published
+                	,count(id) AS numbers 
+                FROM `tl_banner` 
+                WHERE `pid`=?
+                GROUP BY 1';
+        $objNumbers = \Database::getInstance()->prepare($sql)->execute($catId);
+        if ($objNumbers->numRows == 0)
+        {
+            return $add;
+        }
+        $published     = 0;
+        $not_published = 0;
+        while ($objNumbers->next())
+        {
+            if ($objNumbers->published == 0) 
+            {
+            	$not_published = $objNumbers->numbers;
+            }
+            if ($objNumbers->published == 1)
+            {
+                $published = $objNumbers->numbers;
+            }
+        }
+    
+        $add[$GLOBALS['TL_LANG']['tl_banner']['banner_number_of']] = $published." " 
+                        . $GLOBALS['TL_LANG']['tl_banner']['banner_active']
+                        . " / "
+                        . $not_published." "
+                        . $GLOBALS['TL_LANG']['tl_banner']['banner_inactive'];
+        return $add;
     }
     
     /**
@@ -622,5 +662,22 @@ class DCA_banner extends \Backend
                                 ->execute($intId);
     }
 
+    /**
+     * Return all image sizes as array
+     * @return array
+     */
+    public function getBannerImageSizes()
+    {
+        $sizes = array();
+        $imageSize = $this->Database
+                            ->prepare("SELECT id, name, width, height FROM tl_image_size ORDER BY pid, name")
+                            ->execute(\Input::get('id'));
+        while ($imageSize->next())
+        {
+            $sizes[$imageSize->id] = $imageSize->name;
+            $sizes[$imageSize->id] .= ' (' . $imageSize->width . 'x' . $imageSize->height . ')';
+        }
+        return array_merge(array('image_sizes'=>$sizes), $GLOBALS['TL_CROP']);
+    }
 
 }

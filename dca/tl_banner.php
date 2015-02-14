@@ -7,7 +7,7 @@
  * This is the data container array for table tl_banner.
  *
  * PHP version 5
- * @copyright  Glen Langer 2007..2013
+ * @copyright  Glen Langer 2007..2015
  * @author     Glen Langer
  * @package    Banner
  * @license    LGPL
@@ -44,7 +44,8 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 			'filter'                  => true,
 			'fields'                  => array('sorting'),
 			'panelLayout'             => 'search,filter,limit',
-			'headerFields'            => array('title', 'banner_protected', 'tstamp'),
+			'headerFields'            => array('title', 'banner_protected', 'tstamp','id'),
+			'header_callback'         => array('BugBuster\Banner\DCA_banner', 'addHeader'),
 			'child_record_callback'   => array('BugBuster\Banner\DCA_banner', 'listBanner')
 		),		
 		'global_operations' => array
@@ -99,9 +100,9 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 	(
 	      '__selector__'                => array('banner_type','banner_until'),
 		  'default'                     => 'banner_type',
-		  'banner_image'                => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_jumpTo,banner_target;{image_legend},banner_image,banner_imgSize;{comment_legend},banner_comment;{publish_legend},banner_published,banner_start,banner_stop,banner_until;{filter_legend:hide},banner_domain',
-		  'banner_image_extern'         => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_target;{image_legend},banner_image_extern,banner_imgSize;{comment_legend},banner_comment;{publish_legend},banner_published,banner_start,banner_stop,banner_until;{filter_legend:hide},banner_domain',
-		  'banner_text'                 => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_jumpTo,banner_target;{comment_legend},banner_comment;{publish_legend},banner_published,banner_start,banner_stop,banner_until;{filter_legend:hide},banner_domain'
+		  'banner_image'                => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_jumpTo,banner_target;{image_legend},banner_image,banner_imgSize;{comment_legend},banner_comment;{filter_legend:hide},banner_domain;{expert_legend:hide},banner_cssid;{publish_legend},banner_published,banner_start,banner_stop,banner_until',
+		  'banner_image_extern'         => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_target;{image_legend},banner_image_extern,banner_imgSize;{comment_legend},banner_comment;{filter_legend:hide},banner_domain;{expert_legend:hide},banner_cssid;{publish_legend},banner_published,banner_start,banner_stop,banner_until',
+		  'banner_text'                 => 'banner_type;{title_legend},banner_name,banner_weighting;{destination_legend},banner_url,banner_jumpTo,banner_target;{comment_legend},banner_comment;{filter_legend:hide},banner_domain;{expert_legend:hide},banner_cssid;{publish_legend},banner_published,banner_start,banner_stop,banner_until'
 	),
     // Subpalettes
 	'subpalettes' => array
@@ -206,9 +207,11 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_banner']['banner_imgSize'],
 			'exclude'                 => true,
-			'inputType'               => 'text',
+			'inputType'               => 'imageSize',
+			'options_callback'        => array('BugBuster\Banner\DCA_banner', 'getBannerImageSizes'),
+			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'sql'                     => "varchar(255) NOT NULL default ''",
-			'eval'                    => array('multiple'=>true, 'size'=>2, 'rgxp'=>'digit', 'nospace'=>true)
+			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true)
 		),
         'banner_comment' => array
         (
@@ -277,7 +280,15 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 	        'explanation'	          => 'banner_help',
 	        'sql'                     => "varchar(255) NOT NULL default ''",
 	        'eval'                    => array('mandatory'=>false, 'maxlength'=>255, 'helpwizard'=>true)
-		)
+		),
+		'banner_cssid' => array
+		(
+			'label'                   => &$GLOBALS['TL_LANG']['tl_banner']['banner_cssid'],
+			'exclude'                 => true,
+			'inputType'               => 'text',
+			'eval'                    => array('multiple'=>true, 'size'=>2),
+			'sql'                     => "varchar(255) NOT NULL default ''"
+		),
 	)
 );
 
