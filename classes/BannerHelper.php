@@ -116,7 +116,7 @@ class BannerHelper extends \Frontend
 	 * 
 	 * @return	false, if anything is wrong
 	 */
-	protected function BannerHelperInit()
+	protected function bannerHelperInit()
 	{
 	    //Fix the planet
 	    $this->statusRandomBlocker           = false;
@@ -146,7 +146,7 @@ class BannerHelper extends \Frontend
 		    $this->strFormat = 'html5';
 		}
 		//DEBUG 
-		//log_message('BannerHelperInit this->outputFormat:'.$this->outputFormat,'Banner.log');
+		//log_message('bannerHelperInit this->outputFormat:'.$this->outputFormat,'Banner.log');
 		global $objPage; 
 		if ($objPage == NULL) 
 		{

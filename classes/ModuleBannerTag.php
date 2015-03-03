@@ -148,9 +148,9 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	{
 	    //DEBUG
 	    //log_message('generateBanner banner_categories:'.$this->banner_categories,'Banner.log');
-		if ($this->BannerHelperInit() === false)
+		if ($this->bannerHelperInit() === false)
 		{
-			$this->log('Problem in BannerHelperInit', 'ModuleBannerTag generateBanner', TL_ERROR);
+			$this->log('Problem in bannerHelperInit', 'ModuleBannerTag generateBanner', TL_ERROR);
 	        return false;
 		}
 
