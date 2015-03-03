@@ -481,7 +481,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
             return true;
         }
         return false; 
-	} //CheckUserAgent
+	} //checkUserAgent
 	public static function bannerclick_array_trim_value(&$data) 
 	{
         $data = trim($data);

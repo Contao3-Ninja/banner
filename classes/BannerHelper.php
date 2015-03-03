@@ -1808,7 +1808,7 @@ class BannerHelper extends \Frontend
 	    {
 	        return; //Bot gefunden, wird nicht gezaehlt
 	    }
-	    if ($this->CheckUserAgent() == true)
+	    if ($this->checkUserAgent() == true)
 	    {
 	        return ; //User Agent Filterung
 	    }
@@ -1981,7 +1981,7 @@ class BannerHelper extends \Frontend
 	/**
 	 * HTTP_USER_AGENT Special Check
 	 */
-	protected function CheckUserAgent()
+	protected function checkUserAgent()
 	{
 	    if ( \Environment::get('httpUserAgent') )  
 	    {
@@ -2005,7 +2005,7 @@ class BannerHelper extends \Frontend
 	        return true;
 	    }
 	    return false;
-	} //CheckUserAgent
+	} //checkUserAgent
 	public static function trimBannerArrayValue(&$data) 
 	{
 	    $data = trim($data);
