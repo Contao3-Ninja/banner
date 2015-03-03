@@ -523,7 +523,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
             while ( list($key, $val) = each($this->_session) )
             {
                 if ( $key == $banner_id &&
-                        $this->removeReClickBlockerId($key, $val) == true )
+                        $this->removeReClickBlockerId($key, $val) === true )
                 {
                     // Key ist noch gültig und es muss daher geblockt werden
                     //log_message('getReClickBlockerId Banner ID:'.$key,'Banner.log');
