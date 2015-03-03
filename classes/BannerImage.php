@@ -36,7 +36,7 @@ class BannerImage extends \System //\Frontend
 	 * Current version of the class.
 	 * @var string
 	 */
-	const BANNER_IMAGE_VERSION = '3.2.0';
+	const BANNER_IMAGE_VERSION = '3.2.1';
 	
 	/**
 	 * Banner intern
@@ -177,7 +177,7 @@ class BannerImage extends \System //\Frontend
 	protected function getImageSizeCompressed($BannerImage)
 	{
 		$arrImageSize = false;
-		$res = $this->swc_data($BannerImage);
+		$res = $this->uncompressSwcData($BannerImage);
 		if ($res) 
 		{
 			// width,height
@@ -192,7 +192,7 @@ class BannerImage extends \System //\Frontend
 	 * @param string $filename
 	 * @return boolean|array	false|$width,$height
 	 */
-	private function swc_data($filename) 
+	private function uncompressSwcData($filename) 
 	{
 	    $size   = 0;
 	    $width  = 0;
@@ -284,7 +284,7 @@ class BannerImage extends \System //\Frontend
 	    fclose($file);
 	    $buffer ='';
 	    return array($width,$height);
-	}//swc_data
+	}//uncompressSwcData
 	
 	/**
 	 * Calculate the new size for witdh and height
