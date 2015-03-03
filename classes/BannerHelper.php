@@ -559,7 +559,7 @@ class BannerHelper extends \Frontend
 	    {
 	        list($key, $tstmap) = each($this->_session);
 	        reset($this->_session);
-	        if ( $this->removeOldFirstViewBlockerId($key, $tstmap) == true ) 
+	        if ( $this->removeOldFirstViewBlockerId($key, $tstmap) === true ) 
 	        {
 	            // Key ist noch gültig und es muss daher geblockt werden
 	            //log_message('getFirstViewBlockerId Banner Kat ID: '.$key,'Banner.log');
