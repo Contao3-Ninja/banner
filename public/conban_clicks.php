@@ -22,8 +22,6 @@
  */
 namespace BugBuster\BotDetection;
 
-use Contao\Controller;
-
 /**
  * Initialize the system
  */
