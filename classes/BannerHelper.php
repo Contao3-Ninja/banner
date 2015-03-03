@@ -1996,7 +1996,7 @@ class BannerHelper extends \Frontend
 	    {
 	        return false; // keine Angaben im Modul
 	    }
-	    array_walk($arrUserAgents, array('self','banner_array_trim_value'));  // trim der array values
+	    array_walk($arrUserAgents, array('self','trimBannerArrayValue'));  // trim der array values
 	    // grobe Suche
 	    $CheckUserAgent = str_replace($arrUserAgents, '#', $UserAgent);
 	    if ($UserAgent != $CheckUserAgent) 
@@ -2006,7 +2006,7 @@ class BannerHelper extends \Frontend
 	    }
 	    return false;
 	} //CheckUserAgent
-	public static function banner_array_trim_value(&$data) 
+	public static function trimBannerArrayValue(&$data) 
 	{
 	    $data = trim($data);
 	    return ;
