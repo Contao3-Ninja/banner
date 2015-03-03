@@ -14,7 +14,7 @@
  */
 
 define('BANNER_VERSION', '3.5');
-define('BANNER_BUILD'  , '0');
+define('BANNER_BUILD'  , '1');
 
 /**
  * -------------------------------------------------------------------------
@@ -48,5 +48,5 @@ $GLOBALS['FE_MOD']['miscellaneous']['banner'] = 'Banner\ModuleBanner';
  * -------------------------------------------------------------------------
  */
 $GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('Banner\BannerCheckHelper', 'checkExtensions');
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('Banner\ModuleBannerTag', 'ReplaceInsertTagsBanner');
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('Banner\ModuleBannerTag', 'replaceInsertTagsBanner');
 
