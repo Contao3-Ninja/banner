@@ -1804,11 +1804,11 @@ class BannerHelper extends \Frontend
 	 */
 	protected function setStatViewUpdate()
 	{
-	    if ($this->bannerCheckBot() == true)
+	    if ($this->bannerCheckBot() === true)
 	    {
 	        return; //Bot gefunden, wird nicht gezaehlt
 	    }
-	    if ($this->checkUserAgent() == true)
+	    if ($this->checkUserAgent() === true)
 	    {
 	        return ; //User Agent Filterung
 	    }
