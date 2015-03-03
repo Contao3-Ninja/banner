@@ -251,10 +251,11 @@ class BannerImage extends \System //\Frontend
 	                $cbit   = 7;
 	            }
 	        }
-	        $c 	  = 1;
-	        $val  = 0;
-	        $tval = strrev($cval);
-	        for ($n=0;$n<strlen($tval);$n++) 
+	        $c 	    = 1;
+	        $val    = 0;
+	        $tval   = strrev($cval);
+	        $strlen = strlen($tval);
+	        for ($n=0; $n<$strlen; $n++) 
 	        {
 	            $atom = substr($tval,$n,1);
 	            if ($atom=="1") $val+=$c;
