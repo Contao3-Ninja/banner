@@ -81,9 +81,10 @@ class BannerCheckHelper extends \System
             );
     
             // required files
+            /*
             $arrRequiredFiles = array(
                     'Modulname' => 'plugins/.....'
-            );
+            );*/
     
             // check for required extensions
             foreach ($arrRequiredExtensions as $key => $val)
