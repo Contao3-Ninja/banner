@@ -1899,7 +1899,7 @@ class BannerHelper extends \Frontend
 	        while ( list($key, $val) = each($this->_session) )
 	        {
 	            if ( $key == $banner_id && 
-	                 $this->removeStatViewUpdateBlockerId($key, $val) == true )
+	                 $this->removeStatViewUpdateBlockerId($key, $val) === true )
 	            {
 	                // Key ist noch gültig und es muss daher geblockt werden
 	                //log_message('getStatViewUpdateBlockerId Banner ID:'.$key,'Banner.log');
