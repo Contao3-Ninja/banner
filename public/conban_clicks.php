@@ -399,7 +399,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 	 */
 	protected function getSetReClickBlocker()
 	{
-	    $ClientIP = bin2hex(sha1(\Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
+	    //$ClientIP = bin2hex(sha1(\Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
 	    $BannerID = $this->intBID;
 
 	    if ( $this->getReClickBlockerId($BannerID) === false )
