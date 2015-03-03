@@ -62,7 +62,7 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	 * @param unknown $strTag
 	 * @return boolean|void
 	 */
-	public function ReplaceInsertTagsBanner($strTag)
+	public function replaceInsertTagsBanner($strTag)
 	{
 	    $arrTag = trimsplit('::', $strTag);
 	    if ($arrTag[0] != 'banner_module')
@@ -80,14 +80,14 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	        if (false === $retModuleData) 
 	        {
 	        	//kein Banner Modul mit dieser ID 
-	        	$this->log('No banner module with this id "'.$arrTag[1].'"', 'ModuleBannerTag ReplaceInsertTagsBanner', TL_ERROR);
+	        	$this->log('No banner module with this id "'.$arrTag[1].'"', 'ModuleBannerTag replaceInsertTagsBanner', TL_ERROR);
 	           return false;
 	        }
 	    }
 	    else 
 	    {
 	        //keine Banner Modul ID
-	        $this->log('Missing parameter (1): banner module id', 'ModuleBannerTag ReplaceInsertTagsBanner', TL_ERROR);
+	        $this->log('Missing parameter (1): banner module id', 'ModuleBannerTag replaceInsertTagsBanner', TL_ERROR);
 	        return false;
 	    }
 	    if (isset($arrTag[2])) { $this->typePrefix    = $arrTag[2]; } //ce_ / mod_
@@ -148,9 +148,9 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	{
 	    //DEBUG
 	    //log_message('generateBanner banner_categories:'.$this->banner_categories,'Banner.log');
-		if ($this->BannerHelperInit() === false)
+		if ($this->bannerHelperInit() === false)
 		{
-			$this->log('Problem in BannerHelperInit', 'ModuleBannerTag generateBanner', TL_ERROR);
+			$this->log('Problem in bannerHelperInit', 'ModuleBannerTag generateBanner', TL_ERROR);
 	        return false;
 		}
 

@@ -20,7 +20,7 @@ $this->loadLanguageFile('tl_page');  //wegen banner_redirect
 /**
  * Add a palette to tl_module
  */
-$GLOBALS['TL_DCA']['tl_module']['palettes']['banner'] = 'name,type,headline;banner_hideempty,banner_firstview;banner_categories,banner_template;banner_redirect;guests,protected,banner_useragent;align,space,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['banner'] = 'name,type,headline;banner_hideempty,banner_firstview;banner_categories,banner_template;banner_redirect;guests,protected,banner_useragent;align,cssID,space';
 
 
 /**

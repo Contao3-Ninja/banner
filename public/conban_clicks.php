@@ -22,8 +22,6 @@
  */
 namespace BugBuster\BotDetection;
 
-use Contao\Controller;
-
 /**
  * Initialize the system
  */
@@ -401,7 +399,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 	 */
 	protected function getSetReClickBlocker()
 	{
-	    $ClientIP = bin2hex(sha1(\Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
+	    //$ClientIP = bin2hex(sha1(\Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
 	    $BannerID = $this->intBID;
 
 	    if ( $this->getReClickBlockerId($BannerID) === false )
@@ -429,17 +427,17 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 	      && (int)$GLOBALS['TL_CONFIG']['mod_banner_bot_check'] == 0
 	       ) 
 	    {
-	        //log_message('BannerCheckBot abgeschaltet','Banner.log');
+	        //log_message('bannerCheckBot abgeschaltet','Banner.log');
 	        return false; //Bot Suche abgeschaltet ueber localconfig.php
 	    }
 	    if ($this->BD_CheckBotAgent() || $this->BD_CheckBotIP()) 
 	    {
-	    	//log_message('BannerCheckBot True','Banner.log');
+	    	//log_message('bannerCheckBot True','Banner.log');
 	    	return true;
 	    }
-	    //log_message('BannerCheckBot False','Banner.log');
+	    //log_message('bannerCheckBot False','Banner.log');
 	    return false;
-	} //BannerCheckBot
+	} //checkBot
 	
 	/**
 	 * HTTP_USER_AGENT Special Check
@@ -472,7 +470,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 	    {
 	    	return false; // keine Angaben im Modul
 	    }
-	    array_walk($arrUserAgents, array('self','bannerclick_array_trim_value'));  // trim der array values
+	    array_walk($arrUserAgents, array('self','bannerclickTrimArrayValue'));  // trim der array values
         // grobe Suche
         $CheckUserAgent=str_replace($arrUserAgents, '#', $UserAgent);
         if ($UserAgent != $CheckUserAgent) 
@@ -481,8 +479,8 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
             return true;
         }
         return false; 
-	} //CheckUserAgent
-	public static function bannerclick_array_trim_value(&$data) 
+	} //checkUserAgent
+	public static function bannerclickTrimArrayValue(&$data) 
 	{
         $data = trim($data);
         return ;
@@ -525,7 +523,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
             while ( list($key, $val) = each($this->_session) )
             {
                 if ( $key == $banner_id &&
-                        $this->removeReClickBlockerId($key, $val) == true )
+                        $this->removeReClickBlockerId($key, $val) === true )
                 {
                     // Key ist noch gültig und es muss daher geblockt werden
                     //log_message('getReClickBlockerId Banner ID:'.$key,'Banner.log');

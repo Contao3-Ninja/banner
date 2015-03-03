@@ -116,7 +116,7 @@ class BannerHelper extends \Frontend
 	 * 
 	 * @return	false, if anything is wrong
 	 */
-	protected function BannerHelperInit()
+	protected function bannerHelperInit()
 	{
 	    //Fix the planet
 	    $this->statusRandomBlocker           = false;
@@ -146,7 +146,7 @@ class BannerHelper extends \Frontend
 		    $this->strFormat = 'html5';
 		}
 		//DEBUG 
-		//log_message('BannerHelperInit this->outputFormat:'.$this->outputFormat,'Banner.log');
+		//log_message('bannerHelperInit this->outputFormat:'.$this->outputFormat,'Banner.log');
 		global $objPage; 
 		if ($objPage == NULL) 
 		{
@@ -559,7 +559,7 @@ class BannerHelper extends \Frontend
 	    {
 	        list($key, $tstmap) = each($this->_session);
 	        reset($this->_session);
-	        if ( $this->removeOldFirstViewBlockerId($key, $tstmap) == true ) 
+	        if ( $this->removeOldFirstViewBlockerId($key, $tstmap) === true ) 
 	        {
 	            // Key ist noch gültig und es muss daher geblockt werden
 	            //log_message('getFirstViewBlockerId Banner Kat ID: '.$key,'Banner.log');
@@ -604,7 +604,7 @@ class BannerHelper extends \Frontend
 	    if ($this->banner_firstview !=1) { return false; }
 
 	    // sha1 20 Zeichen, bin2hex 40 zeichen
-	    $ClientIP = bin2hex(sha1($this->banner_categories . \Environment::get('remoteAddr'),true));
+	    //$ClientIP = bin2hex(sha1($this->banner_categories . \Environment::get('remoteAddr'),true));
 
 	    // 5 Minuten, Einträge >= 5 Minuten werden gelöscht
 	    //$BannerFirstViewBlockTime = time() - 60*5; 
@@ -1391,7 +1391,7 @@ class BannerHelper extends \Frontend
 	    
 	    if ( $this->arrCategoryValues['banner_random'] == 1 ) 
 	    {
-	        $this->shuffle_assoc($this->arrAllBannersBasic);
+	        $this->shuffleAssoc($this->arrAllBannersBasic);
 	    }
 	    
 	    //wenn limit gesetzt, array arrAllBannersBasic dezimieren
@@ -1771,7 +1771,7 @@ class BannerHelper extends \Frontend
      * shuffle for associative arrays, preserves key=>value pairs.
      * http://www.php.net/manual/de/function.shuffle.php
      */
-    protected function shuffle_assoc(&$array) 
+    protected function shuffleAssoc(&$array) 
     {
         $keys = array_keys($array);
         shuffle($keys);
@@ -1804,26 +1804,27 @@ class BannerHelper extends \Frontend
 	 */
 	protected function setStatViewUpdate()
 	{
-	    if ($this->BannerCheckBot() == true)
+	    if ($this->bannerCheckBot() === true)
 	    {
 	        return; //Bot gefunden, wird nicht gezaehlt
 	    }
-	    if ($this->CheckUserAgent() == true)
+	    if ($this->checkUserAgent() === true)
 	    {
 	        return ; //User Agent Filterung
 	    }
 	    
 	    // Blocker
 	    
-	    $intCatID = ($this->banner_categories >0) ? $this->banner_categories : 42 ; // Answer to the Ultimate Question of Life, the Universe, and Everything
+	    //$intCatID = ($this->banner_categories >0) ? $this->banner_categories : 42 ; // Answer to the Ultimate Question of Life, the Universe, and Everything
 	    //log_message('BannerStatViewUpdate $intCatID:'.$intCatID,'Banner.log');
-	    $ClientIP = bin2hex(sha1($intCatID . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
+	    //$ClientIP = bin2hex(sha1($intCatID . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
 	    $lastBanner = array_pop($this->arrBannerData);
 	    $BannerID = $lastBanner['banner_id'];
 	    if ($BannerID==0)
 	    { // kein Banner, nichts zu tun
 	        return;
 	    }
+	    /*
 	    $BannerBlockTime = time() - 60*5;  // 5 Minuten, 0-5 min wird geblockt
 	    $BannerCleanTime = time() - 60*10; // 10 Minuten, Einträge >= 10 Minuten werden gelöscht
 	    if ( isset($GLOBALS['TL_CONFIG']['mod_banner_block_time'] ) 
@@ -1833,6 +1834,7 @@ class BannerHelper extends \Frontend
 	        $BannerBlockTime = time() - 60*1*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
 	        $BannerCleanTime = time() - 60*2*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
 	    }
+	    */
 	    
 	    if ( $this->getStatViewUpdateBlockerId($BannerID) === true )
 	    {
@@ -1897,7 +1899,7 @@ class BannerHelper extends \Frontend
 	        while ( list($key, $val) = each($this->_session) )
 	        {
 	            if ( $key == $banner_id && 
-	                 $this->removeStatViewUpdateBlockerId($key, $val) == true )
+	                 $this->removeStatViewUpdateBlockerId($key, $val) === true )
 	            {
 	                // Key ist noch gültig und es muss daher geblockt werden
 	                //log_message('getStatViewUpdateBlockerId Banner ID:'.$key,'Banner.log');
@@ -1951,19 +1953,19 @@ class BannerHelper extends \Frontend
 	/**
 	 * Spider Bot Check
 	 */
-	protected function BannerCheckBot()
+	protected function bannerCheckBot()
 	{
 	    if (isset($GLOBALS['TL_CONFIG']['mod_banner_bot_check']) 
 	      && (int)$GLOBALS['TL_CONFIG']['mod_banner_bot_check'] == 0
 	       )
 	    {
-	        //log_message('BannerCheckBot abgeschaltet','Banner.log');
+	        //log_message('bannerCheckBot abgeschaltet','Banner.log');
 	        return false; //Bot Suche abgeschaltet ueber localconfig.php
 	    }
 	    if (!in_array('botdetection', $this->Config->getActiveModules()))
 	    {
 	        //botdetection Modul fehlt, Abbruch
-	        $this->log('BotDetection extension required!', 'ModulBanner BannerCheckBot', TL_ERROR);
+	        $this->log('BotDetection extension required!', 'ModulBanner bannerCheckBot', TL_ERROR);
 	        return false;
 	    }
 	    // Import Helperclass ModuleBotDetection
@@ -1971,17 +1973,17 @@ class BannerHelper extends \Frontend
 	    $this->ModuleBotDetection = new \BotDetection\ModuleBotDetection();
 	    if ($this->ModuleBotDetection->BD_CheckBotAgent() || $this->ModuleBotDetection->BD_CheckBotIP())
 	    {
-	        //log_message('BannerCheckBot True','Banner.log');
+	        //log_message('bannerCheckBot True','Banner.log');
 	        return true;
 	    }
-	    //log_message('BannerCheckBot False','Banner.log');
+	    //log_message('bannerCheckBot False','Banner.log');
 	    return false;
-	} //BannerCheckBot
+	} //bannerCheckBot
 	
 	/**
 	 * HTTP_USER_AGENT Special Check
 	 */
-	protected function CheckUserAgent()
+	protected function checkUserAgent()
 	{
 	    if ( \Environment::get('httpUserAgent') )  
 	    {
@@ -1996,7 +1998,7 @@ class BannerHelper extends \Frontend
 	    {
 	        return false; // keine Angaben im Modul
 	    }
-	    array_walk($arrUserAgents, array('self','banner_array_trim_value'));  // trim der array values
+	    array_walk($arrUserAgents, array('self','trimBannerArrayValue'));  // trim der array values
 	    // grobe Suche
 	    $CheckUserAgent = str_replace($arrUserAgents, '#', $UserAgent);
 	    if ($UserAgent != $CheckUserAgent) 
@@ -2005,8 +2007,8 @@ class BannerHelper extends \Frontend
 	        return true;
 	    }
 	    return false;
-	} //CheckUserAgent
-	public static function banner_array_trim_value(&$data) 
+	} //checkUserAgent
+	public static function trimBannerArrayValue(&$data) 
 	{
 	    $data = trim($data);
 	    return ;
