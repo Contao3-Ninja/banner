@@ -472,7 +472,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 	    {
 	    	return false; // keine Angaben im Modul
 	    }
-	    array_walk($arrUserAgents, array('self','bannerclick_array_trim_value'));  // trim der array values
+	    array_walk($arrUserAgents, array('self','bannerclickTrimArrayValue'));  // trim der array values
         // grobe Suche
         $CheckUserAgent=str_replace($arrUserAgents, '#', $UserAgent);
         if ($UserAgent != $CheckUserAgent) 
@@ -482,7 +482,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
         }
         return false; 
 	} //checkUserAgent
-	public static function bannerclick_array_trim_value(&$data) 
+	public static function bannerclickTrimArrayValue(&$data) 
 	{
         $data = trim($data);
         return ;
