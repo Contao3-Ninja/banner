@@ -1804,7 +1804,7 @@ class BannerHelper extends \Frontend
 	 */
 	protected function setStatViewUpdate()
 	{
-	    if ($this->BannerCheckBot() == true)
+	    if ($this->bannerCheckBot() == true)
 	    {
 	        return; //Bot gefunden, wird nicht gezaehlt
 	    }
@@ -1951,19 +1951,19 @@ class BannerHelper extends \Frontend
 	/**
 	 * Spider Bot Check
 	 */
-	protected function BannerCheckBot()
+	protected function bannerCheckBot()
 	{
 	    if (isset($GLOBALS['TL_CONFIG']['mod_banner_bot_check']) 
 	      && (int)$GLOBALS['TL_CONFIG']['mod_banner_bot_check'] == 0
 	       )
 	    {
-	        //log_message('BannerCheckBot abgeschaltet','Banner.log');
+	        //log_message('bannerCheckBot abgeschaltet','Banner.log');
 	        return false; //Bot Suche abgeschaltet ueber localconfig.php
 	    }
 	    if (!in_array('botdetection', $this->Config->getActiveModules()))
 	    {
 	        //botdetection Modul fehlt, Abbruch
-	        $this->log('BotDetection extension required!', 'ModulBanner BannerCheckBot', TL_ERROR);
+	        $this->log('BotDetection extension required!', 'ModulBanner bannerCheckBot', TL_ERROR);
 	        return false;
 	    }
 	    // Import Helperclass ModuleBotDetection
@@ -1971,12 +1971,12 @@ class BannerHelper extends \Frontend
 	    $this->ModuleBotDetection = new \BotDetection\ModuleBotDetection();
 	    if ($this->ModuleBotDetection->BD_CheckBotAgent() || $this->ModuleBotDetection->BD_CheckBotIP())
 	    {
-	        //log_message('BannerCheckBot True','Banner.log');
+	        //log_message('bannerCheckBot True','Banner.log');
 	        return true;
 	    }
-	    //log_message('BannerCheckBot False','Banner.log');
+	    //log_message('bannerCheckBot False','Banner.log');
 	    return false;
-	} //BannerCheckBot
+	} //bannerCheckBot
 	
 	/**
 	 * HTTP_USER_AGENT Special Check

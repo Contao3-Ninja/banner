@@ -429,17 +429,17 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 	      && (int)$GLOBALS['TL_CONFIG']['mod_banner_bot_check'] == 0
 	       ) 
 	    {
-	        //log_message('BannerCheckBot abgeschaltet','Banner.log');
+	        //log_message('bannerCheckBot abgeschaltet','Banner.log');
 	        return false; //Bot Suche abgeschaltet ueber localconfig.php
 	    }
 	    if ($this->BD_CheckBotAgent() || $this->BD_CheckBotIP()) 
 	    {
-	    	//log_message('BannerCheckBot True','Banner.log');
+	    	//log_message('bannerCheckBot True','Banner.log');
 	    	return true;
 	    }
-	    //log_message('BannerCheckBot False','Banner.log');
+	    //log_message('bannerCheckBot False','Banner.log');
 	    return false;
-	} //BannerCheckBot
+	} //checkBot
 	
 	/**
 	 * HTTP_USER_AGENT Special Check
