@@ -1391,7 +1391,7 @@ class BannerHelper extends \Frontend
 	    
 	    if ( $this->arrCategoryValues['banner_random'] == 1 ) 
 	    {
-	        $this->shuffle_assoc($this->arrAllBannersBasic);
+	        $this->shuffleAssoc($this->arrAllBannersBasic);
 	    }
 	    
 	    //wenn limit gesetzt, array arrAllBannersBasic dezimieren
@@ -1771,7 +1771,7 @@ class BannerHelper extends \Frontend
      * shuffle for associative arrays, preserves key=>value pairs.
      * http://www.php.net/manual/de/function.shuffle.php
      */
-    protected function shuffle_assoc(&$array) 
+    protected function shuffleAssoc(&$array) 
     {
         $keys = array_keys($array);
         shuffle($keys);
