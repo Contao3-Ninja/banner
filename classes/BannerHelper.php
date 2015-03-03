@@ -604,7 +604,7 @@ class BannerHelper extends \Frontend
 	    if ($this->banner_firstview !=1) { return false; }
 
 	    // sha1 20 Zeichen, bin2hex 40 zeichen
-	    $ClientIP = bin2hex(sha1($this->banner_categories . \Environment::get('remoteAddr'),true));
+	    //$ClientIP = bin2hex(sha1($this->banner_categories . \Environment::get('remoteAddr'),true));
 
 	    // 5 Minuten, Einträge >= 5 Minuten werden gelöscht
 	    //$BannerFirstViewBlockTime = time() - 60*5; 
@@ -1815,15 +1815,16 @@ class BannerHelper extends \Frontend
 	    
 	    // Blocker
 	    
-	    $intCatID = ($this->banner_categories >0) ? $this->banner_categories : 42 ; // Answer to the Ultimate Question of Life, the Universe, and Everything
+	    //$intCatID = ($this->banner_categories >0) ? $this->banner_categories : 42 ; // Answer to the Ultimate Question of Life, the Universe, and Everything
 	    //log_message('BannerStatViewUpdate $intCatID:'.$intCatID,'Banner.log');
-	    $ClientIP = bin2hex(sha1($intCatID . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
+	    //$ClientIP = bin2hex(sha1($intCatID . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
 	    $lastBanner = array_pop($this->arrBannerData);
 	    $BannerID = $lastBanner['banner_id'];
 	    if ($BannerID==0)
 	    { // kein Banner, nichts zu tun
 	        return;
 	    }
+	    /*
 	    $BannerBlockTime = time() - 60*5;  // 5 Minuten, 0-5 min wird geblockt
 	    $BannerCleanTime = time() - 60*10; // 10 Minuten, Einträge >= 10 Minuten werden gelöscht
 	    if ( isset($GLOBALS['TL_CONFIG']['mod_banner_block_time'] ) 
@@ -1833,6 +1834,7 @@ class BannerHelper extends \Frontend
 	        $BannerBlockTime = time() - 60*1*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
 	        $BannerCleanTime = time() - 60*2*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
 	    }
+	    */
 	    
 	    if ( $this->getStatViewUpdateBlockerId($BannerID) === true )
 	    {
