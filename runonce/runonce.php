@@ -66,5 +66,3 @@ class BannerRunonceJob extends Controller
 
 $objBannerRunonceJob = new BannerRunonceJob();
 $objBannerRunonceJob->run();
-
-?>
