@@ -53,7 +53,7 @@ class BannerRunonceJob extends Controller
 		        }
 		    }
 		    // Run the version 3.2 update in two tables
-		    if ($blnDone == false)
+		    if ($blnDone === false)
 		    {
 		        Database\Updater::convertSingleField('tl_banner', 'banner_image');
 		        Database\Updater::convertSingleField('tl_banner_category', 'banner_default_image');
