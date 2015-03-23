@@ -724,6 +724,10 @@ class BannerHelper extends \Frontend
                         $arrImageSize[0] = $arrImageSizenNew[0];
                         $arrImageSize[1] = $arrImageSizenNew[1];
                         $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
+                        
+                        $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
+                        $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
+                        $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
                     }
                     else
                     {
@@ -1098,6 +1102,10 @@ class BannerHelper extends \Frontend
 	                    $arrImageSize[0] = $arrImageSizenNew[0];
 	                    $arrImageSize[1] = $arrImageSizenNew[1];
 	                    $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
+	                    
+	                    $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
+	                    $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
+	                    $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
 	                }
 	                else
 	                {
@@ -1485,6 +1493,10 @@ class BannerHelper extends \Frontend
 	                        $arrImageSize[0] = $arrImageSizenNew[0];
 	                        $arrImageSize[1] = $arrImageSizenNew[1];
 	                        $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
+	                        
+	                        $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
+	                        $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
+	                        $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
 	                    }
 	                    else
 	                    {
