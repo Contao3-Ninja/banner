@@ -88,7 +88,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 		    if ( 0 == (int)$this->intDEFBID ) 
 		    {
 		        header('HTTP/1.1 501 Not Implemented');
-		    	die('Invalid Banner ID (' . \Input::get('bid') . ')');
+		    	throw new \ErrorException('Invalid Banner ID (' . \Input::get('bid') . ')',2,1,basename(__FILE__),__LINE__);
 		    }
 		}
 
@@ -129,7 +129,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 	    		if (!$objBanners->next()) 
 	    		{
 	    			header('HTTP/1.1 501 Not Implemented');
-	    			die('Banner ID not found');
+	    			throw new \ErrorException('Banner ID not found',2,1,basename(__FILE__),__LINE__);
 	    		} 
 	    		else 
 	    		{
@@ -222,7 +222,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
             if (!$objBanners->next()) 
             {
                 header('HTTP/1.1 501 Not Implemented');
-            	die('Default Banner ID not found');
+            	throw new \ErrorException('Default Banner ID not found',2,1,basename(__FILE__),__LINE__);
             }
             $banner_redirect = '303';
         }
