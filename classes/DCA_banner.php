@@ -378,6 +378,7 @@ class DCA_banner extends \Backend
             default:
                 break;
         }
+        unset($oriSize);
 
         $banner_image = $row['banner_image_extern'];
         //$banner_image = html_entity_decode($row['banner_image_extern'], ENT_NOQUOTES, 'UTF-8');

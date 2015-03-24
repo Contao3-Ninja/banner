@@ -375,6 +375,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         $intWidth  = $arrNewBannerImageSize[0];
         $intHeight = $arrNewBannerImageSize[1];
         $oriSize   = $arrNewBannerImageSize[2];
+        unset($oriSize);
         
         switch ($arrImageSize[2])
         {
