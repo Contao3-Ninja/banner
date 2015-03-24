@@ -35,90 +35,9 @@ while ($dir != '.' && $dir != '/' && !is_file($dir . '/system/initialize.php'))
  
 if (!is_file($dir . '/system/initialize.php'))
 {
-    echo 'Could not find initialize.php!';
-    exit(1);
+    throw new \ErrorException('Could not find initialize.php!',2,1,basename(__FILE__),__LINE__);
 }
 require($dir . '/system/initialize.php');
-
-if (!file_exists(TL_ROOT . '/system/modules/botdetection/modules/ModuleBotDetection.php'))
-{
-	//botdetection Modul fehlt, Abbruch
-	echo '<!DOCTYPE html>
-	        <html>
-	        <head>
-	            <title>BotDetection extension required!</title>
-	            <style>
-#main {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background: none repeat scroll 0 0 #FFFFFF;
-    border-color: -moz-use-text-color #BBBBBB #BBBBBB;
-    border-image: none;
-    border-radius: 0 0 3px 3px;
-    border-right: 1px solid #BBBBBB;
-    border-style: none solid solid;
-    border-width: 0 1px 1px;
-    box-shadow: 0 3px 6px #CCCCCC;
-    padding: 0;
-    width: 600px;
-    color: #666966;
-    font-size: 11px;
-	margin: 0 auto;
-}
-#header {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background: none repeat scroll 0 0 #FFFFFF;
-    border-color: #BBBBBB #BBBBBB -moz-use-text-color;
-    border-image: none;
-    border-radius: 3px 3px 0 0;
-    border-style: solid solid none;
-    border-width: 1px 1px 0;
-    padding: 1px;
-    width: 596px;
-}
-
-#header h1 {
-    background: url("data:image/gif;base64,R0lGODdhAQAUAPQQAK+yr6Omo6erp66xrrGzsbCzsKSno6msqKWoprG1srK2s6eqpqSnpKyvrKuuq6msqrO2swAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAAQAUAAAFEGAQGAyyCMfjNANQEIkCzSEAOw==") repeat-x scroll 0 0 #B3B6B3;
-    border-radius: 3px 3px 0 0;
-    color: #FFFFFF;
-    margin: 0;
-    padding: 4px 8px 6px;
-}
-
-#message {
-    padding: 0 10px 10px 10px;
-} 
-p {
-    line-height: 1.5;
-}
-p {
-    margin: 0 0 12px;
-    padding: 0;
-}	        
-	            </style>
-	        </head>
-            <body>
-	            <div id="main">
-        	        <div id="header">
-                        <h1>BotDetection Error</h1>
-                    </div>
-	                <div id="message">
-                        <h2>BotDetection extension required!</h2>
-            	        <p>Please install the extension <a href="https://contao.org/en/extension-list/view/botdetection.en.html">BotDetection</a>.</p>
-	                    <br>
-            	        <h2>BotDetection Erweiterung fehlt!</h2>
-            	        <p>Bitte die Erweiterung <a href="https://contao.org/de/extension-list/view/botdetection.de.html">BotDetection</a> installieren.</p>
-	                </div>
-	            </div>
-            </body>
-            </html>';
-	exit();
-}
 
 /**
  * Class BannerClicks
@@ -618,6 +537,86 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 /**
  * Instantiate controller
  */
-$objBannerClicks = new \BugBuster\BotDetection\BannerClicks();
-$objBannerClicks->run();
+if (file_exists(TL_ROOT . '/system/modules/botdetection/modules/ModuleBotDetection.php'))
+{
+    $objBannerClicks = new \BugBuster\BotDetection\BannerClicks();
+    $objBannerClicks->run();
+}
+else 
+{
+    //botdetection Modul fehlt, Abbruch
+    echo '<!DOCTYPE html>
+<html>
+<head>
+    <title>BotDetection extension required!</title>
+    <style>
+#main {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-color: -moz-use-text-color #BBBBBB #BBBBBB;
+    border-image: none;
+    border-radius: 0 0 3px 3px;
+    border-right: 1px solid #BBBBBB;
+    border-style: none solid solid;
+    border-width: 0 1px 1px;
+    box-shadow: 0 3px 6px #CCCCCC;
+    padding: 0;
+    width: 600px;
+    color: #666966;
+    font-size: 11px;
+	margin: 0 auto;
+}
+#header {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-color: #BBBBBB #BBBBBB -moz-use-text-color;
+    border-image: none;
+    border-radius: 3px 3px 0 0;
+    border-style: solid solid none;
+    border-width: 1px 1px 0;
+    padding: 1px;
+    width: 596px;
+}
 
+#header h1 {
+    background: url("data:image/gif;base64,R0lGODdhAQAUAPQQAK+yr6Omo6erp66xrrGzsbCzsKSno6msqKWoprG1srK2s6eqpqSnpKyvrKuuq6msqrO2swAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAAQAUAAAFEGAQGAyyCMfjNANQEIkCzSEAOw==") repeat-x scroll 0 0 #B3B6B3;
+    border-radius: 3px 3px 0 0;
+    color: #FFFFFF;
+    margin: 0;
+    padding: 4px 8px 6px;
+}
+
+#message {
+    padding: 0 10px 10px 10px;
+}
+p {
+    line-height: 1.5;
+}
+p {
+    margin: 0 0 12px;
+    padding: 0;
+}
+    </style>
+</head>
+<body>
+    <div id="main">
+        <div id="header">
+            <h1>BotDetection Error</h1>
+        </div>
+        <div id="message">
+            <h2>BotDetection extension required!</h2>
+	        <p>Please install the extension <a href="https://contao.org/en/extension-list/view/botdetection.en.html">BotDetection</a>.</p>
+            <br>
+	        <h2>BotDetection Erweiterung fehlt!</h2>
+	        <p>Bitte die Erweiterung <a href="https://contao.org/de/extension-list/view/botdetection.de.html">BotDetection</a> installieren.</p>
+        </div>
+    </div>
+</body>
+</html>';
+}
