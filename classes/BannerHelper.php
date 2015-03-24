@@ -147,12 +147,13 @@ class BannerHelper extends \Frontend
 		}
 		//DEBUG 
 		//log_message('bannerHelperInit this->outputFormat:'.$this->outputFormat,'Banner.log');
-		global $objPage; 
-		if ($objPage == NULL) 
+		 
+		if (!isset($GLOBALS['objPage'])) 
 		{
 			$objPage = new \stdClass();
 			$objPage->templateGroup = $this->templatepfad;
-			$objPage->outputFormat = $this->outputFormat; 
+			$objPage->outputFormat = $this->outputFormat;
+			$GLOBALS['objPage'] = $objPage;
 		}
 		
 	}
@@ -526,6 +527,7 @@ class BannerHelper extends \Frontend
 	    if ( count($this->_session) )
 	    {
 	        list($key, $val) = each($this->_session);
+	        unset($val);
 	        reset($this->_session);
 	        //log_message('getRandomBlockerId BannerID:'.$key,'Banner.log');
 	        return $key;
@@ -1416,6 +1418,7 @@ class BannerHelper extends \Frontend
 	    //Schleife
 	    while ( list($banner_id, $banner_weigth) = each($this->arrAllBannersBasic) )
 	    {
+	        unset($banner_weigth);
 	        $objBanners  = \Database::getInstance()
                                 ->prepare("SELECT
                                                 TLB.*
