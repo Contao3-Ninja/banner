@@ -73,7 +73,6 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 		parent::__construct();
 		$this->intBID    = \Input::get('bid');   
 		$this->intDEFBID = \Input::get('defbid');
-		//$this->import('Database');
 	}
 
 
@@ -228,12 +227,10 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
         }
 
 		$banner_url = ampersand($objBanners->banner_url);
-		//log_message('conbanClicks ampersand '.print_r($banner_url,true),'Banner.log');
-		//header('HTTP/1.1 301 Moved Permanently');
-		//header('HTTP/1.1 302 Found');
-		//header('HTTP/1.1 303 See Other');
-		//                 307 Temporary Redirect (ab Contao 3.1)
-		//header('Location: ' . str_replace('&amp;', '&', $banner_url));
+		// 301 Moved Permanently
+		// 302 Found
+		// 303 See Other
+		// 307 Temporary Redirect (ab Contao 3.1)
 		$this->redirect($banner_url, $banner_redirect); 
 	}
 
@@ -346,15 +343,15 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
 	      && (int)$GLOBALS['TL_CONFIG']['mod_banner_bot_check'] == 0
 	       ) 
 	    {
-	        //log_message('bannerCheckBot abgeschaltet','Banner.log');
+	        //fuer debug log_message('bannerCheckBot abgeschaltet','Banner.log');
 	        return false; //Bot Suche abgeschaltet ueber localconfig.php
 	    }
 	    if ($this->BD_CheckBotAgent() || $this->BD_CheckBotIP()) 
 	    {
-	    	//log_message('bannerCheckBot True','Banner.log');
+	    	//fuer debug log_message('bannerCheckBot True','Banner.log');
 	    	return true;
 	    }
-	    //log_message('bannerCheckBot False','Banner.log');
+	    //fuer debug log_message('bannerCheckBot False','Banner.log');
 	    return false;
 	} //checkBot
 	
@@ -394,7 +391,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
         $CheckUserAgent=str_replace($arrUserAgents, '#', $UserAgent);
         if ($UserAgent != $CheckUserAgent) 
         {   // es wurde ersetzt also was gefunden
-        	//log_message('CheckUserAgent Click Filterung: Treffer!','Banner.log');
+        	//fuer debug log_message('CheckUserAgent Click Filterung: Treffer!','Banner.log');
             return true;
         }
         return false; 
@@ -445,7 +442,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
                         $this->removeReClickBlockerId($key, $val) === true )
                 {
                     // Key ist noch gültig und es muss daher geblockt werden
-                    //log_message('getReClickBlockerId Banner ID:'.$key,'Banner.log');
+                    //fuer debug log_message('getReClickBlockerId Banner ID:'.$key,'Banner.log');
                     return true;
                 }
             }
