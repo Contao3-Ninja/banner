@@ -90,11 +90,25 @@ class BannerReferrer
 	
 	protected function detect()
 	{
-	    $this->_referrer_DNS = parse_url( $this->_http_referrer, PHP_URL_HOST );
+	    try 
+	    {
+	        $this->_referrer_DNS = parse_url( $this->_http_referrer, PHP_URL_HOST );
+	    } 
+	    catch (\Exception $e) 
+	    {
+	        $this->_referrer_DNS == NULL;
+	    }
 	    if ($this->_referrer_DNS === NULL) 
 	    {
 	    	//try this...
-	    	$this->_referrer_DNS = @parse_url( 'http://'.$this->_http_referrer, PHP_URL_HOST );
+	    	try 
+	    	{
+	    	    $this->_referrer_DNS = parse_url( 'http://'.$this->_http_referrer, PHP_URL_HOST );
+	    	} 
+	    	catch (\Exception $e) 
+	    	{
+	    	    $this->_referrer_DNS == NULL;
+	    	}
 	    	if ($this->_referrer_DNS === NULL || 
 	    	    $this->_referrer_DNS === false) 
 	    	{
