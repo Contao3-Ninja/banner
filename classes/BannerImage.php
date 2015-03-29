@@ -361,8 +361,6 @@ class BannerImage extends \System //\Frontend
 			    {
 			        // Breite statt Hoehe setzen, Breite auf maximale Hoehe
 			    	$newImageSize = $this->getBannerImageSizeNew($arrImageSize[0],$arrImageSize[1], $maxHeight, 0);
-			        //$intWidth  = $maxHeight;
-			        //$intHeight = ceil($intWidth*$arrImageSize[1]/$arrImageSize[0]);
 			    	$intWidth  = $newImageSize[0];
 			    	$intHeight = $newImageSize[1];
 			    	$oriSize   = $newImageSize[2];

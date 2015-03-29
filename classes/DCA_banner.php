@@ -47,7 +47,6 @@ class DCA_banner extends \Backend
     {
         parent::__construct();
         $this->import('BackendUser', 'User');
-        //$this->import('BugBuster\Banner\BannerImage', 'BannerImage');
         $this->BannerImage = new \Banner\BannerImage();
         
     }
@@ -381,7 +380,7 @@ class DCA_banner extends \Backend
         unset($oriSize);
 
         $banner_image = $row['banner_image_extern'];
-        //$banner_image = html_entity_decode($row['banner_image_extern'], ENT_NOQUOTES, 'UTF-8');
+
         //Banner Ziel per Page?
         if ($row['banner_jumpTo'] >0)
         {

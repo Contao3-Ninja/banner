@@ -149,10 +149,10 @@ class BannerHelper extends \Frontend
 		 
 		if (!isset($GLOBALS['objPage'])) 
 		{
-			$GLOBALS['objPage'] = new \stdClass();
-			$GLOBALS['objPage']->templateGroup = $this->templatepfad;
-			$GLOBALS['objPage']->outputFormat = $this->outputFormat;
-			// old $GLOBALS['objPage'] = $objPage;
+			$objPage = new \stdClass();
+			$objPage->templateGroup = $this->templatepfad;
+			$objPage->outputFormat = $this->outputFormat;
+			$GLOBALS['objPage'] = $objPage;
 		}
 		
 	}
@@ -334,7 +334,6 @@ class BannerHelper extends \Frontend
 			    $banner_default_target = ($this->arrCategoryValues['banner_default_target'] == '1') ? '' : ' target="_blank"';
 			}
 			//BannerImage Class
-			//$this->import('\Banner\BannerImage', 'BannerImage');
 			$this->BannerImage = new \Banner\BannerImage();
 			 
 			//Banner Art bestimmen
