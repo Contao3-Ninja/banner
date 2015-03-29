@@ -109,7 +109,15 @@ class BannerImage extends \System //\Frontend
 	 */
 	protected function getImageSizeInternal($BannerImage)
 	{
-		$arrImageSize = @getimagesize(TL_ROOT . '/' . $BannerImage);
+	    try 
+	    {
+	        $arrImageSize = getimagesize(TL_ROOT . '/' . $BannerImage);
+	    } 
+	    catch (\Exception $e) 
+	    {
+	        $arrImageSize = false;
+	    }		
+		
 		if ($arrImageSize === false)
 		{
 		    //Workaround for PHP without zlib on SWC files
