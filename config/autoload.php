@@ -42,7 +42,7 @@ ClassLoader::addClasses(array
 	'BugBuster\Banner\BannerImage'                      => 'system/modules/banner/classes/BannerImage.php',
 	'BugBuster\Banner\DcaBannerCategory'                => 'system/modules/banner/classes/DcaBannerCategory.php',
 	'BugBuster\Banner\BannerReferrer'                   => 'system/modules/banner/classes/BannerReferrer.php',
-	'BugBuster\Banner\DCA_module_banner'                => 'system/modules/banner/classes/DCA_module_banner.php',
+	'BugBuster\Banner\DcaModuleBanner'                  => 'system/modules/banner/classes/DcaModuleBanner.php',
 ));
 
 

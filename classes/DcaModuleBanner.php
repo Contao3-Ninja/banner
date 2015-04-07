@@ -3,7 +3,7 @@
 /**
  * Contao Open Source CMS, Copyright (C) 2005-2013 Leo Feyer
  *
- * Contao Module "Banner" - DCA Helper Class DCA_module_banner
+ * Contao Module "Banner" - DCA Helper Class DcaModuleBanner
  *
  * @copyright  Glen Langer 2012..2015 <http://contao.ninja>
  * @author     Glen Langer (BugBuster)
@@ -19,14 +19,14 @@
 namespace BugBuster\Banner;
 
 /**
- * DCA Helper Class DCA_module_banner
+ * DCA Helper Class DcaModuleBanner
  *
  * @copyright  Glen Langer 2012..2015 <http://contao.ninja>
  * @author     Glen Langer (BugBuster)
  * @package    Banner
  *
  */
-class DCA_module_banner extends \Backend
+class DcaModuleBanner extends \Backend
 {
     public function getBannerTemplates($dc)
     {
