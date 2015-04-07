@@ -3,7 +3,7 @@
 /**
  * Contao Open Source CMS, Copyright (C) 2005-2013 Leo Feyer
  *
- * Contao Module "Banner" - DCA Helper Class DCA_banner_category
+ * Contao Module "Banner" - DCA Helper Class DCA_banner
  *
  * @copyright  Glen Langer 2012..2015 <http://contao.ninja>
  * @author     Glen Langer (BugBuster)

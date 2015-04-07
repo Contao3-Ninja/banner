@@ -56,7 +56,7 @@ $GLOBALS['TL_DCA']['tl_banner_category'] = array
 			//'format'                  => '%s <br /><span style="color:#b3b3b3;">[%s]<br />[%s]</span>'
 			'fields'                  => array('tag'),
 			'format'                  => '%s',
-			'label_callback'		  => array('BugBuster\Banner\DCA_banner_category', 'labelCallback'),
+			'label_callback'		  => array('BugBuster\Banner\DcaBannerCategory', 'labelCallback'),
 		),
 		'global_operations' => array
 		(
@@ -253,7 +253,7 @@ $GLOBALS['TL_DCA']['tl_banner_category'] = array
 			'eval'                    => array('disabled'=>true),
 			'load_callback' => array
 			(
-			    array('BugBuster\Banner\DCA_banner_category', 'getAdminCheckbox')
+			    array('BugBuster\Banner\DcaBannerCategory', 'getAdminCheckbox')
 			)
 		),
 	)
