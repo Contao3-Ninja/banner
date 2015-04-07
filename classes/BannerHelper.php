@@ -1936,7 +1936,7 @@ class BannerHelper extends \Frontend
 	        //DEBUG log_message('bannerCheckBot abgeschaltet','Banner.log');
 	        return false; //Bot Suche abgeschaltet ueber localconfig.php
 	    }
-	    if (!in_array('botdetection', $this->Config->getActiveModules()))
+	    if (!in_array('botdetection', \ModuleLoader::getActive()) )
 	    {
 	        //botdetection Modul fehlt, Abbruch
 	        $this->log('BotDetection extension required!', 'ModulBanner bannerCheckBot', TL_ERROR);
