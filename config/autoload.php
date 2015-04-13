@@ -36,6 +36,7 @@ ClassLoader::addClasses(array
 	// Classes
 	'BugBuster\Banner\BannerHelper'                     => 'system/modules/banner/classes/BannerHelper.php',
 	'BugBuster\Banner\ModuleBannerTag'                  => 'system/modules/banner/classes/ModuleBannerTag.php',
+	'BugBuster\Banner\ModuleBannerLog'                  => 'system/modules/banner/classes/ModuleBannerLog.php',
 	'BugBuster\Banner\DcaBanner'                        => 'system/modules/banner/classes/DcaBanner.php',
 	'BugBuster\BannerStatistics\BannerStatisticsHelper' => 'system/modules/banner/classes/BannerStatisticsHelper.php',
 	'BugBuster\Banner\BannerCheckHelper'                => 'system/modules/banner/classes/BannerCheckHelper.php',
