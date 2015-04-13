@@ -85,7 +85,7 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	        else 
 	        {
 	            //Get Debug Settings
-	            $this->BannerSetDebugSettings($this->banner_categories);
+	            $this->setDebugSettings($this->banner_categories);
 	        }
 	    }
 	    else 
@@ -285,7 +285,7 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	    }
 	}
 	
-	protected function BannerSetDebugSettings($banner_category_id)
+	protected function setDebugSettings($banner_category_id)
 	{
 	    $GLOBALS['banner']['debug']['tag']          = false;
 	    $GLOBALS['banner']['debug']['helper']       = false;
