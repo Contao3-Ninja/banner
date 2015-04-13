@@ -63,6 +63,7 @@ class BannerReferrer
 		{ 
 			$this->detect();
 		}
+		ModuleBannerLog::Writer(__METHOD__ , __LINE__ , 'Referrer_DNS: '. print_r($this->_referrer_DNS,true));
 	}
 	
 	/**

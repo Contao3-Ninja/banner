@@ -36,7 +36,7 @@ class BannerImage extends \System
 	 * Current version of the class.
 	 * @var string
 	 */
-	const BANNER_IMAGE_VERSION = '3.3.0';
+	const BANNER_IMAGE_VERSION = '3.4.0';
 	
 	/**
 	 * Banner intern
@@ -123,6 +123,8 @@ class BannerImage extends \System
 		    //Workaround for PHP without zlib on SWC files
 		    $arrImageSize = $this->getImageSizeCompressed($BannerImage);
 		}
+		ModuleBannerLog::Writer(__METHOD__ , __LINE__ , 'Image Size: '. print_r($arrImageSize,true));
+		
 		return $arrImageSize;
 	}
 	
@@ -162,11 +164,11 @@ class BannerImage extends \System
 		{
 		    if ($e->getCode() == 0)
 		    {
-		        log_message('[getImageSizeExternal] tmpFile Problem: notWriteable', 'debug.log');
+		        log_message('[getImageSizeExternal] tmpFile Problem: notWriteable', 'error.log');
 		    } 
 		    else 
 		    {
-		        log_message('[getImageSizeExternal] tmpFile Problem: error', 'debug.log');
+		        log_message('[getImageSizeExternal] tmpFile Problem: error', 'error.log');
 		    }
 		    return false;
 		} 
@@ -182,6 +184,8 @@ class BannerImage extends \System
 		$objFile = null;
 		unset($objFile);
 
+		ModuleBannerLog::Writer(__METHOD__ , __LINE__ , 'Image Size: '. print_r($arrImageSize,true));
+		
 		return $arrImageSize;
 	}
 	
@@ -201,6 +205,8 @@ class BannerImage extends \System
 			// width,height
 			$arrImageSize = array($res[0], $res[1], 13); // 13 = SWC
 		}
+		ModuleBannerLog::Writer(__METHOD__ , __LINE__ , 'Image Size: '. print_r($arrImageSize,true));
+		
 		return $arrImageSize; 
 	}
 	

@@ -82,6 +82,11 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	        	$this->log('No banner module with this id "'.$arrTag[1].'"', 'ModuleBannerTag replaceInsertTagsBanner', TL_ERROR);
 	           return false;
 	        }
+	        else 
+	        {
+	            //Get Debug Settings
+	            $this->BannerSetDebugSettings($this->banner_categories);
+	        }
 	    }
 	    else 
 	    {
@@ -96,6 +101,8 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	    if (isset($arrTag[6])) { $this->outputFormat  = $arrTag[6]; }
 	    if (isset($arrTag[7])) { $this->templatepfad  = $arrTag[7]; }
 
+	    ModuleBannerLog::Writer(__METHOD__ , __LINE__ , 'Insert Tag Parameter: '. print_r($arrTag,true));
+	    
 	    return $this->generateBanner();
 	}
 	
@@ -275,6 +282,36 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	    {
 	        $this->Template->hl       = $_headline['unit'];
 	        $this->Template->headline = $_headline['value'];
+	    }
+	}
+	
+	protected function BannerSetDebugSettings($banner_category_id)
+	{
+	    $GLOBALS['banner']['debug']['tag']          = false;
+	    $GLOBALS['banner']['debug']['helper']       = false;
+	    $GLOBALS['banner']['debug']['image']        = false;
+	    $GLOBALS['banner']['debug']['referrer']     = false;
+	     
+	    $objBanner = \Database::getInstance()
+	                   ->prepare("SELECT
+                                banner_expert_debug_tag,
+                                banner_expert_debug_helper,
+                                banner_expert_debug_image,
+                                banner_expert_debug_referrer
+                            FROM
+                                tl_banner_category
+                            WHERE
+                                id=?
+                            ")
+	                            ->limit(1)
+	                            ->executeUncached($banner_category_id);
+	    while ($objBanner->next())
+	    {
+	        $GLOBALS['banner']['debug']['tag']          = (boolean)$objBanner->banner_expert_debug_tag;
+	        $GLOBALS['banner']['debug']['helper']       = (boolean)$objBanner->banner_expert_debug_helper;
+	        $GLOBALS['banner']['debug']['image']        = (boolean)$objBanner->banner_expert_debug_image;
+	        $GLOBALS['banner']['debug']['referrer']     = (boolean)$objBanner->banner_expert_debug_referrer;
+	        ModuleBannerLog::Writer('## START ##', '## DEBUG ##', 'T'.(int)$GLOBALS['banner']['debug']['tag'] .'#H'. (int)$GLOBALS['banner']['debug']['helper'] .'#I'. (int)$GLOBALS['banner']['debug']['image'] .'#R'.(int) $GLOBALS['banner']['debug']['referrer']);
 	    }
 	}
 
