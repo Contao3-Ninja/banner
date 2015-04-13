@@ -123,7 +123,7 @@ class BannerImage extends \System
 		    //Workaround for PHP without zlib on SWC files
 		    $arrImageSize = $this->getImageSizeCompressed($BannerImage);
 		}
-		ModuleBannerLog::Writer(__METHOD__ , __LINE__ , 'Image Size: '. print_r($arrImageSize,true));
+		ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Image Size: '. print_r($arrImageSize,true));
 		
 		return $arrImageSize;
 	}
@@ -184,7 +184,7 @@ class BannerImage extends \System
 		$objFile = null;
 		unset($objFile);
 
-		ModuleBannerLog::Writer(__METHOD__ , __LINE__ , 'Image Size: '. print_r($arrImageSize,true));
+		ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Image Size: '. print_r($arrImageSize,true));
 		
 		return $arrImageSize;
 	}
@@ -205,7 +205,7 @@ class BannerImage extends \System
 			// width,height
 			$arrImageSize = array($res[0], $res[1], 13); // 13 = SWC
 		}
-		ModuleBannerLog::Writer(__METHOD__ , __LINE__ , 'Image Size: '. print_r($arrImageSize,true));
+		ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Image Size: '. print_r($arrImageSize,true));
 		
 		return $arrImageSize; 
 	}

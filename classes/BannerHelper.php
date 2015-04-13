@@ -354,7 +354,7 @@ class BannerHelper extends \Frontend
 			$picture['alt']   = specialchars(ampersand($this->arrCategoryValues['banner_default_name']));
 			$picture['title'] = '';
 			
-			ModuleBannerLog::Writer(__METHOD__ , __LINE__ , 'Fake Picture: '. print_r($picture,true));
+			ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Fake Picture: '. print_r($picture,true));
 			
 			switch ($arrImageSize[2]) 
 			{
@@ -720,7 +720,7 @@ class BannerHelper extends \Frontend
                         $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
                         $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
                         
-                        ModuleBannerLog::Writer(__METHOD__ , __LINE__ , 'Orisize Picture: '. print_r($picture,true));
+                        ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Orisize Picture: '. print_r($picture,true));
                     }
                     else
                     {
@@ -732,7 +732,7 @@ class BannerHelper extends \Frontend
                         $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
                         $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
                         
-                        ModuleBannerLog::Writer(__METHOD__ , __LINE__ , 'Resize Picture: '. print_r($picture,true));
+                        ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Resize Picture: '. print_r($picture,true));
                         
                         $arrImageSize[0] = $arrImageSizenNew[0];
                         $arrImageSize[1] = $arrImageSizenNew[1];
@@ -1100,7 +1100,7 @@ class BannerHelper extends \Frontend
 	                    $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
 	                    $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
 	                    
-	                    ModuleBannerLog::Writer(__METHOD__ , __LINE__ , 'Orisize Picture: '. print_r($picture,true));
+	                    ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Orisize Picture: '. print_r($picture,true));
 	                }
 	                else
 	                {
@@ -1110,7 +1110,7 @@ class BannerHelper extends \Frontend
 	                    $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
 	                    $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
 	                    
-	                    ModuleBannerLog::Writer(__METHOD__ , __LINE__ , 'Resize Picture: '. print_r($picture,true));
+	                    ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Resize Picture: '. print_r($picture,true));
 
 	                    $arrImageSize[0] = $arrImageSizenNew[0];
 	                    $arrImageSize[1] = $arrImageSizenNew[1];
@@ -1494,7 +1494,7 @@ class BannerHelper extends \Frontend
 	                        $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
 	                        $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
 	                        
-	                        ModuleBannerLog::Writer(__METHOD__ , __LINE__ , 'Orisize Picture: '. print_r($picture,true));
+	                        ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Orisize Picture: '. print_r($picture,true));
 	                    }
 	                    else
 	                    {
@@ -1504,7 +1504,7 @@ class BannerHelper extends \Frontend
 	                        $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
 	                        $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
 	                        
-	                        ModuleBannerLog::Writer(__METHOD__ , __LINE__ , 'Resize Picture: '. print_r($picture,true));
+	                        ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Resize Picture: '. print_r($picture,true));
 
 	                        $arrImageSize[0] = $arrImageSizenNew[0];
 	                        $arrImageSize[1] = $arrImageSizenNew[1];

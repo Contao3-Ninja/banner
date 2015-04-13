@@ -101,7 +101,7 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	    if (isset($arrTag[6])) { $this->outputFormat  = $arrTag[6]; }
 	    if (isset($arrTag[7])) { $this->templatepfad  = $arrTag[7]; }
 
-	    ModuleBannerLog::Writer(__METHOD__ , __LINE__ , 'Insert Tag Parameter: '. print_r($arrTag,true));
+	    ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Insert Tag Parameter: '. print_r($arrTag,true));
 	    
 	    return $this->generateBanner();
 	}
@@ -311,7 +311,7 @@ class ModuleBannerTag extends \BugBuster\Banner\BannerHelper
 	        $GLOBALS['banner']['debug']['helper']       = (boolean)$objBanner->banner_expert_debug_helper;
 	        $GLOBALS['banner']['debug']['image']        = (boolean)$objBanner->banner_expert_debug_image;
 	        $GLOBALS['banner']['debug']['referrer']     = (boolean)$objBanner->banner_expert_debug_referrer;
-	        ModuleBannerLog::Writer('## START ##', '## DEBUG ##', 'T'.(int)$GLOBALS['banner']['debug']['tag'] .'#H'. (int)$GLOBALS['banner']['debug']['helper'] .'#I'. (int)$GLOBALS['banner']['debug']['image'] .'#R'.(int) $GLOBALS['banner']['debug']['referrer']);
+	        ModuleBannerLog::writeLog('## START ##', '## DEBUG ##', 'T'.(int)$GLOBALS['banner']['debug']['tag'] .'#H'. (int)$GLOBALS['banner']['debug']['helper'] .'#I'. (int)$GLOBALS['banner']['debug']['image'] .'#R'.(int) $GLOBALS['banner']['debug']['referrer']);
 	    }
 	}
 

@@ -30,7 +30,7 @@ class ModuleBannerLog
      * @param string    $method
      * @param integer   $line
      */
-    public static function Writer($method,$line,$value)
+    public static function writeLog($method,$line,$value)
     {
         if ($method == '## START ##') 
         {
