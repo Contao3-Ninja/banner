@@ -716,7 +716,14 @@ class BannerHelper extends \Frontend
                         $arrImageSize[1] = $arrImageSizenNew[1];
                         $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
                         
-                        $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
+                        //fake the Picture::create
+                        $picture['img']   = array
+                        (
+                            'src'    => specialchars(ampersand($FileSrc)),
+                            'width'  => $arrImageSizenNew[0],
+                            'height' => $arrImageSizenNew[1],
+                            'srcset' => specialchars(ampersand($FileSrc))
+                        );
                         $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
                         $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
                         
@@ -1096,7 +1103,14 @@ class BannerHelper extends \Frontend
 	                    $arrImageSize[1] = $arrImageSizenNew[1];
 	                    $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
 	                    
-	                    $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
+	                    //fake the Picture::create
+                        $picture['img']   = array
+                        (
+                            'src'    => specialchars(ampersand($FileSrc)),
+                            'width'  => $arrImageSizenNew[0],
+                            'height' => $arrImageSizenNew[1],
+                            'srcset' => specialchars(ampersand($FileSrc))
+                        );
 	                    $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
 	                    $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
 	                    
@@ -1490,7 +1504,14 @@ class BannerHelper extends \Frontend
 	                        $arrImageSize[1] = $arrImageSizenNew[1];
 	                        $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
 	                        
-	                        $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
+	                        //fake the Picture::create
+	                        $picture['img']   = array
+	                        (
+	                            'src'    => specialchars(ampersand($FileSrc)),
+	                            'width'  => $arrImageSizenNew[0],
+	                            'height' => $arrImageSizenNew[1],
+	                            'srcset' => specialchars(ampersand($FileSrc))
+	                        );
 	                        $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
 	                        $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
 	                        
