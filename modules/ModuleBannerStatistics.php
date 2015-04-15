@@ -47,7 +47,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
     public function __construct()
     {
         parent::__construct();
-        \System::loadLanguageFile('tl_banner_stat'); //$this->loadLanguageFile('tl_banner_stat');
+        \System::loadLanguageFile('tl_banner_stat'); 
         
         if ( (int)\Input::get('id') == 0)
         {
@@ -139,7 +139,6 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         $this->Template->number_inactive  = $number_inactive;
         $this->Template->number_clicks    = $number_clicks;
         $this->Template->number_views     = $number_views;
-        //$this->Template->banner_export_title = $GLOBALS['TL_LANG']['tl_banner_stat']['export_button_title'];
         $this->Template->header_id        = $GLOBALS['TL_LANG']['tl_banner_stat']['id'];
         $this->Template->header_picture   = $GLOBALS['TL_LANG']['tl_banner_stat']['picture'];
         $this->Template->header_name      = $GLOBALS['TL_LANG']['tl_banner_stat']['name'];
@@ -234,7 +233,6 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         //Pfad+Dateiname holen ueber UUID (findByPk leitet um auf findByUuid)
         $objFile = \FilesModel::findByPk($Banner['banner_image']);
         //BannerImage Class
-        //$this->import('\Banner\BannerImage', 'BannerImage');
         $this->BannerImage = new \Banner\BannerImage();
         
         //Banner Art und Größe bestimmen
@@ -347,10 +345,8 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         $this->setBannerPublishedActive($Banner);
         $this->setBannerURL($Banner);
         $Banner['banner_url']   = \Idna::decode($Banner['banner_url']);
-        //$Banner['banner_image'] = $Banner['banner_image_extern'];
         
         //BannerImage Class
-        //$this->import('\Banner\BannerImage', 'BannerImage');
         $this->BannerImage = new \Banner\BannerImage();
         
         //Banner Art und Größe bestimmen
@@ -375,6 +371,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
         $intWidth  = $arrNewBannerImageSize[0];
         $intHeight = $arrNewBannerImageSize[1];
         $oriSize   = $arrNewBannerImageSize[2];
+        unset($oriSize);
         
         switch ($arrImageSize[2])
         {

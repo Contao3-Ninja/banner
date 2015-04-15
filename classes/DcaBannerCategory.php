@@ -3,7 +3,7 @@
 /**
  * Contao Open Source CMS, Copyright (C) 2005-2014 Leo Feyer
  *
- * Contao Module "Banner" - DCA Helper Class DCA_banner_category
+ * Contao Module "Banner" - DCA Helper Class DcaBannerCategory
  *
  * @copyright  Glen Langer 2012..2015 <http://contao.ninja>
  * @author     Glen Langer (BugBuster)
@@ -19,7 +19,7 @@
 namespace BugBuster\Banner;
 
 
-class DCA_banner_category extends \Backend
+class DcaBannerCategory extends \Backend
 {
     public function labelCallback($arrRow)
     {

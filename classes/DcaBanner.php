@@ -3,7 +3,7 @@
 /**
  * Contao Open Source CMS, Copyright (C) 2005-2013 Leo Feyer
  *
- * Contao Module "Banner" - DCA Helper Class DCA_banner_category
+ * Contao Module "Banner" - DCA Helper Class DcaBanner
  *
  * @copyright  Glen Langer 2012..2015 <http://contao.ninja>
  * @author     Glen Langer (BugBuster)
@@ -19,7 +19,7 @@
 namespace BugBuster\Banner;
 
 
-class DCA_banner extends \Backend
+class DcaBanner extends \Backend
 {
     /**
      * Banner intern
@@ -47,7 +47,6 @@ class DCA_banner extends \Backend
     {
         parent::__construct();
         $this->import('BackendUser', 'User');
-        //$this->import('BugBuster\Banner\BannerImage', 'BannerImage');
         $this->BannerImage = new \Banner\BannerImage();
         
     }
@@ -378,9 +377,10 @@ class DCA_banner extends \Backend
             default:
                 break;
         }
+        unset($oriSize);
 
         $banner_image = $row['banner_image_extern'];
-        //$banner_image = html_entity_decode($row['banner_image_extern'], ENT_NOQUOTES, 'UTF-8');
+
         //Banner Ziel per Page?
         if ($row['banner_jumpTo'] >0)
         {

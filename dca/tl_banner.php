@@ -45,8 +45,8 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 			'fields'                  => array('sorting'),
 			'panelLayout'             => 'search,filter,limit',
 			'headerFields'            => array('title', 'banner_protected', 'tstamp','id'),
-			'header_callback'         => array('BugBuster\Banner\DCA_banner', 'addHeader'),
-			'child_record_callback'   => array('BugBuster\Banner\DCA_banner', 'listBanner')
+			'header_callback'         => array('BugBuster\Banner\DcaBanner', 'addHeader'),
+			'child_record_callback'   => array('BugBuster\Banner\DcaBanner', 'listBanner')
 		),		
 		'global_operations' => array
 		(
@@ -84,7 +84,7 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 				'label'               => &$GLOBALS['TL_LANG']['tl_banner']['toggle'],
 				'icon'                => 'visible.gif',
 				'attributes'          => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
-				'button_callback'     => array('BugBuster\Banner\DCA_banner', 'toggleIcon')
+				'button_callback'     => array('BugBuster\Banner\DcaBanner', 'toggleIcon')
 			),
 			'show' => array
 			(
@@ -208,7 +208,7 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_banner']['banner_imgSize'],
 			'exclude'                 => true,
 			'inputType'               => 'imageSize',
-			'options_callback'        => array('BugBuster\Banner\DCA_banner', 'getBannerImageSizes'),
+			'options_callback'        => array('BugBuster\Banner\DcaBanner', 'getBannerImageSizes'),
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'sql'                     => "varchar(255) NOT NULL default ''",
 			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true)

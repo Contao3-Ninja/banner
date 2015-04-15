@@ -36,13 +36,14 @@ ClassLoader::addClasses(array
 	// Classes
 	'BugBuster\Banner\BannerHelper'                     => 'system/modules/banner/classes/BannerHelper.php',
 	'BugBuster\Banner\ModuleBannerTag'                  => 'system/modules/banner/classes/ModuleBannerTag.php',
-	'BugBuster\Banner\DCA_banner'                       => 'system/modules/banner/classes/DCA_banner.php',
+	'BugBuster\Banner\ModuleBannerLog'                  => 'system/modules/banner/classes/ModuleBannerLog.php',
+	'BugBuster\Banner\DcaBanner'                        => 'system/modules/banner/classes/DcaBanner.php',
 	'BugBuster\BannerStatistics\BannerStatisticsHelper' => 'system/modules/banner/classes/BannerStatisticsHelper.php',
 	'BugBuster\Banner\BannerCheckHelper'                => 'system/modules/banner/classes/BannerCheckHelper.php',
 	'BugBuster\Banner\BannerImage'                      => 'system/modules/banner/classes/BannerImage.php',
-	'BugBuster\Banner\DCA_banner_category'              => 'system/modules/banner/classes/DCA_banner_category.php',
+	'BugBuster\Banner\DcaBannerCategory'                => 'system/modules/banner/classes/DcaBannerCategory.php',
 	'BugBuster\Banner\BannerReferrer'                   => 'system/modules/banner/classes/BannerReferrer.php',
-	'BugBuster\Banner\DCA_module_banner'                => 'system/modules/banner/classes/DCA_module_banner.php',
+	'BugBuster\Banner\DcaModuleBanner'                  => 'system/modules/banner/classes/DcaModuleBanner.php',
 ));
 
 

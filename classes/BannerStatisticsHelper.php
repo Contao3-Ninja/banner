@@ -72,7 +72,7 @@ class BannerStatisticsHelper extends \BackendModule
      */
     public static function getInstance()
     {
-        if (self::$instance == null)
+        if (self::$instance === null)
         {
             self::$instance = new BannerStatisticsHelper();
         }
@@ -492,12 +492,12 @@ class BannerStatisticsHelper extends \BackendModule
     {
         if (0 == strlen($banner_stat_groups)) 
         {
-            //log_message('banner_stat_groups ist leer', 'banner.log');
+            //DEBUG log_message('banner_stat_groups ist leer', 'banner.log');
         	return true; // nicht gefiltert, also darf jeder
         }
         if ( true === $this->User->isAdmin )
         {
-            //log_message('Ich bin Admin', 'banner.log');
+            //DEBUG log_message('Ich bin Admin', 'banner.log');
             return true; // Admin darf immer
         }
         
@@ -506,7 +506,7 @@ class BannerStatisticsHelper extends \BackendModule
         {
             if ( true === $this->User->isMemberOf($groupid) ) 
             {
-                //log_message('Ich bin in der richtigen Gruppe '.$groupid, 'banner.log');
+                //DEBUG log_message('Ich bin in der richtigen Gruppe '.$groupid, 'banner.log');
             	return true; // User is Member of banner_stat_group 
             }
         }

@@ -30,13 +30,13 @@ namespace BugBuster\Banner;
  * @package    Banner
  * @license    LGPL
  */
-class BannerImage extends \System //\Frontend
+class BannerImage extends \System 
 {
 	/**
 	 * Current version of the class.
 	 * @var string
 	 */
-	const BANNER_IMAGE_VERSION = '3.2.1';
+	const BANNER_IMAGE_VERSION = '3.4.0';
 	
 	/**
 	 * Banner intern
@@ -109,12 +109,22 @@ class BannerImage extends \System //\Frontend
 	 */
 	protected function getImageSizeInternal($BannerImage)
 	{
-		$arrImageSize = @getimagesize(TL_ROOT . '/' . $BannerImage);
+	    try 
+	    {
+	        $arrImageSize = getimagesize(TL_ROOT . '/' . $BannerImage);
+	    } 
+	    catch (\Exception $e) 
+	    {
+	        $arrImageSize = false;
+	    }		
+		
 		if ($arrImageSize === false)
 		{
 		    //Workaround for PHP without zlib on SWC files
 		    $arrImageSize = $this->getImageSizeCompressed($BannerImage);
 		}
+		ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Image Size: '. print_r($arrImageSize,true));
+		
 		return $arrImageSize;
 	}
 	
@@ -128,9 +138,19 @@ class BannerImage extends \System //\Frontend
 	{
 		$token = md5(uniqid(rand(), true));
 		$tmpImage = 'system/tmp/mod_banner_fe_'.$token.'.tmp';
-		$objRequest = new \Request();
-		$objRequest->redirect = true; // #75: Unterstützung der redirects für externe Affiliat Banner
-		$objRequest->rlimit = 5;     // #75: Unterstützung der redirects für externe Affiliat Banner
+		// HOOK: proxy module
+		if ( \Config::get('useProxy') 
+		    && in_array('proxy', \ModuleLoader::getActive()) 
+            ) 
+		{
+		    $objRequest = new \ProxyRequest();
+		} 
+		else 
+		{
+		    $objRequest = new \Request();
+		    $objRequest->redirect = true; // #75: Unterstützung der redirects für externe Affiliat Banner
+		    $objRequest->rlimit = 5;      // #75: Unterstützung der redirects für externe Affiliat Banner
+		}
 		$objRequest->send(html_entity_decode($BannerImage, ENT_NOQUOTES, 'UTF-8'));
 		//old: Test auf chunked, nicht noetig solange Contao bei HTTP/1.0 bleibt
 		try
@@ -144,11 +164,11 @@ class BannerImage extends \System //\Frontend
 		{
 		    if ($e->getCode() == 0)
 		    {
-		        log_message('[getImageSizeExternal] tmpFile Problem: notWriteable', 'debug.log');
+		        log_message('[getImageSizeExternal] tmpFile Problem: notWriteable', 'error.log');
 		    } 
 		    else 
 		    {
-		        log_message('[getImageSizeExternal] tmpFile Problem: error', 'debug.log');
+		        log_message('[getImageSizeExternal] tmpFile Problem: error', 'error.log');
 		    }
 		    return false;
 		} 
@@ -164,6 +184,8 @@ class BannerImage extends \System //\Frontend
 		$objFile = null;
 		unset($objFile);
 
+		ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Image Size: '. print_r($arrImageSize,true));
+		
 		return $arrImageSize;
 	}
 	
@@ -183,6 +205,8 @@ class BannerImage extends \System //\Frontend
 			// width,height
 			$arrImageSize = array($res[0], $res[1], 13); // 13 = SWC
 		}
+		ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Image Size: '. print_r($arrImageSize,true));
+		
 		return $arrImageSize; 
 	}
 	
@@ -361,8 +385,6 @@ class BannerImage extends \System //\Frontend
 			    {
 			        // Breite statt Hoehe setzen, Breite auf maximale Hoehe
 			    	$newImageSize = $this->getBannerImageSizeNew($arrImageSize[0],$arrImageSize[1], $maxHeight, 0);
-			        //$intWidth  = $maxHeight;
-			        //$intHeight = ceil($intWidth*$arrImageSize[1]/$arrImageSize[0]);
 			    	$intWidth  = $newImageSize[0];
 			    	$intHeight = $newImageSize[1];
 			    	$oriSize   = $newImageSize[2];

@@ -63,3 +63,15 @@ $GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_groups']['0']    = 'Allow
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_groups']['1']    = 'Here you can choose which groups will be allowed to see the banner statistic of this category.';
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_admins']['0']    = 'Administrators';
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_admins']['1']    = 'Administrators have unlimited access to all banner statistics.';
+
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_expert_debug_image']['0']    = 'Debug mode for the class "Banner Image"';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_expert_debug_image']['1']    = 'With activation, write debug information to the log file (<em>system/logs/banner_debug.log</em>)';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_expert_debug_referrer']['0'] = 'Debug mode for the class "Banner Referrer"';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_expert_debug_referrer']['1'] = 'With activation, write debug information to the log file (<em>system/logs/banner_debug.log</em>)';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_expert_debug_helper']['0']   = 'Debug mode for the class "Banner Helper"';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_expert_debug_helper']['1']   = 'With activation, write debug information to the log file (<em>system/logs/banner_debug.log</em>)';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_expert_debug_tag']['0']      = 'Debug mode for the class "Banner Tag"';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_expert_debug_tag']['1']      = 'With activation, write debug information to the log file (<em>system/logs/banner_debug.log</em>)';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_expert_legend']              = 'Expert settings';
+
+

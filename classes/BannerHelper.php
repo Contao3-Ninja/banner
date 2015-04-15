@@ -145,14 +145,14 @@ class BannerHelper extends \Frontend
 		{
 		    $this->strFormat = 'html5';
 		}
-		//DEBUG 
-		//log_message('bannerHelperInit this->outputFormat:'.$this->outputFormat,'Banner.log');
-		global $objPage; 
-		if ($objPage == NULL) 
+		//DEBUG log_message('bannerHelperInit this->outputFormat:'.$this->outputFormat,'Banner.log');
+		 
+		if (!isset($GLOBALS['objPage'])) 
 		{
 			$objPage = new \stdClass();
 			$objPage->templateGroup = $this->templatepfad;
-			$objPage->outputFormat = $this->outputFormat; 
+			$objPage->outputFormat = $this->outputFormat;
+			$GLOBALS['objPage'] = $objPage;
 		}
 		
 	}
@@ -164,8 +164,7 @@ class BannerHelper extends \Frontend
 	 */
 	protected function getSetCategoryValues()
 	{
-	    //DEBUG
-	    //log_message('getSetCategoryValues banner_categories:'.$this->banner_categories,'Banner.log');
+	    //DEBUG log_message('getSetCategoryValues banner_categories:'.$this->banner_categories,'Banner.log');
 		//$this->banner_categories is now an ID, but the name is backward compatible 
 		if ( !isset($this->banner_categories) || !is_numeric($this->banner_categories) ) 
 		{
@@ -202,8 +201,7 @@ class BannerHelper extends \Frontend
 				'banner_protected'		=> $objBannerCategory->banner_protected,
 				'banner_group'			=> $arrGroup[0]
 				);
-		//DEBUG
-	    //log_message('getSetCategoryValues arrCategoryValues:'.print_r($this->arrCategoryValues,true),'Banner.log');
+        //DEBUG log_message('getSetCategoryValues arrCategoryValues:'.print_r($this->arrCategoryValues,true),'Banner.log');
 		return true;
 	}
 	
@@ -298,8 +296,7 @@ class BannerHelper extends \Frontend
 		{
 			$this->arrAllBannersBasic[$objBanners->id] = $objBanners->banner_weighting;
 		}
-		//DEBUG
-		//log_message('getSetAllBannerForCategory arrAllBannersBasic:'.print_r($this->arrAllBannersBasic,true),'Banner.log');
+		//DEBUG log_message('getSetAllBannerForCategory arrAllBannersBasic:'.print_r($this->arrAllBannersBasic,true),'Banner.log');
 		return (bool)$this->arrAllBannersBasic; //false bei leerem array, sonst true
 	}
 	
@@ -337,7 +334,6 @@ class BannerHelper extends \Frontend
 			    $banner_default_target = ($this->arrCategoryValues['banner_default_target'] == '1') ? '' : ' target="_blank"';
 			}
 			//BannerImage Class
-			//$this->import('\Banner\BannerImage', 'BannerImage');
 			$this->BannerImage = new \Banner\BannerImage();
 			 
 			//Banner Art bestimmen
@@ -357,6 +353,8 @@ class BannerHelper extends \Frontend
 			);
 			$picture['alt']   = specialchars(ampersand($this->arrCategoryValues['banner_default_name']));
 			$picture['title'] = '';
+			
+			ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Fake Picture: '. print_r($picture,true));
 			
 			switch ($arrImageSize[2]) 
 			{
@@ -526,8 +524,9 @@ class BannerHelper extends \Frontend
 	    if ( count($this->_session) )
 	    {
 	        list($key, $val) = each($this->_session);
+	        unset($val);
 	        reset($this->_session);
-	        //log_message('getRandomBlockerId BannerID:'.$key,'Banner.log');
+	        //DEBUG log_message('getRandomBlockerId BannerID:'.$key,'Banner.log');
 	        return $key;
 	    }
 	    return 0;
@@ -562,7 +561,7 @@ class BannerHelper extends \Frontend
 	        if ( $this->removeOldFirstViewBlockerId($key, $tstmap) === true ) 
 	        {
 	            // Key ist noch gültig und es muss daher geblockt werden
-	            //log_message('getFirstViewBlockerId Banner Kat ID: '.$key,'Banner.log');
+	            //DEBUG log_message('getFirstViewBlockerId Banner Kat ID: '.$key,'Banner.log');
 	            return $key;
 	        }
 	    }
@@ -603,13 +602,6 @@ class BannerHelper extends \Frontend
 	    //FirstViewBanner gewünscht?
 	    if ($this->banner_firstview !=1) { return false; }
 
-	    // sha1 20 Zeichen, bin2hex 40 zeichen
-	    //$ClientIP = bin2hex(sha1($this->banner_categories . \Environment::get('remoteAddr'),true));
-
-	    // 5 Minuten, Einträge >= 5 Minuten werden gelöscht
-	    //$BannerFirstViewBlockTime = time() - 60*5; 
-
-	    //$this->import('\Banner\BannerReferrer','BannerReferrer');
 	    $this->BannerReferrer = new \Banner\BannerReferrer();
 	    $this->BannerReferrer->checkReferrer();
 	    $ReferrerDNS = $this->BannerReferrer->getReferrerDNS();
@@ -697,7 +689,6 @@ class BannerHelper extends \Frontend
                     //Pfad+Dateiname holen ueber UUID (findByPk leitet um auf findByUuid)
                     $objFile = \FilesModel::findByPk($objBanners->banner_image);
                     //BannerImage Class
-                    //$this->import('\Banner\BannerImage', 'BannerImage');
                     $this->BannerImage = new \Banner\BannerImage();
                     //Banner Art und Größe bestimmen
                     $arrImageSize = $this->BannerImage->getBannerImageSize($objFile->path, self::BANNER_TYPE_INTERN);
@@ -725,9 +716,18 @@ class BannerHelper extends \Frontend
                         $arrImageSize[1] = $arrImageSizenNew[1];
                         $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
                         
-                        $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
+                        //fake the Picture::create
+                        $picture['img']   = array
+                        (
+                            'src'    => specialchars(ampersand($FileSrc)),
+                            'width'  => $arrImageSizenNew[0],
+                            'height' => $arrImageSizenNew[1],
+                            'srcset' => specialchars(ampersand($FileSrc))
+                        );
                         $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
                         $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
+                        
+                        ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Orisize Picture: '. print_r($picture,true));
                     }
                     else
                     {
@@ -739,6 +739,8 @@ class BannerHelper extends \Frontend
                         $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
                         $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
                         
+                        ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Resize Picture: '. print_r($picture,true));
+                        
                         $arrImageSize[0] = $arrImageSizenNew[0];
                         $arrImageSize[1] = $arrImageSizenNew[1];
                         $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
@@ -746,7 +748,6 @@ class BannerHelper extends \Frontend
                     break;
                 case self::BANNER_TYPE_EXTERN :
                     //BannerImage Class
-                    //$this->import('\Banner\BannerImage', 'BannerImage');
                     $this->BannerImage = new \Banner\BannerImage();
                     //Banner Art und Größe bestimmen
                     $arrImageSize = $this->BannerImage->getBannerImageSize($objBanners->banner_image_extern, self::BANNER_TYPE_EXTERN);
@@ -763,7 +764,7 @@ class BannerHelper extends \Frontend
                     $arrImageSizenNew = $this->BannerImage->getBannerImageSizeNew($arrImageSize[0],$arrImageSize[1],$arrNewSizeValues[0],$arrNewSizeValues[1]);
                     //Umwandlung bei Parametern
                     $FileSrc = html_entity_decode($objBanners->banner_image_extern, ENT_NOQUOTES, 'UTF-8');
-                    //$src = $objBanners->banner_image_extern;
+
                     $arrImageSize[0] = $arrImageSizenNew[0];
                     $arrImageSize[1] = $arrImageSizenNew[1];
                     $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
@@ -1075,7 +1076,6 @@ class BannerHelper extends \Frontend
 	                //Pfad+Dateiname holen ueber UUID (findByPk leitet um auf findByUuid)
 	                $objFile = \FilesModel::findByPk($objBanners->banner_image);
 	                //BannerImage Class
-	                //$this->import('\Banner\BannerImage', 'BannerImage');
 	                $this->BannerImage = new \Banner\BannerImage();
 	                //Banner Art und Größe bestimmen
 	                $arrImageSize = $this->BannerImage->getBannerImageSize($objFile->path, self::BANNER_TYPE_INTERN);
@@ -1103,9 +1103,18 @@ class BannerHelper extends \Frontend
 	                    $arrImageSize[1] = $arrImageSizenNew[1];
 	                    $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
 	                    
-	                    $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
+	                    //fake the Picture::create
+                        $picture['img']   = array
+                        (
+                            'src'    => specialchars(ampersand($FileSrc)),
+                            'width'  => $arrImageSizenNew[0],
+                            'height' => $arrImageSizenNew[1],
+                            'srcset' => specialchars(ampersand($FileSrc))
+                        );
 	                    $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
 	                    $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
+	                    
+	                    ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Orisize Picture: '. print_r($picture,true));
 	                }
 	                else
 	                {
@@ -1114,7 +1123,9 @@ class BannerHelper extends \Frontend
 	                    $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
 	                    $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
 	                    $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
-	                     
+	                    
+	                    ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Resize Picture: '. print_r($picture,true));
+
 	                    $arrImageSize[0] = $arrImageSizenNew[0];
 	                    $arrImageSize[1] = $arrImageSizenNew[1];
 	                    $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
@@ -1122,7 +1133,6 @@ class BannerHelper extends \Frontend
 	                break;
 	            case self::BANNER_TYPE_EXTERN :
 	                //BannerImage Class
-	                //$this->import('\Banner\BannerImage', 'BannerImage');
 	                $this->BannerImage = new \Banner\BannerImage();
 	                //Banner Art und Größe bestimmen
 	                $arrImageSize = $this->BannerImage->getBannerImageSize($objBanners->banner_image_extern, self::BANNER_TYPE_EXTERN);
@@ -1139,7 +1149,7 @@ class BannerHelper extends \Frontend
 	                $arrImageSizenNew = $this->BannerImage->getBannerImageSizeNew($arrImageSize[0],$arrImageSize[1],$arrNewSizeValues[0],$arrNewSizeValues[1]);
 	                //Umwandlung bei Parametern
 	                $FileSrc = html_entity_decode($objBanners->banner_image_extern, ENT_NOQUOTES, 'UTF-8');
-	                //$src = $objBanners->banner_image_extern;
+
 	                $arrImageSize[0] = $arrImageSizenNew[0];
 	                $arrImageSize[1] = $arrImageSizenNew[1];
 	                $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
@@ -1382,7 +1392,7 @@ class BannerHelper extends \Frontend
 	     
 	    //RandomBlocker entfernen falls möglich und nötig
 	    
-             // einer muss mindestens übrig bleiben
+        // einer muss mindestens übrig bleiben
 	    if ( count($this->arrAllBannersBasic) >1                
 	         // bei Alle Banner anzeigen (0) nichts entfernen
 	         && $this->arrCategoryValues['banner_limit'] >0  
@@ -1416,6 +1426,7 @@ class BannerHelper extends \Frontend
 	    //Schleife
 	    while ( list($banner_id, $banner_weigth) = each($this->arrAllBannersBasic) )
 	    {
+	        unset($banner_weigth);
 	        $objBanners  = \Database::getInstance()
                                 ->prepare("SELECT
                                                 TLB.*
@@ -1466,7 +1477,6 @@ class BannerHelper extends \Frontend
 	                    //Pfad+Dateiname holen ueber UUID (findByPk leitet um auf findByUuid)
 	                    $objFile = \FilesModel::findByPk($objBanners->banner_image);
 	                    //BannerImage Class
-	                    //$this->import('\Banner\BannerImage', 'BannerImage');
 	                    $this->BannerImage = new \Banner\BannerImage();
 	                    //Banner Art und Größe bestimmen
 	                    $arrImageSize = $this->BannerImage->getBannerImageSize($objFile->path, self::BANNER_TYPE_INTERN);
@@ -1494,9 +1504,18 @@ class BannerHelper extends \Frontend
 	                        $arrImageSize[1] = $arrImageSizenNew[1];
 	                        $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
 	                        
-	                        $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
+	                        //fake the Picture::create
+	                        $picture['img']   = array
+	                        (
+	                            'src'    => specialchars(ampersand($FileSrc)),
+	                            'width'  => $arrImageSizenNew[0],
+	                            'height' => $arrImageSizenNew[1],
+	                            'srcset' => specialchars(ampersand($FileSrc))
+	                        );
 	                        $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
 	                        $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
+	                        
+	                        ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Orisize Picture: '. print_r($picture,true));
 	                    }
 	                    else
 	                    {
@@ -1505,6 +1524,8 @@ class BannerHelper extends \Frontend
 	                        $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
 	                        $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
 	                        $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
+	                        
+	                        ModuleBannerLog::writeLog(__METHOD__ , __LINE__ , 'Resize Picture: '. print_r($picture,true));
 
 	                        $arrImageSize[0] = $arrImageSizenNew[0];
 	                        $arrImageSize[1] = $arrImageSizenNew[1];
@@ -1513,7 +1534,6 @@ class BannerHelper extends \Frontend
 	                    break;
 	                case self::BANNER_TYPE_EXTERN :
 	                    //BannerImage Class
-	                    //$this->import('\Banner\BannerImage', 'BannerImage');
 	                    $this->BannerImage = new \Banner\BannerImage();
 	                    //Banner Art und Größe bestimmen
 	                    $arrImageSize = $this->BannerImage->getBannerImageSize($objBanners->banner_image_extern, self::BANNER_TYPE_EXTERN);
@@ -1530,6 +1550,7 @@ class BannerHelper extends \Frontend
 	                    $arrImageSizenNew = $this->BannerImage->getBannerImageSizeNew($arrImageSize[0],$arrImageSize[1],$arrNewSizeValues[0],$arrNewSizeValues[1]);
 	                    //Umwandlung bei Parametern
 	                    $FileSrc = html_entity_decode($objBanners->banner_image_extern, ENT_NOQUOTES, 'UTF-8');
+	                    
 	                    //fake the Picture::create
 	                    $picture['img']   = array
 	                    (
@@ -1541,7 +1562,6 @@ class BannerHelper extends \Frontend
 	                    $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
 	                    $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
 	                    
-	                    //$src = $objBanners->banner_image_extern;
 	                    $arrImageSize[0] = $arrImageSizenNew[0];
 	                    $arrImageSize[1] = $arrImageSizenNew[1];
 	                    $arrImageSize[3] = ' height="'.$arrImageSizenNew[1].'" width="'.$arrImageSizenNew[0].'"';
@@ -1695,9 +1715,6 @@ class BannerHelper extends \Frontend
 	                
 	                $this->arrBannerData = $arrBanners; //wird von setStatViewUpdate genutzt
 	                $this->setStatViewUpdate();
-	                //$this->Template->banners = $arrBanners;
-	                //return true;
-	                 
 	            }//$arrImageSize !== false
 	             
 	            // Text Banner
@@ -1753,16 +1770,11 @@ class BannerHelper extends \Frontend
 	                );
 	                
 	                $arrResults[] = $arrBanners[0];
-	                //$this->Template->banners = $arrResults;
 	            
 	                $this->arrBannerData = $arrBanners; //wird von setStatViewUpdate genutzt
 	                $this->setStatViewUpdate();
 	                
 	            }//text banner
-	            
-	            
-	            
-	            
 	            
 	        }//Banner vorhanden
 	    } // while each($this->arrAllBannersBasic)
@@ -1826,27 +1838,12 @@ class BannerHelper extends \Frontend
 	    }
 	    
 	    // Blocker
-	    
-	    //$intCatID = ($this->banner_categories >0) ? $this->banner_categories : 42 ; // Answer to the Ultimate Question of Life, the Universe, and Everything
-	    //log_message('BannerStatViewUpdate $intCatID:'.$intCatID,'Banner.log');
-	    //$ClientIP = bin2hex(sha1($intCatID . \Environment::get('remoteAddr'),true)); // sha1 20 Zeichen, bin2hex 40 zeichen
 	    $lastBanner = array_pop($this->arrBannerData);
 	    $BannerID = $lastBanner['banner_id'];
 	    if ($BannerID==0)
 	    { // kein Banner, nichts zu tun
 	        return;
 	    }
-	    /*
-	    $BannerBlockTime = time() - 60*5;  // 5 Minuten, 0-5 min wird geblockt
-	    $BannerCleanTime = time() - 60*10; // 10 Minuten, Einträge >= 10 Minuten werden gelöscht
-	    if ( isset($GLOBALS['TL_CONFIG']['mod_banner_block_time'] ) 
-	     && intval($GLOBALS['TL_CONFIG']['mod_banner_block_time'])>0
-	       )
-	    {
-	        $BannerBlockTime = time() - 60*1*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
-	        $BannerCleanTime = time() - 60*2*intval($GLOBALS['TL_CONFIG']['mod_banner_block_time']);
-	    }
-	    */
 	    
 	    if ( $this->getStatViewUpdateBlockerId($BannerID) === true )
 	    {
@@ -1914,7 +1911,7 @@ class BannerHelper extends \Frontend
 	                 $this->removeStatViewUpdateBlockerId($key, $val) === true )
 	            {
 	                // Key ist noch gültig und es muss daher geblockt werden
-	                //log_message('getStatViewUpdateBlockerId Banner ID:'.$key,'Banner.log');
+	                //DEBUG log_message('getStatViewUpdateBlockerId Banner ID:'.$key,'Banner.log');
 	                return true;
 	            }
 	        }
@@ -1971,24 +1968,23 @@ class BannerHelper extends \Frontend
 	      && (int)$GLOBALS['TL_CONFIG']['mod_banner_bot_check'] == 0
 	       )
 	    {
-	        //log_message('bannerCheckBot abgeschaltet','Banner.log');
+	        //DEBUG log_message('bannerCheckBot abgeschaltet','Banner.log');
 	        return false; //Bot Suche abgeschaltet ueber localconfig.php
 	    }
-	    if (!in_array('botdetection', $this->Config->getActiveModules()))
+	    if (!in_array('botdetection', \ModuleLoader::getActive()) )
 	    {
 	        //botdetection Modul fehlt, Abbruch
 	        $this->log('BotDetection extension required!', 'ModulBanner bannerCheckBot', TL_ERROR);
 	        return false;
 	    }
 	    // Import Helperclass ModuleBotDetection
-	    //$this->import('\BotDetection\ModuleBotDetection','ModuleBotDetection');
 	    $this->ModuleBotDetection = new \BotDetection\ModuleBotDetection();
 	    if ($this->ModuleBotDetection->BD_CheckBotAgent() || $this->ModuleBotDetection->BD_CheckBotIP())
 	    {
-	        //log_message('bannerCheckBot True','Banner.log');
+	        //DEBUG log_message('bannerCheckBot True','Banner.log');
 	        return true;
 	    }
-	    //log_message('bannerCheckBot False','Banner.log');
+	    //DEBUG log_message('bannerCheckBot False','Banner.log');
 	    return false;
 	} //bannerCheckBot
 	
@@ -2015,7 +2011,7 @@ class BannerHelper extends \Frontend
 	    $CheckUserAgent = str_replace($arrUserAgents, '#', $UserAgent);
 	    if ($UserAgent != $CheckUserAgent) 
 	    {   // es wurde ersetzt also was gefunden
-	        //log_message('CheckUserAgent Filterung; Treffer!','Banner.log');
+	        //DEBUG log_message('CheckUserAgent Filterung; Treffer!','Banner.log');
 	        return true;
 	    }
 	    return false;

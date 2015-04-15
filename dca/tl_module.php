@@ -55,7 +55,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['banner_template'] = array
     'default'                 => 'mod_banner_list_all',
     'exclude'                 => true,
     'inputType'               => 'select',
-    'options_callback'        => array('BugBuster\Banner\DCA_module_banner', 'getBannerTemplates'),
+    'options_callback'        => array('BugBuster\Banner\DcaModuleBanner', 'getBannerTemplates'),
     'sql'                     => "varchar(32) NOT NULL default ''",
     'eval'                    => array('tl_class'=>'w50')
 );
