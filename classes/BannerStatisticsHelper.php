@@ -507,7 +507,7 @@ class BannerStatisticsHelper extends \BackendModule
         if (0 == strlen($banner_stat_groups)) 
         {
             //DEBUG log_message('banner_stat_groups ist leer', 'banner.log');
-        	return true; // nicht gefiltert, also darf jeder
+        	return false; //nicht gefiltert, also darf keiner außer Admin
         }
         
         //mit isMemberOf ermitteln, ob user Member einer der Cat Groups ist
