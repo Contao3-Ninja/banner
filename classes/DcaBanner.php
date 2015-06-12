@@ -665,6 +665,7 @@ class DcaBanner extends \Backend
     /**
      * Return all image sizes as array
      * @return array
+     * @deprecated
      */
     public function getBannerImageSizes()
     {
