@@ -303,6 +303,7 @@ class BannerStatisticsHelper extends \BackendModule
                             ->prepare("SELECT
                                             `id`
                                           , `title`
+                                          , `banner_stat_protected`
                                           , `banner_stat_groups`
                                        FROM
                                             tl_banner_category
@@ -313,7 +314,8 @@ class BannerStatisticsHelper extends \BackendModule
                             ->execute();
         while ($objBannerCat->next())
         {
-            if ( true === $this->isUserInBannerStatGroups($objBannerCat->banner_stat_groups) ) 
+            if ( true === $this->isUserInBannerStatGroups($objBannerCat->banner_stat_groups, 
+                                                   (bool) $objBannerCat->banner_stat_protected)) 
             {
                 $arrBannerCats[] = array
                 (
@@ -488,17 +490,24 @@ class BannerStatisticsHelper extends \BackendModule
      * @param   string  DB Field "banner_stat_groups", serialized array
      * @return  bool    true / false
      */
-    protected function isUserInBannerStatGroups($banner_stat_groups)
+    protected function isUserInBannerStatGroups($banner_stat_groups, $banner_stat_protected)
     {
-        if (0 == strlen($banner_stat_groups)) 
-        {
-            //DEBUG log_message('banner_stat_groups ist leer', 'banner.log');
-        	return true; // nicht gefiltert, also darf jeder
-        }
         if ( true === $this->User->isAdmin )
         {
             //DEBUG log_message('Ich bin Admin', 'banner.log');
             return true; // Admin darf immer
+        }
+        //wenn  Schutz nicht aktiviert ist, darf jeder
+        if (false === $banner_stat_protected)
+        {
+            //Debug log_message('Schutz nicht aktiviert', 'banner.log');
+            return true;
+        }
+        //Schutz aktiviert, Einschränkungen vorhanden?
+        if (0 == strlen($banner_stat_groups)) 
+        {
+            //DEBUG log_message('banner_stat_groups ist leer', 'banner.log');
+        	return true; // nicht gefiltert, also darf jeder
         }
         
         //mit isMemberOf ermitteln, ob user Member einer der Cat Groups ist
@@ -510,6 +519,7 @@ class BannerStatisticsHelper extends \BackendModule
             	return true; // User is Member of banner_stat_group 
             }
         }
+        //Debug log_message('Ich bin in der falschen Gruppe', 'banner.log');
         return false;
     }
     
