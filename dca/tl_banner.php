@@ -208,7 +208,7 @@ $GLOBALS['TL_DCA']['tl_banner'] = array
 			'label'                   => &$GLOBALS['TL_LANG']['tl_banner']['banner_imgSize'],
 			'exclude'                 => true,
 			'inputType'               => 'imageSize',
-			'options_callback'        => array('BugBuster\Banner\DcaBanner', 'getBannerImageSizes'),
+			'options'                 => System::getImageSizes(),
 			'reference'               => &$GLOBALS['TL_LANG']['MSC'],
 			'sql'                     => "varchar(255) NOT NULL default ''",
 			'eval'                    => array('rgxp'=>'digit', 'nospace'=>true)
