@@ -154,6 +154,7 @@ class BannerHelper extends \Frontend
 			$objPage->outputFormat = $this->outputFormat;
 			$GLOBALS['objPage'] = $objPage;
 		}
+		\Controller::setStaticUrls(); // #169
 		
 	}
 	
@@ -1520,7 +1521,7 @@ class BannerHelper extends \Frontend
 	                    else
 	                    {
 	                        $FileSrc = \Image::get($this->urlEncode($objFile->path), $arrImageSizenNew[0], $arrImageSizenNew[1],'proportional');
-	                        
+ 
 	                        $picture = \Picture::create($this->urlEncode($objFile->path), array($arrImageSizenNew[0], $arrImageSizenNew[1], $arrNewSizeValues[2]))->getTemplateData();
 	                        $picture['alt']   = specialchars(ampersand($objBanners->banner_name));
 	                        $picture['title'] = specialchars(ampersand($objBanners->banner_comment));
