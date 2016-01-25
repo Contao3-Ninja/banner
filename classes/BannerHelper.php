@@ -154,7 +154,6 @@ class BannerHelper extends \Frontend
 			$objPage->outputFormat = $this->outputFormat;
 			$GLOBALS['objPage'] = $objPage;
 		}
-		\Controller::setStaticUrls(); // #169
 		
 	}
 	
