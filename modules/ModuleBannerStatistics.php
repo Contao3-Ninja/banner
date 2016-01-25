@@ -460,7 +460,7 @@ class ModuleBannerStatistics extends \BugBuster\BannerStatistics\BannerStatistic
             foreach ($GLOBALS['TL_BANNER_HOOKS']['addStatisticPanelLine'] as $callback)
             {
                 $this->import($callback[0]);
-                $result[] = $this->$callback[0]->$callback[1]($this->intCatID);
+                $result[] = $this->{$callback[0]}->{$callback[1]}($this->intCatID); //#170
             }
             return $result;
         }

@@ -20,8 +20,8 @@
 		"forum":"https://community.contao.org/de/forumdisplay.php?24-banner"
 	},
 	"require":{
-		"php":">=5.3",
-		"contao/core":">=3.4,<4",
+		"php":">=5.4",
+		"contao/core":">=3.5.1,<4",
 		"contao-community-alliance/composer-plugin": "*",
 		"bugbuster/botdetection":">=3.2.1"
 	},

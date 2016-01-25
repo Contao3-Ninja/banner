@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-06-29T00:55:54+02:00
+ * last-updated: 2015-02-07T21:13:33+01:00
  */
 
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_default']['0']        = 'تصویر بنر پیش‌فرض';
@@ -19,10 +19,12 @@ $GLOBALS['TL_LANG']['tl_banner_category']['banner_default_name']['1']   = 'نا�
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_default_target']['0'] = 'پیوند داخلی';
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_default_url']['0']    = 'نشانی وب مقصد بنر';
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_default_url']['1']    = 'نشانی وب مقصد بنر را وارد کنید: http://...';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_expert_legend']       = 'تنظیمات پیشرفته';
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_groups']['0']         = 'گروه‌های اعضای مجاز';
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_limit']['0']          = 'محدود کردن تعداد بنرها.';
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_numbers']['0']        = 'نمایش همه بنرها';
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_protected']['0']      = 'حفاظت دسته';
+$GLOBALS['TL_LANG']['tl_banner_category']['banner_protected']['1']      = 'نمایش بنر این دسته‌بندی فقط برای  گروه‌های اعضاء مشخص.';
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_protected_catagory']  = 'دسته حفاظت شده';
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_random']['0']         = 'ترتیب تصافی';
 $GLOBALS['TL_LANG']['tl_banner_category']['banner_stat_admins']['0']    = 'مدیرها';
@@ -42,6 +44,7 @@ $GLOBALS['TL_LANG']['tl_banner_category']['new']['0']                   = 'دس�
 $GLOBALS['TL_LANG']['tl_banner_category']['new']['1']                   = 'ایجاد دسته جدید';
 $GLOBALS['TL_LANG']['tl_banner_category']['number_legend']              = 'تعداد بنرها';
 $GLOBALS['TL_LANG']['tl_banner_category']['protected_legend']           = 'حفاظت دسترسی';
+$GLOBALS['TL_LANG']['tl_banner_category']['protected_stat_legend']      = 'حفاظت دسترسی برای آمار';
 $GLOBALS['TL_LANG']['tl_banner_category']['show']['0']                  = 'جزئیات دسته‌بندی';
 $GLOBALS['TL_LANG']['tl_banner_category']['show']['1']                  = 'نمایش جزئیات دسته‌بندی شناسه %s';
 $GLOBALS['TL_LANG']['tl_banner_category']['stat']['0']                  = 'آمار دسته‌بندی';

@@ -8,22 +8,25 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-09-19T01:14:27+02:00
+ * last-updated: 2015-02-07T21:13:33+01:00
  */
 
 $GLOBALS['TL_LANG']['tl_banner']['1']                        = 'اولویت بالا';
 $GLOBALS['TL_LANG']['tl_banner']['2']                        = 'اولویت عادی';
 $GLOBALS['TL_LANG']['tl_banner']['3']                        = 'اولویت پایین';
+$GLOBALS['TL_LANG']['tl_banner']['banner_active']            = 'منتشر شده';
 $GLOBALS['TL_LANG']['tl_banner']['banner_cat_not_found']     = 'دسته‌بندی‌ای در ماژول بنر انتخاب نشده است.';
 $GLOBALS['TL_LANG']['tl_banner']['banner_clicks_until']['0'] = 'محدود کردن تعداد کلیک';
 $GLOBALS['TL_LANG']['tl_banner']['banner_comment']['0']      = 'متن بنر';
 $GLOBALS['TL_LANG']['tl_banner']['banner_comment']['1']      = 'نظر برای برچسب عنوان است. برای بنر متنی: خط متن.';
+$GLOBALS['TL_LANG']['tl_banner']['banner_cssid']['0']        = 'شناسه/کلاس سی‌اس‌اس';
 $GLOBALS['TL_LANG']['tl_banner']['banner_domain']['0']       = 'صافی دامنه';
 $GLOBALS['TL_LANG']['tl_banner']['banner_image']['0']        = 'تصویر بنر';
 $GLOBALS['TL_LANG']['tl_banner']['banner_image']['1']        = 'لطفا بنر را انتخاب کنید. (GIF,JPG,PNG,SWF)';
 $GLOBALS['TL_LANG']['tl_banner']['banner_image_extern']['0'] = 'نشانی وب تصویر بنر';
 $GLOBALS['TL_LANG']['tl_banner']['banner_image_extern']['1'] = 'نشانی وب تصویر بنر خارجی: http://...';
 $GLOBALS['TL_LANG']['tl_banner']['banner_imgSize']['0']      = 'عرض و ارتفاع بنر';
+$GLOBALS['TL_LANG']['tl_banner']['banner_inactive']          = 'منتشر نشده';
 $GLOBALS['TL_LANG']['tl_banner']['banner_jumpTo']['0']       = 'صفحه مقصد بنر';
 $GLOBALS['TL_LANG']['tl_banner']['banner_name']['0']         = 'نام بنر';
 $GLOBALS['TL_LANG']['tl_banner']['banner_name']['1']         = 'نام بنر را وارد نماید. برای بنر متنی: عنوان.';
@@ -46,6 +49,7 @@ $GLOBALS['TL_LANG']['tl_banner']['delete']['1']              = 'حذف بنر ش
 $GLOBALS['TL_LANG']['tl_banner']['destination_legend']       = 'مقصدهای بنر';
 $GLOBALS['TL_LANG']['tl_banner']['edit']['0']                = 'ویرایش بنر';
 $GLOBALS['TL_LANG']['tl_banner']['edit']['1']                = 'ویرایش بنر شناسه %s';
+$GLOBALS['TL_LANG']['tl_banner']['expert_legend']            = 'تنظیمات پیشرفته';
 $GLOBALS['TL_LANG']['tl_banner']['filter_legend']            = 'صافی کردن';
 $GLOBALS['TL_LANG']['tl_banner']['image_legend']             = 'تصویر بنر';
 $GLOBALS['TL_LANG']['tl_banner']['new']['0']                 = 'بنر جدید';
@@ -54,6 +58,8 @@ $GLOBALS['TL_LANG']['tl_banner']['publish_legend']           = 'تنظیمات �
 $GLOBALS['TL_LANG']['tl_banner']['show']['0']                = 'جزئیات بنر';
 $GLOBALS['TL_LANG']['tl_banner']['show']['1']                = 'جزئیات بنر شناسه %s';
 $GLOBALS['TL_LANG']['tl_banner']['source_extern']            = 'خارجی';
+$GLOBALS['TL_LANG']['tl_banner']['source_fallback']          = 'تصویر یدکی';
+$GLOBALS['TL_LANG']['tl_banner']['source_fallback_no']       = 'تصویر یدکی یافت نشد.';
 $GLOBALS['TL_LANG']['tl_banner']['source_intern']            = 'داخلی';
 $GLOBALS['TL_LANG']['tl_banner']['title_legend']             = 'نام و توزین';
 $GLOBALS['TL_LANG']['tl_banner']['tl_be_max_clicks']         = 'بیشترین کلیک';
