@@ -32,6 +32,9 @@
 		"contao-legacy/banner":"self.version"
 	},
 	"extra":{
+	        "branch-alias": {
+            "dev-develop": "3.5.4-dev"
+        },
 		"contao":{
 			"sources":{
 				"":"system/modules/banner"
