@@ -436,7 +436,7 @@ class BannerClicks extends \BugBuster\BotDetection\ModuleBotDetection
         if ( count($this->_session) )
         {
             reset($this->_session);
-            while ( list($key, $val) = each($this->_session) )
+            foreach ($this->_session as $key => $val)
             {
                 if ( $key == $banner_id &&
                         $this->removeReClickBlockerId($key, $val) === true )
