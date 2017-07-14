@@ -4,6 +4,11 @@ Contao Banner Advertisement Module
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/288d9e0d-3710-438a-b8b1-ecfcc697ea86/small.png)](https://insight.sensiolabs.com/projects/288d9e0d-3710-438a-b8b1-ecfcc697ea86)
 
+## User guide
+
+* English: http://docs.contao.ninja/en/banner.html
+* German: http://docs.contao.ninja/de/banner.html
+
 ## For Translators
 Translations are managed using Transifex. To create a new translation or to help to maintain an existing one, please register at transifex.com.
 
