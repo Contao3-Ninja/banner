@@ -523,8 +523,9 @@ class BannerHelper extends \Frontend
 	    $this->getSession('RandomBlocker'.$this->module_id);
 	    if ( count($this->_session) )
 	    {
-	        list($key, $val) = each($this->_session);
-	        unset($val);
+	        $key   = key($this->_session);
+	        $value = current($this->_session);
+	        unset($value);	        
 	        reset($this->_session);
 	        //DEBUG log_message('getRandomBlockerId BannerID:'.$key,'Banner.log');
 	        return $key;
@@ -556,7 +557,8 @@ class BannerHelper extends \Frontend
 	    $this->getSession('FirstViewBlocker'.$this->module_id);
 	    if ( count($this->_session) )
 	    {
-	        list($key, $tstmap) = each($this->_session);
+	        $key    = key($this->_session);
+	        $tstmap = current($this->_session);
 	        reset($this->_session);
 	        if ( $this->removeOldFirstViewBlockerId($key, $tstmap) === true ) 
 	        {
@@ -1012,7 +1014,7 @@ class BannerHelper extends \Frontend
 	    $SingleBannerWeighting = $this->getSingleWeighting();
 
 	    //alle Basic Daten durchgehen und die löschen die nicht der Wichtung entsprechen
-	    while ( list($key, $val) = each($this->arrAllBannersBasic) ) 
+	    foreach ($this->arrAllBannersBasic as $key => $val)
 	    {
 	        if ($val != $SingleBannerWeighting) 
 	        {
@@ -1424,7 +1426,7 @@ class BannerHelper extends \Frontend
 
 	    //Rest soll nun angezeigt werden.
 	    //Schleife
-	    while ( list($banner_id, $banner_weigth) = each($this->arrAllBannersBasic) )
+	    foreach($this->arrAllBannersBasic as $banner_id => $banner_weigth)
 	    {
 	        unset($banner_weigth);
 	        $objBanners  = \Database::getInstance()
@@ -1777,7 +1779,7 @@ class BannerHelper extends \Frontend
 	            }//text banner
 	            
 	        }//Banner vorhanden
-	    } // while each($this->arrAllBannersBasic)
+	    } // foreach($this->arrAllBannersBasic)
 	    
 	    //anderes Template?
 	    if (($this->banner_template != $this->strTemplate) 
@@ -1905,7 +1907,7 @@ class BannerHelper extends \Frontend
 	    if ( count($this->_session) )
 	    {
 	        reset($this->_session);
-	        while ( list($key, $val) = each($this->_session) )
+	        foreach ($this->_session as $key => $val)
 	        {
 	            if ( $key == $banner_id && 
 	                 $this->removeStatViewUpdateBlockerId($key, $val) === true )
