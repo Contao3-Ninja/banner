@@ -436,6 +436,7 @@ class BannerHelper extends \Frontend
 		{
 		    // auf Leer umschalten
 		    $this->strTemplate='mod_banner_empty';
+		    $this->Template->arrCategoryValues = $this->arrCategoryValues; // #176
 		    $this->Template = new \FrontendTemplate($this->strTemplate);
 		}
 		$this->Template->banners = $arrResults;
